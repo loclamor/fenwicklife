@@ -2,5 +2,32 @@
 
 *.class
 
+*.pydevproject
+.metadata
+.gradle
 bin/
+tmp/
 output/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+.externalToolBuilders/
+
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin 
+.target
+
+# TeXlipse plugin
+.texlipse
