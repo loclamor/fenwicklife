@@ -3,7 +3,7 @@ package com.m2dl.fenwicklife.xmlrpc;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.m2dl.fenwicklife.engine.Case;
+import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.engine.CaseType;
 import com.m2dl.fenwicklife.engine.Main;
 
@@ -11,9 +11,9 @@ public class FenwickGlobalStatus implements IFenwickGlobalStatus{
 
 	public String getAllPositions(int i1) {
 		System.out.println("[Service] : All positions requested.");
-		List<Case> fieldState = Main.field.getFieldState(); 
+		List<Tile> fieldState = Main.field.getFieldState(); 
 		String returnedValue = "";
-		for(Case c : fieldState) {
+		for(Tile c : fieldState) {
 			if(c.getType() == CaseType.WALL) {
 				returnedValue+=(int)c.getX()+":"+(int)c.getY()+":WALL\n";
 			}
