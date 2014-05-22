@@ -26,10 +26,19 @@ public class Field {
 		return fieldState;
 	}
 
-	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorX) {
+	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorY) {
 		super();
+		
+		if(firstCorridorY == secondCorridorY) {
+			throw new RuntimeException("Both corridors on same coordinate");
+		}
+		
+		if(firstCorridorY < 0 || secondCorridorY < 0 || firstCorridorY > sizeY || secondCorridorY > sizeY) {
+			throw new RuntimeException("Invalid corridor coordinates");
+		}
+		
 		this.firstCorridorY = firstCorridorY;
-		this.secondCorridorX = secondCorridorX;
+		this.secondCorridorX = secondCorridorY;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.centerWallXLeft   = sizeX / 2 - centerWallSize;
