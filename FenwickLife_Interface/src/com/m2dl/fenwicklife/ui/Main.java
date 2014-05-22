@@ -86,7 +86,6 @@ public class Main {
 		    	int x = Integer.parseInt(lineInformations[0]);
 		    	int y = Integer.parseInt(lineInformations[1]);
 		    	String type = lineInformations[2];
-		    	System.out.println("Display an " + type + " in (" + x + " , " + y + ")");
 		    			
 		    	switch(type) {
 		    	case "FENWICKFULL" :
