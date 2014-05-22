@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.m2dl.fenwicklife.engine.Tile;
-import com.m2dl.fenwicklife.engine.CaseType;
+import com.m2dl.fenwicklife.engine.TileType;
 import com.m2dl.fenwicklife.engine.Main;
 
 public class FenwickGlobalStatus implements IFenwickGlobalStatus{
@@ -14,7 +14,7 @@ public class FenwickGlobalStatus implements IFenwickGlobalStatus{
 		List<Tile> fieldState = Main.field.getFieldState(); 
 		String returnedValue = "";
 		for(Tile c : fieldState) {
-			if(c.getType() == CaseType.WALL) {
+			if(c.getType() == TileType.WALL) {
 				returnedValue+=(int)c.getX()+":"+(int)c.getY()+":WALL\n";
 			}
 		}
