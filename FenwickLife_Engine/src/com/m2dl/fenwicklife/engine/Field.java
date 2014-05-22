@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Field {
-	private List<Agent> listOfAgents;
-	private List<Box> listOfBoxes;
 	private int firstCorridorY;
 	private int secondCorridorX;
 	private int sizeX;
@@ -37,21 +35,9 @@ public class Field {
 		this.centerWallXLeft   = sizeX / 2 - centerWallSize;
 		this.centerWallXRight  = sizeX / 2 + centerWallSize;
 
-		this.listOfAgents = new ArrayList<Agent>();
-		this.listOfBoxes = new ArrayList<Box>();
+		
 	}
-	public List<Agent> getListOfAgents() {
-		return listOfAgents;
-	}
-	public void setListOfAgents(List<Agent> listOfAgents) {
-		this.listOfAgents = listOfAgents;
-	}
-	public List<Box> getListOfBoxes() {
-		return listOfBoxes;
-	}
-	public void setListOfBoxes(List<Box> listOfBoxes) {
-		this.listOfBoxes = listOfBoxes;
-	}
+	
 	public int getFirstCorridorY() {
 		return firstCorridorY;
 	}
