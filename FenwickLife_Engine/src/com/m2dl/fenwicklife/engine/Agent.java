@@ -2,24 +2,29 @@ package com.m2dl.fenwicklife.engine;
 
 public class Agent extends Active {
 	
-	private boolean isCarryingBox;
+	private Box box;
 	
 	public Agent(int x, int y) {
 		super(x, y);
-		this.isCarryingBox = false;
 	}
 	
 	public boolean isCarryingBox() {
-		return isCarryingBox;
+		return box != null;
 	}
 	
-	public void setEMpty(boolean isEMpty) {
-		this.isCarryingBox = isEMpty;
+	public boolean takeBox(Box box) {
+		// TODO : exception if take box when already carrying one ?
+		if(this.isCarryingBox()) return false;
+		this.box = box;
+		return true;
 	}
 	
-	public Tile[][] getSurroundings() {
-		
-		Tile[][] surroundings = new Tile[3][3];
+	public void dropBox() {
+		this.box = null;
+	}
+	
+	private Tile[][] getSurroundings() {
+		Tile[][] surroundings = Engine.getInstance().getField().getSurroundings(this.getX(), this.getY());
 		
 		return surroundings;
 	}
