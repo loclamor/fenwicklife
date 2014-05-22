@@ -1,6 +1,6 @@
 package com.m2dl.fenwicklife.engine;
 
-public class Agent extends Active{
+public class Agent extends Active {
 	
 	private boolean isCarryingBox;
 	
@@ -18,7 +18,7 @@ public class Agent extends Active{
 	}
 	
 	public Tile[][] getSurroundings() {
-		//TODO
+		
 		Tile[][] surroundings = new Tile[3][3];
 		
 		return surroundings;
