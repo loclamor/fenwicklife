@@ -16,9 +16,6 @@ public class Main {
 	public static void main(String[] args) throws ClassInterfaceRelationException {
 		// Retrieve args
 		int port = 8081;
-
-		// Init the field
-		Main.engine = new Engine();
 		
 		// Init services list
 		List<Object> classesServices = new ArrayList<Object>();

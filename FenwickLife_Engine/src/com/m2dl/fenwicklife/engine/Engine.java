@@ -16,7 +16,9 @@ public class Engine {
 	private List<Box> listOfBoxes;
 	private Field field;
 	
-	public Engine() {
+	private static Engine instance = new Engine(); 
+	
+	private Engine() {
 		this.field = new Field(DEFAULT_SIZE_X, DEFAULT_SIZE_Y, DEFAULT_CENTER_WALL_SIZE,
 				DEFAULT_FIRST_CORRIDOR_Y, DEFAULT_SECOND_CORRIDOR_Y);
 		
@@ -36,7 +38,9 @@ public class Engine {
 		return this.listOfBoxes;
 	}
 	
-	
+	public static Engine getInstance() {
+		return instance;
+	}
 	
 	
 }

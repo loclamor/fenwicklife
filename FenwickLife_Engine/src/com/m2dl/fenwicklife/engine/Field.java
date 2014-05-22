@@ -59,4 +59,9 @@ public class Field {
 	public void setSecondCorridorX(int secondCorridorX) {
 		this.secondCorridorY = secondCorridorX;
 	}
+
+	public Tile[][] getSurroundings(int x, int y) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
