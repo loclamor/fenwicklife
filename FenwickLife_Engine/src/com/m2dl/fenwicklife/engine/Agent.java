@@ -2,15 +2,25 @@ package com.m2dl.fenwicklife.engine;
 
 public class Agent extends Active{
 	
-	private boolean isEMpty;
-	public Agent(int x, int y, boolean isEMpty) {
+	private boolean isCarryingBox;
+	
+	public Agent(int x, int y) {
 		super(x, y);
-		this.isEMpty = isEMpty;
+		this.isCarryingBox = false;
 	}
-	public boolean isEMpty() {
-		return isEMpty;
+	
+	public boolean isCarryingBox() {
+		return isCarryingBox;
 	}
+	
 	public void setEMpty(boolean isEMpty) {
-		this.isEMpty = isEMpty;
+		this.isCarryingBox = isEMpty;
+	}
+	
+	public Tile[][] getSurroundings() {
+		//TODO
+		Tile[][] surroundings = new Tile[3][3];
+		
+		return surroundings;
 	}
 }

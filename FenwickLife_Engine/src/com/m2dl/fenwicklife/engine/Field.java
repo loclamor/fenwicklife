@@ -13,15 +13,15 @@ public class Field {
 	private int centerWallXLeft;
 	private int centerWallXRight;
 	
-	public List<Case> getFieldState() {
-		List<Case> fieldState = new ArrayList<Case>();
+	public List<Tile> getFieldState() {
+		List<Tile> fieldState = new ArrayList<Tile>();
 		for(int i = 0; i < sizeX; i++) {
 			for(int j = 0; j < sizeY; j++) {
 				if(i == 0 || i == sizeX - 1 || j == 0 || j == sizeY - 1) {
-					fieldState.add(new Case(i, j, CaseType.WALL));
+					fieldState.add(new Tile(i, j, TileType.WALL));
 				}
 				else if(i >= centerWallXLeft && i <= centerWallXRight && j != firstCorridorY && j != secondCorridorX) {
-					fieldState.add(new Case(i, j, CaseType.WALL));
+					fieldState.add(new Tile(i, j, TileType.WALL));
 				}
 			}
 		}

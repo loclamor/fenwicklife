@@ -1,10 +1,11 @@
 package com.m2dl.fenwicklife.engine;
 
-public class Case {
+public class Tile {
 	private int X;
 	private int Y;
-	private CaseType type;
-	public Case(int x, int y, CaseType type) {
+	private TileType type;
+	
+	public Tile(int x, int y, TileType type) {
 		super();
 		X = x;
 		Y = y;
@@ -22,10 +23,10 @@ public class Case {
 	public void setY(int y) {
 		Y = y;
 	}
-	public CaseType getType() {
+	public TileType getType() {
 		return type;
 	}
-	public void setType(CaseType type) {
+	public void setType(TileType type) {
 		this.type = type;
 	}
 }

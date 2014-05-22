@@ -1,6 +1,8 @@
 package com.m2dl.fenwicklife.engine;
 
-public enum CaseType {
+public enum TileType {
 	EMPTY,
-	WALL
+	WALL,
+	HOME,
+	STORE
 }
