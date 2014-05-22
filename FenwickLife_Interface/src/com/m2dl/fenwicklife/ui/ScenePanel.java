@@ -33,8 +33,8 @@ public class ScenePanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setBackground(Color.YELLOW);
         g2d.setColor(Color.green);
-        float widthRatio  = getWidth()  / virtualGridWidth;
-        float heightRatio = getHeight() / virtualGridHeight;
+        float widthRatio  = ((float)getWidth())  / virtualGridWidth;
+        float heightRatio = ((float)getHeight()) / virtualGridHeight;
         if(displayGrid) {
         	for(int x = 1; x < virtualGridWidth + 1; x++) {
         		g2d.drawLine((int)(x * widthRatio), 0,  (int)(x * widthRatio), getHeight());
