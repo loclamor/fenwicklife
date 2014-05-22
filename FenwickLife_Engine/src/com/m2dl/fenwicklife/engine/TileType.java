@@ -4,5 +4,8 @@ public enum TileType {
 	EMPTY,
 	WALL,
 	HOME,
-	STORE
+	STORE,
+	AGENTWITHBOX,
+	AGENT,
+	BOX
 }
