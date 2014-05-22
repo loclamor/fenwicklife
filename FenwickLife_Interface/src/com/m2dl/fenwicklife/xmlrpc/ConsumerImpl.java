@@ -56,8 +56,7 @@ public class ConsumerImpl implements IConsumer {
 					.println("[Customer] : Can't use the service, maybe the function doesn't exist.");
 			return null;
 		}
-		System.out.println("[Customer] : Provider " + adress + ":" + port + " respond : "
-				+ result);
+		System.out.println("[Customer] : Provider " + adress + ":" + port + " respond" ); // + result);
 		return result;
 	}
 
