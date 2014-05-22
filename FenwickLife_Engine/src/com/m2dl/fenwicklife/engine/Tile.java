@@ -1,27 +1,27 @@
 package com.m2dl.fenwicklife.engine;
 
 public class Tile {
-	private int X;
-	private int Y;
+	private int x;
+	private int y;
 	private TileType type;
 	
 	public Tile(int x, int y, TileType type) {
 		super();
-		X = x;
-		Y = y;
+		this.x = x;
+		this.y = y;
 		this.type = type;
 	}
 	public int getX() {
-		return X;
+		return x;
 	}
 	public void setX(int x) {
-		X = x;
+		this.x = x;
 	}
 	public int getY() {
-		return Y;
+		return y;
 	}
 	public void setY(int y) {
-		Y = y;
+		this.y = y;
 	}
 	public TileType getType() {
 		return type;

@@ -12,13 +12,13 @@ import com.m2dl.fenwicklife.xmlrpc.ProviderImpl;
 
 public class Main {
 	private static IProvider provider;
-	public static Field field;
+	public static Engine engine;
 	public static void main(String[] args) throws ClassInterfaceRelationException {
 		// Retrieve args
 		int port = 8081;
-
-		// Init the field
-		Main.field = new Field(60, 40, 10, 3, 6);
+		
+		// Init engine
+		Main.engine = Engine.getInstance();
 		
 		// Init services list
 		List<Object> classesServices = new ArrayList<Object>();

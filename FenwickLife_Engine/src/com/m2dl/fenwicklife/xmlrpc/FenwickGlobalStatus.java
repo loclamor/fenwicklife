@@ -1,6 +1,5 @@
 package com.m2dl.fenwicklife.xmlrpc;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +13,7 @@ public class FenwickGlobalStatus implements IFenwickGlobalStatus{
 
 	public String getAllPositions(int i1) {
 		System.out.println("[Service] : All positions requested.");
-		Map<Position, TileType> fieldState = Main.field.getFieldState(); 
+		Map<Position, TileType> fieldState = Main.engine.getFieldState();
 		Set<Position> positions = fieldState.keySet();
 		String returnedValue = "";
 		for(Position p : positions) {
@@ -22,10 +21,6 @@ public class FenwickGlobalStatus implements IFenwickGlobalStatus{
 				returnedValue+=(int)p.getX()+":"+(int)p.getY()+":WALL\n";
 			}
 		}
-//		returnedValue+=(int)(Math.random()*60)+":"+(int)(Math.random()*40)+":FENWICK\n";
-//		returnedValue+=(int)(Math.random()*60)+":"+(int)(Math.random()*40)+":FENWICKFULL\n";
-//		returnedValue+=(int)(Math.random()*60)+":"+(int)(Math.random()*40)+":WALL\n";
-//		returnedValue+=(int)(Math.random()*60)+":"+(int)(Math.random()*40)+":BOX\n";
 		return returnedValue;
 	}
 

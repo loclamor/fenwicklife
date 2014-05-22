@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Field {
-	private Map<Position, Active> listOfActive;
+	private Map<Position, TileType> grid;
 	private int firstCorridorY;
-	private int secondCorridorX;
+	private int secondCorridorY;
 	private int sizeX;
 	private int sizeY;
 	private int centerWallXLeft;
@@ -20,13 +20,7 @@ public class Field {
 	}
 	
 	public boolean isObstacle(Position p) {
-		if(p.getX() == 0 || p.getX() == sizeX - 1 || p.getY() == 0 || p.getY() == sizeY - 1) {
-			return true;
-		}
-		else if(p.getX() >= centerWallXLeft && p.getX() <= centerWallXRight && p.getY() != firstCorridorY && p.getY() != secondCorridorX) {
-			return true;
-		}
-		return listOfActive.containsKey(p);
+		return getTileType(p) != TileType.EMPTY;
 	}
 	
 	public TileType getTileType(int x, int y) {
@@ -37,18 +31,11 @@ public class Field {
 		if(p.getX() == 0 || p.getX() == sizeX - 1 || p.getY() == 0 || p.getY() == sizeY - 1) {
 			return TileType.WALL;
 		}
-		else if(p.getX() >= centerWallXLeft && p.getX() <= centerWallXRight && p.getY() != firstCorridorY && p.getY() != secondCorridorX) {
+		else if(p.getX() >= centerWallXLeft && p.getX() <= centerWallXRight && p.getY() != firstCorridorY && p.getY() != secondCorridorY) {
 			return TileType.WALL;
 		}
-		Active a = listOfActive.get(p);
-		if(a instanceof Agent) {
-			if(((Agent)a).isCarryingBox()) {
-				return TileType.AGENTWITHBOX;
-			}
-			return TileType.AGENT;
-		}
-		else if(a instanceof Box) {
-			return TileType.BOX;
+		if(grid.containsKey(p)) {
+			return grid.get(p);
 		}
 		return TileType.EMPTY;
 	}
@@ -63,37 +50,24 @@ public class Field {
 		return fieldState;
 	}
 
-	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorX) {
+	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorY) {
 		super();
+		
+		if(firstCorridorY == secondCorridorY) {
+			throw new RuntimeException("Both corridors on same coordinate");
+		}
+		
+		if(firstCorridorY < 0 || secondCorridorY < 0 || firstCorridorY > sizeY || secondCorridorY > sizeY) {
+			throw new RuntimeException("Invalid corridor coordinates");
+		}
+		
 		this.firstCorridorY = firstCorridorY;
-		this.secondCorridorX = secondCorridorX;
+		this.secondCorridorY = secondCorridorY;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.centerWallXLeft   = sizeX / 2 - centerWallSize;
 		this.centerWallXRight  = sizeX / 2 + centerWallSize;
-
-		this.listOfActive = new HashMap<Position, Active>();
-	}
-	public List<Agent> getListOfAgents() {
-		Collection<Active> actives = listOfActive.values();
-		List<Agent> listOfAgents = new ArrayList<Agent>();
-		for(Active a : actives) {
-			if(a instanceof Agent) {
-				listOfAgents.add((Agent) a);
-			}
-		}
-		return listOfAgents;
-	}
-
-	public List<Box> getListOfBoxes() {
-		Collection<Active> actives = listOfActive.values();
-		List<Box> listOfBoxes = new ArrayList<Box>();
-		for(Active a : actives) {
-			if(a instanceof Box) {
-				listOfBoxes.add((Box) a);
-			}
-		}
-		return listOfBoxes;
+		this.grid = new HashMap<Position, TileType>();
 	}
 
 	public int getFirstCorridorY() {
@@ -103,9 +77,14 @@ public class Field {
 		this.firstCorridorY = firstCorridorY;
 	}
 	public int getSecondCorridorX() {
-		return secondCorridorX;
+		return secondCorridorY;
 	}
 	public void setSecondCorridorX(int secondCorridorX) {
-		this.secondCorridorX = secondCorridorX;
+		this.secondCorridorY = secondCorridorX;
+	}
+
+	public Tile[][] getSurroundings(int x, int y) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

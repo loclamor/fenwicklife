@@ -2,9 +2,7 @@ package com.m2dl.fenwicklife.ui.drawables;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.Shape;
 
 public class Drawable {

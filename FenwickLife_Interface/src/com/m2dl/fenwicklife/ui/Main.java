@@ -57,7 +57,7 @@ public class Main {
 			@Override
 			public void run() 
 			{
-				System.out.println("Refresh the UI");
+				// Refresh the UI
 				refreshdisplay();
 			}	
 		};

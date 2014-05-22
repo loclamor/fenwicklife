@@ -38,10 +38,11 @@ public class ScenePanel extends JPanel {
         		g2d.drawLine(0, (int)(y * heightRatio),  getWidth(), (int)(y * heightRatio));
         	}
         }
-        for(Drawable s : drawables) {
+        List<Drawable> cp_drawables = drawables;
+        for(Drawable s : cp_drawables) {
         	
         	int sX       = (int) ( s.getX() * widthRatio);
-        	int sWidth   =  (int) (widthRatio);
+        	int sWidth   = (int) (widthRatio);
         	int sY 	     = (int) ( s.getY() * heightRatio);
         	int sHeight  = (int) (heightRatio);
         	s.draw(g2d, sX, sY, sWidth, sHeight);
