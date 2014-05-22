@@ -45,6 +45,7 @@ public class Main {
 	    window.setVisible(true);
 	    window.setSize(600, 400);
 	    window.setTitle("Fenwick Life UI");
+	    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    // Init the panel to display drawables
 	    panel = new ScenePanel(1, 1);
 	    window.add(panel);
