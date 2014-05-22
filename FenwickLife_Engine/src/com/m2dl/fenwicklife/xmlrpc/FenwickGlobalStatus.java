@@ -10,7 +10,7 @@ public class FenwickGlobalStatus implements IFenwickGlobalStatus{
 
 	public String getAllPositions(int i1) {
 
-		List<Tile> fieldState = Main.field.getFieldState(); 
+		List<Tile> fieldState = Main.engine.getField().getFieldState(); 
 
 		String returnedValue = "";
 		for(Tile c : fieldState) {

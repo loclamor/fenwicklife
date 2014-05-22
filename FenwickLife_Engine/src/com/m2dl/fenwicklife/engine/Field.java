@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Field {
 	private int firstCorridorY;
-	private int secondCorridorX;
+	private int secondCorridorY;
 	private int sizeX;
 	private int sizeY;
 	private int centerWallXLeft;
@@ -18,7 +18,7 @@ public class Field {
 				if(i == 0 || i == sizeX - 1 || j == 0 || j == sizeY - 1) {
 					fieldState.add(new Tile(i, j, TileType.WALL));
 				}
-				else if(i >= centerWallXLeft && i <= centerWallXRight && j != firstCorridorY && j != secondCorridorX) {
+				else if(i >= centerWallXLeft && i <= centerWallXRight && j != firstCorridorY && j != secondCorridorY) {
 					fieldState.add(new Tile(i, j, TileType.WALL));
 				}
 			}
@@ -38,7 +38,7 @@ public class Field {
 		}
 		
 		this.firstCorridorY = firstCorridorY;
-		this.secondCorridorX = secondCorridorY;
+		this.secondCorridorY = secondCorridorY;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.centerWallXLeft   = sizeX / 2 - centerWallSize;
@@ -54,9 +54,9 @@ public class Field {
 		this.firstCorridorY = firstCorridorY;
 	}
 	public int getSecondCorridorX() {
-		return secondCorridorX;
+		return secondCorridorY;
 	}
 	public void setSecondCorridorX(int secondCorridorX) {
-		this.secondCorridorX = secondCorridorX;
+		this.secondCorridorY = secondCorridorX;
 	}
 }
