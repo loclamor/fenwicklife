@@ -1,5 +1,8 @@
 package com.m2dl.fenwicklife.agent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.m2dl.fenwicklife.Active;
 import com.m2dl.fenwicklife.engine.Box;
 import com.m2dl.fenwicklife.engine.Engine;
@@ -9,7 +12,7 @@ import com.m2dl.fenwicklife.engine.TileType;
 public class Agent extends Active {
 	
 	private Box box;
-	private Tile[][] availableDestinations;
+	private List<Tile> availableDestinations;
 	private boolean isInStoreZone;
 	private boolean isInHomeZone;
 	
@@ -42,16 +45,14 @@ public class Agent extends Active {
 		return !Engine.getInstance().getField().isObstacle(t.getX(), t.getY());
 	}
 	
-	private Tile[][] getAvailableDestinations(Tile[][] surroundings) {
-		Tile[][] availableDestinations = new Tile[7][7];
+	private List<Tile> getAvailableDestinations(Tile[][] surroundings) {
+		List<Tile> availableDestinations = new ArrayList<Tile>();
 		
 		for(int i=0; i < surroundings.length; i++) {
 			for(int j=0; j < surroundings[i].length; j++) {
 				Tile currentTile = surroundings[i][j];
 				if(canMove(currentTile)) {
-					availableDestinations[i][j] = currentTile;
-				} else {
-					availableDestinations[i][j] = null;
+					availableDestinations.add(currentTile);
 				}
 			}
 		}
