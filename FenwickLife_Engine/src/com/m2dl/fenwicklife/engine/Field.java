@@ -13,6 +13,7 @@ public class Field {
 	public static final int MAX_CENTRAL_WALL_SIZE = 100;
 	public static final int MIN_CENTRAL_WALL_SIZE = 1;
 	
+	
 	private Map<Position, Tile> grid;
 	private int firstCorridorY;
 	private int secondCorridorY;
@@ -20,9 +21,12 @@ public class Field {
 	private int sizeY;
 	private int centerWallXLeft;
 	private int centerWallXRight;
+	private Position storeAreaTopCorner;
+	private Position storeAreaBottomCorner;
+	private Position homeAreaTopCorner;
+	private Position homeAreaBottomCorner;
 	
 	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorY) {
-		super();
 		if(sizeX < MIN_SIZE_X || sizeX > MAX_SIZE_X) {
 			throw new RuntimeException("Field Size X invalid");
 		}
@@ -47,8 +51,8 @@ public class Field {
 		this.secondCorridorY = secondCorridorY;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-		this.centerWallXLeft   = sizeX / 2 - centerWallSize;
-		this.centerWallXRight  = sizeX / 2 + centerWallSize;
+		this.centerWallXLeft   = (sizeX - centerWallSize) / 2;
+		this.centerWallXRight  = (sizeX + centerWallSize) / 2;
 		this.grid = initGrid();
 	}
 	
