@@ -15,13 +15,13 @@ public class FenwickGlobalStatus implements IFenwickGlobalStatus{
 		System.out.println("[Service] : All positions requested.");
 		Map<Position, Tile> fieldState = EngineMain.engine.getField().getGrid();
 		Set<Position> positions = fieldState.keySet();
-		String returnedValue = "";
+		StringBuilder returnedValue = new StringBuilder();
 		for(Position p : positions) {
 			if(fieldState.get(p).getType() == TileType.WALL) {
-				returnedValue+=(int)p.getX()+":"+(int)p.getY()+":WALL\n";
+				returnedValue.append((int)p.getX()+":"+(int)p.getY()+":WALL\n");
 			}
 		}
-		return returnedValue;
+		return returnedValue.toString();
 	}
 
 	public String getSize(int i1) {
