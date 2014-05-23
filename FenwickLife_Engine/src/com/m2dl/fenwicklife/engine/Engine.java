@@ -46,8 +46,4 @@ public class Engine {
 		return instance;
 	}
 	
-	public Map<Position, TileType> getFieldState() {
-		return field.getFieldState();
-	}
-	
 }

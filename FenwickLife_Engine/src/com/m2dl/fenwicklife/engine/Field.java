@@ -1,15 +1,12 @@
 package com.m2dl.fenwicklife.engine;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.m2dl.fenwicklife.Position;
 
 public class Field {
-	private Map<Position, TileType> grid;
+	private Map<Position, Tile> grid;
 	private int firstCorridorY;
 	private int secondCorridorY;
 	private int sizeX;
@@ -22,7 +19,7 @@ public class Field {
 	}
 	
 	public boolean isObstacle(Position p) {
-		return getTileType(p) != TileType.EMPTY;
+		return grid.get(p).getType() != TileType.EMPTY;
 	}
 	
 	public TileType getTileType(int x, int y) {
@@ -30,26 +27,22 @@ public class Field {
 	}
 	
 	public TileType getTileType(Position p) {
+		// if outside : wall
 		if(p.getX() == 0 || p.getX() == sizeX - 1 || p.getY() == 0 || p.getY() == sizeY - 1) {
 			return TileType.WALL;
+			// Should not be needed
+//		} else if(p.getX() >= centerWallXLeft && p.getX() <= centerWallXRight && p.getY() != firstCorridorY && p.getY() != secondCorridorY) {
+//			return TileType.WALL;
+		} if(grid.containsKey(p)) {
+			return grid.get(p).getType();
 		}
-		else if(p.getX() >= centerWallXLeft && p.getX() <= centerWallXRight && p.getY() != firstCorridorY && p.getY() != secondCorridorY) {
-			return TileType.WALL;
-		}
-		if(grid.containsKey(p)) {
-			return grid.get(p);
-		}
+		// TODO: should crash
+		System.err.println("Error : Tile not Found");
 		return TileType.EMPTY;
 	}
 	
-	public Map<Position, TileType> getFieldState() {
-		Map<Position, TileType> fieldState = new HashMap<Position, TileType>();
-		for(int i = 0; i < sizeX; i++) {
-			for(int j = 0; j < sizeY; j++) {
-				fieldState.put(new Position(i,  j), getTileType(i, j));
-			}
-		}
-		return fieldState;
+	public Map<Position, Tile> getGrid() {
+		return this.grid;
 	}
 
 	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorY) {
@@ -69,7 +62,7 @@ public class Field {
 		this.sizeY = sizeY;
 		this.centerWallXLeft   = sizeX / 2 - centerWallSize;
 		this.centerWallXRight  = sizeX / 2 + centerWallSize;
-		this.grid = new HashMap<Position, TileType>();
+		this.grid = new HashMap<Position, Tile>();
 	}
 
 	public int getFirstCorridorY() {
