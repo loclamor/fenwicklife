@@ -49,9 +49,34 @@ public class Field {
 		this.sizeY = sizeY;
 		this.centerWallXLeft   = sizeX / 2 - centerWallSize;
 		this.centerWallXRight  = sizeX / 2 + centerWallSize;
-		this.grid = new HashMap<Position, Tile>();
+		this.grid = initGrid();
 	}
 	
+	private Map<Position, Tile> initGrid() {
+		HashMap<Position, Tile> map = new HashMap<Position, Tile>();
+		// first, fill all with empty
+		for(int i = 0; i < this.sizeX; i++) {
+			for(int j = 0; j < this.sizeY; j++) {
+				map.put(new Position(i, j), new Tile(i, j, TileType.EMPTY));
+			}
+		}
+		
+		// central wall
+		for(int i = this.centerWallXLeft; i < this.centerWallXRight; i++) {
+			for(int j = 0; j < this.sizeY; j++) {
+				map.get(new Position(i, j)).setType(TileType.WALL);
+			}
+		}
+		
+		// corridors
+		for(int i = this.centerWallXLeft; i < this.centerWallXRight; i++) {
+			map.get(new Position(i, firstCorridorY)).setType(TileType.WALL);
+			map.get(new Position(i, secondCorridorY)).setType(TileType.WALL);
+		}
+		
+		return map;
+	}
+
 	public int getFirstCorridorY() {
 		return firstCorridorY;
 	}
@@ -84,18 +109,12 @@ public class Field {
 	}
 	
 	public TileType getTileType(Position p) {
-		// if outside : wall
-		if(p.getX() == 0 || p.getX() == sizeX - 1 || p.getY() == 0 || p.getY() == sizeY - 1) {
+		TileType type = grid.get(p).getType();
+		if(type == null) {
+			// if outside : wall
 			return TileType.WALL;
-			// Should not be needed
-//		} else if(p.getX() >= centerWallXLeft && p.getX() <= centerWallXRight && p.getY() != firstCorridorY && p.getY() != secondCorridorY) {
-//			return TileType.WALL;
-		} if(grid.containsKey(p)) {
-			return grid.get(p).getType();
 		}
-		// TODO: should crash
-		System.err.println("Error : Tile not Found");
-		return TileType.EMPTY;
+		return grid.get(p).getType();
 	}
 	
 	public boolean isObstacle(int x, int y) {
