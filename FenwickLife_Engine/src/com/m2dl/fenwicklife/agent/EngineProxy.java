@@ -4,6 +4,19 @@ import com.m2dl.fenwicklife.engine.Tile;
 
 public class EngineProxy implements IEngineProxy {
 
+	private static EngineProxy instance = null;
+	
+	private EngineProxy() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public static EngineProxy getInstance(){
+		if( instance == null ) {
+			instance = new EngineProxy();
+		}
+		return instance;
+	}
+	
 	//xmlRpc call stand there
 	
 	@Override
