@@ -1,4 +1,4 @@
-package com.m2dl.fenwicklife.xmlrpc;
+package com.m2dl.fenwicklife.xmlrpc.provider;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -10,6 +10,8 @@ import org.apache.xmlrpc.server.PropertyHandlerMapping;
 import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
 import org.apache.xmlrpc.webserver.WebServer;
+
+import com.m2dl.fenwicklife.xmlrpc.ClassInterfaceRelation;
 
 /**
  * Implements IProvider

@@ -1,4 +1,4 @@
-package com.m2dl.fenwicklife.engine;
+package com.m2dl.fenwicklife;
 
 public class Active {
 	private int x;

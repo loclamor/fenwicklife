@@ -1,4 +1,4 @@
-package com.m2dl.fenwicklife.xmlrpc;
+package com.m2dl.fenwicklife.xmlrpc.provider;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.m2dl.fenwicklife.xmlrpc;
+package com.m2dl.fenwicklife.xmlrpc.consumer;
 
 /**
  * Interface used by all services like customer that need to call a external

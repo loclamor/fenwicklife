@@ -1,4 +1,4 @@
-package com.m2dl.fenwicklife.xmlrpc;
+package com.m2dl.fenwicklife.xmlrpc.consumer;
 
 import java.net.MalformedURLException;
 import java.net.URL;

@@ -5,17 +5,17 @@ import java.util.TimerTask;
 
 import javax.swing.JFrame;
 
+import com.m2dl.fenwicklife.engine.service.IFenwickGlobalStatus;
 import com.m2dl.fenwicklife.ui.drawables.object.BoxDrawable;
 import com.m2dl.fenwicklife.ui.drawables.object.FenwickDrawable;
 import com.m2dl.fenwicklife.ui.drawables.object.WallDrawable;
-import com.m2dl.fenwicklife.xmlrpc.ConsumerImpl;
-import com.m2dl.fenwicklife.xmlrpc.IConsumer;
-import com.m2dl.fenwicklife.xmlrpc.IFenwickGlobalStatus;
+import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
+import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
 /**
  * Main of the UI
  *
  */
-public class Main {
+public class UIMain {
 	// Displayed panel
 	private static ScenePanel panel;
 	// Timer to refresh informations 

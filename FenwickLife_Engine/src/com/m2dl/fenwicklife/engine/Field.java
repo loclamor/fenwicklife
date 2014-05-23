@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.m2dl.fenwicklife.Position;
+
 public class Field {
 	private Map<Position, TileType> grid;
 	private int firstCorridorY;

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.m2dl.fenwicklife.Position;
+import com.m2dl.fenwicklife.agent.Agent;
+
 public class Engine {
 	
 	public static final int DEFAULT_SIZE_X = 60;

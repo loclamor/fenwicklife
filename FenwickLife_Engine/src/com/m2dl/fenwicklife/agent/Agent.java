@@ -1,4 +1,9 @@
-package com.m2dl.fenwicklife.engine;
+package com.m2dl.fenwicklife.agent;
+
+import com.m2dl.fenwicklife.Active;
+import com.m2dl.fenwicklife.engine.Box;
+import com.m2dl.fenwicklife.engine.Engine;
+import com.m2dl.fenwicklife.engine.Tile;
 
 public class Agent extends Active {
 	

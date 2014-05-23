@@ -1,19 +1,19 @@
-package com.m2dl.fenwicklife.xmlrpc;
+package com.m2dl.fenwicklife.engine.service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.m2dl.fenwicklife.engine.Position;
+import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.engine.TileType;
-import com.m2dl.fenwicklife.engine.Main;
+import com.m2dl.fenwicklife.engine.EngineMain;
 
 public class FenwickGlobalStatus implements IFenwickGlobalStatus{
 
 	public String getAllPositions(int i1) {
 		System.out.println("[Service] : All positions requested.");
-		Map<Position, TileType> fieldState = Main.engine.getFieldState();
+		Map<Position, TileType> fieldState = EngineMain.engine.getFieldState();
 		Set<Position> positions = fieldState.keySet();
 		String returnedValue = "";
 		for(Position p : positions) {
