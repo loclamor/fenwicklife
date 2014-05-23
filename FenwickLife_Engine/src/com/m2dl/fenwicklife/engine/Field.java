@@ -86,7 +86,16 @@ public class Field {
 	}
 
 	public Tile[][] getSurroundings(int x, int y) {
-		// TODO Auto-generated method stub
-		return null;
+		Tile[][] tilesSubGrid = new Tile[7][7];
+		for( int i = x-3; i <= x+3; i++) {
+			for( int j = y-3; j <= y+3; j++) {
+				if( ( i != x && j != y ) ) {//not me
+					TileType type = getTileType(i, j);
+					tilesSubGrid[i-x+3][j-y+3] = new Tile(i, j, type);
+				}
+			}
+		}
+		
+		return tilesSubGrid;
 	}
 }
