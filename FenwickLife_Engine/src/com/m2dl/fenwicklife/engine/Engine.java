@@ -2,9 +2,6 @@ package com.m2dl.fenwicklife.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.agent.Agent;
 
 public class Engine {
@@ -17,7 +14,6 @@ public class Engine {
 	
 	
 	private List<Agent> listOfAgents;
-	private List<Box> listOfBoxes;
 	private Field field;
 	
 	private static Engine instance = new Engine(); 
@@ -27,7 +23,6 @@ public class Engine {
 				DEFAULT_FIRST_CORRIDOR_Y, DEFAULT_SECOND_CORRIDOR_Y);
 		
 		this.listOfAgents = new ArrayList<Agent>();
-		this.listOfBoxes = new ArrayList<Box>();
 	}
 	
 	public Field getField() {
@@ -38,16 +33,8 @@ public class Engine {
 		return this.listOfAgents;
 	}
 	
-	public List<Box> getAllBoxes() {
-		return this.listOfBoxes;
-	}
-	
 	public static Engine getInstance() {
 		return instance;
-	}
-	
-	public Map<Position, TileType> getFieldState() {
-		return field.getFieldState();
 	}
 	
 }
