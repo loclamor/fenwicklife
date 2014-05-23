@@ -86,16 +86,17 @@ public class Field {
 	}
 
 	public Tile[][] getSurroundings(int x, int y) {
+		return getSurroundings(x, y, 3);
+	}
+	
+	public Tile[][] getSurroundings(int x, int y, int size) {
 		Tile[][] tilesSubGrid = new Tile[7][7];
-		for( int i = x-3; i <= x+3; i++) {
-			for( int j = y-3; j <= y+3; j++) {
-				if( ( i != x && j != y ) ) {//not me
-					TileType type = getTileType(i, j);
-					tilesSubGrid[i-x+3][j-y+3] = new Tile(i, j, type);
-				}
+		for( int i = 0; i < 7; i++) {
+			for( int j = 0; j < 7; j++) {
+				TileType type = getTileType(x-size+i, y-size+j);
+				tilesSubGrid[i][j] = new Tile(x-size+i, y-size+j, type);
 			}
 		}
-		
 		return tilesSubGrid;
 	}
 }
