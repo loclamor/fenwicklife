@@ -61,6 +61,8 @@ public class Agent extends Active {
 	}
 	
 	public void perceive() {
+		// TODO changer Engine.getInstance() par proxy
+		
 		availableDestinations = getAvailableDestinations(getSurroundings());
 		isInStoreZone = Engine.getInstance().getField().getTileType(this.getX(), this.getY()) == TileType.STORE;
 		isInHomeZone = Engine.getInstance().getField().getTileType(this.getX(), this.getY()) == TileType.HOME;
