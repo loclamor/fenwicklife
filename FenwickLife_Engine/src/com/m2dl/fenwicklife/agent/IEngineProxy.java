@@ -10,8 +10,8 @@ public interface IEngineProxy {
 
 	public boolean takeBox( Agent me );
 	
-	public Tile[][] getSurroundings( int x, int y );
-	public Tile[][] getSurroundings( int x, int y, int size );
+	public Tile[][] getSurroundings( Agent me );
+	public Tile[][] getSurroundings( Agent me, int size );
 	
 	public boolean create( Agent me, int x, int y ) ;
 	

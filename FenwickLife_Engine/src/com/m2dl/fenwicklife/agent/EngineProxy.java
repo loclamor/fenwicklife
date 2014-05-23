@@ -25,13 +25,13 @@ public class EngineProxy implements IEngineProxy {
 	}
 
 	@Override
-	public Tile[][] getSurroundings(int x, int y) {
+	public Tile[][] getSurroundings(Agent me) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Tile[][] getSurroundings(int x, int y, int size) {
+	public Tile[][] getSurroundings(Agent me, int size) {
 		// TODO Auto-generated method stub
 		return null;
 	}
