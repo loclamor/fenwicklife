@@ -27,35 +27,8 @@ public class Field {
 	private Position homeAreaBottomCorner;
 	
 	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorY, int storeHomeWidth, int storeHomeHeight) {
-		if(sizeX < MIN_SIZE_X || sizeX > MAX_SIZE_X) {
-			throw new RuntimeException("Field Size X invalid");
-		}
-		
-		if(sizeY < MIN_SIZE_Y || sizeY > MAX_SIZE_Y) {
-			throw new RuntimeException("Field Size Y invalid");
-		}
-		
-		if(centerWallSize < MIN_CENTRAL_WALL_SIZE || centerWallSize > MAX_CENTRAL_WALL_SIZE) {
-			throw new RuntimeException("Center wall size invalid");
-		}
-		
-		if(firstCorridorY == secondCorridorY) {
-			throw new RuntimeException("Both corridors on same coordinate");
-		}
-		
-		if(firstCorridorY < 0 || secondCorridorY < 0 || firstCorridorY > sizeY || secondCorridorY > sizeY) {
-			throw new RuntimeException("Invalid corridor coordinates");
-		}
-		
-		if(storeHomeWidth > (sizeX - centerWallSize) / 2 || storeHomeWidth < 1) {
-			throw new RuntimeException("Invalid store and home areas width");
-		}
-		
-		if(storeHomeHeight > sizeY || storeHomeHeight < 1) {
-			throw new RuntimeException("Invalid store and home areas height");
-		}
-		
-		
+		checkInitFieldParameters(sizeX, sizeY, centerWallSize, firstCorridorY,
+				secondCorridorY, storeHomeWidth, storeHomeHeight);
 		
 		this.firstCorridorY = firstCorridorY;
 		this.secondCorridorY = secondCorridorY;
@@ -69,6 +42,38 @@ public class Field {
 		this.storeAreaBottomCorner = new Position(storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
 		this.homeAreaTopCorner = new Position(sizeX - storeHomeWidth, (sizeY - storeHomeHeight) / 2);
 		this.homeAreaBottomCorner = new Position(sizeX - storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
+	}
+
+	private void checkInitFieldParameters(int sizeX, int sizeY,
+			int centerWallSize, int firstCorridorY, int secondCorridorY,
+			int storeHomeWidth, int storeHomeHeight) {
+		if(sizeX < MIN_SIZE_X || sizeX > MAX_SIZE_X) {
+			throw new IllegalArgumentException("Field Size X invalid");
+		}
+		
+		if(sizeY < MIN_SIZE_Y || sizeY > MAX_SIZE_Y) {
+			throw new IllegalArgumentException("Field Size Y invalid");
+		}
+		
+		if(centerWallSize < MIN_CENTRAL_WALL_SIZE || centerWallSize > MAX_CENTRAL_WALL_SIZE) {
+			throw new IllegalArgumentException("Center wall size invalid");
+		}
+		
+		if(firstCorridorY == secondCorridorY) {
+			throw new IllegalArgumentException("Both corridors on same coordinate");
+		}
+		
+		if(firstCorridorY < 0 || secondCorridorY < 0 || firstCorridorY > sizeY || secondCorridorY > sizeY) {
+			throw new IllegalArgumentException("Invalid corridor coordinates");
+		}
+		
+		if(storeHomeWidth > (sizeX - centerWallSize) / 2 || storeHomeWidth < 1) {
+			throw new IllegalArgumentException("Invalid store and home areas width");
+		}
+		
+		if(storeHomeHeight > sizeY || storeHomeHeight < 1) {
+			throw new IllegalArgumentException("Invalid store and home areas height");
+		}
 	}
 	
 	private Map<Position, Tile> initGrid() {
