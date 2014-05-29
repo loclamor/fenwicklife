@@ -1,10 +1,18 @@
 package com.m2dl.fenwicklife.engine;
 
+import com.m2dl.fenwicklife.Position;
+
 public class Tile {
 	private int x;
 	private int y;
 	private TileType type;
 	
+	public Tile(Position pos, TileType type) {
+		super();
+		this.x = pos.getX();
+		this.y = pos.getY();
+		this.type = type;
+	}
 	public Tile(int x, int y, TileType type) {
 		super();
 		this.x = x;

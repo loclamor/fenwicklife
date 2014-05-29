@@ -3,8 +3,8 @@ package com.m2dl.fenwicklife.engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.m2dl.fenwicklife.engine.service.FenwickGlobalStatus;
-import com.m2dl.fenwicklife.engine.service.IFenwickGlobalStatus;
+import com.m2dl.fenwicklife.engine.service.GlobalStatus;
+import com.m2dl.fenwicklife.engine.service.IGlobalStatus;
 import com.m2dl.fenwicklife.xmlrpc.ClassInterfaceRelation;
 import com.m2dl.fenwicklife.xmlrpc.ClassInterfaceRelationException;
 import com.m2dl.fenwicklife.xmlrpc.provider.IProvider;
@@ -22,7 +22,7 @@ public class EngineMain {
 		
 		// Init services list
 		List<Object> classesServices = new ArrayList<Object>();
-		classesServices.add(new ClassInterfaceRelation(FenwickGlobalStatus.class, IFenwickGlobalStatus.class));
+		classesServices.add(new ClassInterfaceRelation(GlobalStatus.class, IGlobalStatus.class));
 		provider = new ProviderImpl();
 		provider.initProvider(port, classesServices);
 	}
