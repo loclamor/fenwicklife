@@ -1,5 +1,6 @@
 package com.m2dl.fenwicklife.agent;
 
+import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
 import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
@@ -38,14 +39,12 @@ public class EngineProxy implements IEngineProxy {
 	
 	@Override
 	public boolean hello(Agent me) {
-		// TODO Auto-generated method stub
-		return false;
+		return Engine.getInstance().hello(me);
 	}
 
 	@Override
 	public boolean move(Agent me, int to_x, int to_y) {
-		// TODO Auto-generated method stub
-		return false;
+		return Engine.getInstance().move(me, to_x, to_y);
 	}
 
 	@Override
