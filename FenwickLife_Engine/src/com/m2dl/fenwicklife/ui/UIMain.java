@@ -1,11 +1,14 @@
 package com.m2dl.fenwicklife.ui;
 
+import java.awt.Color;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
 
 import com.m2dl.fenwicklife.engine.service.IGlobalStatus;
+import com.m2dl.fenwicklife.ui.drawables.BasicDrawable;
+import com.m2dl.fenwicklife.ui.drawables.Drawable;
 import com.m2dl.fenwicklife.ui.drawables.object.BoxDrawable;
 import com.m2dl.fenwicklife.ui.drawables.object.FenwickDrawable;
 import com.m2dl.fenwicklife.ui.drawables.object.WallDrawable;
@@ -87,10 +90,10 @@ public class UIMain {
 		    	String type = lineInformations[2];
 		    			
 		    	switch(type) {
-		    	case "FENWICKFULL" :
+		    	case "AGENTWITHBOX" :
 		    		panel.addGraphics(new FenwickDrawable(x, y, false));
 		    		break;
-		    	case "FENWICK" :
+		    	case "AGENT" :
 		    		panel.addGraphics(new FenwickDrawable(x, y, true));
 		    		break;
 		    	case "BOX" :
@@ -98,6 +101,12 @@ public class UIMain {
 		    		break;
 		    	case "WALL" :
 		    		panel.addGraphics(new WallDrawable(x, y));
+		    		break;
+		    	case "HOME" :
+		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.GREEN));
+		    		break;
+		    	case "STORE" :
+		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.YELLOW));
 		    		break;
 		    	}	
 	    	}
