@@ -26,26 +26,9 @@ public class Field {
 	private Position homeAreaTopCorner;
 	private Position homeAreaBottomCorner;
 	
-	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorY) {
-		if(sizeX < MIN_SIZE_X || sizeX > MAX_SIZE_X) {
-			throw new RuntimeException("Field Size X invalid");
-		}
-		
-		if(sizeY < MIN_SIZE_Y || sizeY > MAX_SIZE_Y) {
-			throw new RuntimeException("Field Size Y invalid");
-		}
-		
-		if(centerWallSize < MIN_CENTRAL_WALL_SIZE || centerWallSize > MAX_CENTRAL_WALL_SIZE) {
-			throw new RuntimeException("Center wall size invalid");
-		}
-		
-		if(firstCorridorY == secondCorridorY) {
-			throw new RuntimeException("Both corridors on same coordinate");
-		}
-		
-		if(firstCorridorY < 0 || secondCorridorY < 0 || firstCorridorY > sizeY || secondCorridorY > sizeY) {
-			throw new RuntimeException("Invalid corridor coordinates");
-		}
+	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorY, int storeHomeWidth, int storeHomeHeight) {
+		checkInitFieldParameters(sizeX, sizeY, centerWallSize, firstCorridorY,
+				secondCorridorY, storeHomeWidth, storeHomeHeight);
 		
 		this.firstCorridorY = firstCorridorY;
 		this.secondCorridorY = secondCorridorY;
@@ -54,6 +37,43 @@ public class Field {
 		this.centerWallXLeft   = (sizeX - centerWallSize) / 2;
 		this.centerWallXRight  = (sizeX + centerWallSize) / 2;
 		this.grid = initGrid();
+		// TODO : check coordiantes calculation
+		this.storeAreaTopCorner = new Position(storeHomeWidth, (sizeY - storeHomeHeight) / 2);
+		this.storeAreaBottomCorner = new Position(storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
+		this.homeAreaTopCorner = new Position(sizeX - storeHomeWidth, (sizeY - storeHomeHeight) / 2);
+		this.homeAreaBottomCorner = new Position(sizeX - storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
+	}
+
+	private void checkInitFieldParameters(int sizeX, int sizeY,
+			int centerWallSize, int firstCorridorY, int secondCorridorY,
+			int storeHomeWidth, int storeHomeHeight) {
+		if(sizeX < MIN_SIZE_X || sizeX > MAX_SIZE_X) {
+			throw new IllegalArgumentException("Field Size X invalid");
+		}
+		
+		if(sizeY < MIN_SIZE_Y || sizeY > MAX_SIZE_Y) {
+			throw new IllegalArgumentException("Field Size Y invalid");
+		}
+		
+		if(centerWallSize < MIN_CENTRAL_WALL_SIZE || centerWallSize > MAX_CENTRAL_WALL_SIZE) {
+			throw new IllegalArgumentException("Center wall size invalid");
+		}
+		
+		if(firstCorridorY == secondCorridorY) {
+			throw new IllegalArgumentException("Both corridors on same coordinate");
+		}
+		
+		if(firstCorridorY < 0 || secondCorridorY < 0 || firstCorridorY > sizeY || secondCorridorY > sizeY) {
+			throw new IllegalArgumentException("Invalid corridor coordinates");
+		}
+		
+		if(storeHomeWidth > (sizeX - centerWallSize) / 2 || storeHomeWidth < 1) {
+			throw new IllegalArgumentException("Invalid store and home areas width");
+		}
+		
+		if(storeHomeHeight > sizeY || storeHomeHeight < 1) {
+			throw new IllegalArgumentException("Invalid store and home areas height");
+		}
 	}
 	
 	private Map<Position, Tile> initGrid() {
@@ -78,6 +98,20 @@ public class Field {
 			map.get(new Position(i, secondCorridorY)).setType(TileType.WALL);
 		}
 		
+		// home area
+		for(int i = this.homeAreaTopCorner.getY(); i <= this.homeAreaBottomCorner.getY(); i++) {
+			for(int j = 0; j <= this.homeAreaBottomCorner.getX(); j++) {
+				map.get(new Position(j, i)).setType(TileType.HOME);
+			}
+		}
+		
+		// store area
+		for(int i = this.storeAreaTopCorner.getY(); i <= this.storeAreaBottomCorner.getY(); i++) {
+			for(int j = this.storeAreaTopCorner.getX(); j <= sizeX; j++) {
+				map.get(new Position(j, i)).setType(TileType.STORE);
+			}
+		}
+		
 		return map;
 	}
 
@@ -93,14 +127,17 @@ public class Field {
 		return secondCorridorY;
 	}
 	
+	/**
+	 * Returns the surrounding og the position at the given coordinates, with default size = 3
+	 */
 	public Tile[][] getSurroundings(int x, int y) {
 		return getSurroundings(x, y, 3);
 	}
 
 	public Tile[][] getSurroundings(int x, int y, int size) {
 		Tile[][] tilesSubGrid = new Tile[7][7];
-		for( int i = 0; i < 7; i++) {
-			for( int j = 0; j < 7; j++) {
+		for( int i = 0; i < (2 * size + 1); i++) {
+			for( int j = 0; j < (2*size + 1); j++) {
 				TileType type = getTileType(x-size+i, y-size+j);
 				tilesSubGrid[i][j] = new Tile(x-size+i, y-size+j, type);
 			}

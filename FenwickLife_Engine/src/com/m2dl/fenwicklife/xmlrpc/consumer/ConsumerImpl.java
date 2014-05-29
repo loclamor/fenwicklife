@@ -16,9 +16,38 @@ import org.apache.xmlrpc.client.XmlRpcCommonsTransportFactory;
  */
 public class ConsumerImpl implements IConsumer {
 
+	private String adress;
+	private int port;
+	private Class serviceClass;
+	
+	public ConsumerImpl(String adress, int port, Class serviceClass) {
+		this.adress = adress;
+		this.port = port;
+		this.serviceClass = serviceClass;
+	}
+	
+	public ConsumerImpl( Class serviceClass) {
+		this.adress = "127.0.0.1";
+		this.port = 8080;
+		this.serviceClass = serviceClass;
+	}
+	
+	public ConsumerImpl(String adress, Class serviceClass) {
+		this.adress = adress;
+		this.port = 8080;
+		this.serviceClass = serviceClass;
+	}
+	
+	public ConsumerImpl( int port, Class serviceClass) {
+		this.adress = "127.0.0.1";
+		this.port = port;
+		this.serviceClass = serviceClass;
+	}
+	
+	
+	
 	@Override
-	public Object consumeService(String adress, int port, Class serviceClass,
-			String serviceFunction, Object[] params) {
+	public Object consumeService( String serviceFunction, Object[] params ) {
 
 		System.out.println("[Customer] : Try to consume :");
 		System.out.println("\t The function " + serviceFunction + " from service "
@@ -60,35 +89,8 @@ public class ConsumerImpl implements IConsumer {
 		return result;
 	}
 
-	// See above (default adress and port)
-	public Object consumeService(Class serviceClass, String serviceFunction,
-			Object[] params) {
-		return consumeService("127.0.0.1", 8080, serviceClass, serviceFunction,
-				params);
-	}
-
-	// See above (default adress and port, no params)
-	public Object consumeService(Class serviceClass, String serviceFunction) {
-		return consumeService("127.0.0.1", 8080, serviceClass, serviceFunction);
-	}
-
-	// See above (default port)
-	public Object consumeService(String adress, Class serviceClass,
-			String serviceFunction, Object[] params) {
-		return consumeService(adress, 8080, serviceClass, serviceFunction,
-				params);
-	}
-
-	// See above (default port, no params)
-	public Object consumeService(String adress, Class serviceClass,
-			String serviceFunction) {
-		return consumeService(adress, 8080, serviceClass, serviceFunction);
-	}
-
 	// See above (no params)
-	public Object consumeService(String adress, int port, Class serviceClass,
-			String serviceFunction) {
-		return consumeService(adress, port, serviceClass, serviceFunction,
-				new Object[0]);
+	public Object consumeService( String serviceFunction ) {
+		return consumeService( serviceFunction, new Object[0]);
 	}
 }
