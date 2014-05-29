@@ -36,12 +36,14 @@ public class Field {
 		this.sizeY = sizeY;
 		this.centerWallXLeft   = (sizeX - centerWallSize) / 2;
 		this.centerWallXRight  = (sizeX + centerWallSize) / 2;
-		this.grid = initGrid();
+		
 		// TODO : check coordiantes calculation
 		this.storeAreaTopCorner = new Position(storeHomeWidth, (sizeY - storeHomeHeight) / 2);
 		this.storeAreaBottomCorner = new Position(storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
 		this.homeAreaTopCorner = new Position(sizeX - storeHomeWidth, (sizeY - storeHomeHeight) / 2);
 		this.homeAreaBottomCorner = new Position(sizeX - storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
+	
+		this.grid = initGrid();
 	}
 
 	private void checkInitFieldParameters(int sizeX, int sizeY,
@@ -107,7 +109,7 @@ public class Field {
 		
 		// store area
 		for(int i = this.storeAreaTopCorner.getY(); i <= this.storeAreaBottomCorner.getY(); i++) {
-			for(int j = this.storeAreaTopCorner.getX(); j <= sizeX; j++) {
+			for(int j = this.storeAreaTopCorner.getX(); j < sizeX; j++) {
 				map.get(new Position(j, i)).setType(TileType.STORE);
 			}
 		}
