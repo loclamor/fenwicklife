@@ -9,7 +9,7 @@ import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.engine.TileType;
 import com.m2dl.fenwicklife.engine.EngineMain;
 
-public class FenwickGlobalStatus implements IFenwickGlobalStatus{
+public class GlobalStatus implements IGlobalStatus{
 
 	public String getAllPositions(int i1) {
 		System.out.println("[Service] : All positions requested.");
