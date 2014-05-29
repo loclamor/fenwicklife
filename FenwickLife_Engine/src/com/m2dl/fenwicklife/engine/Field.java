@@ -112,6 +112,14 @@ public class Field {
 		return getTileType(new Position(x, y));
 	}
 	
+	public void setTileType(TileType type, int x, int y) {
+		setTileType(type, new Position(x, y));
+	}
+	
+	public void setTileType(TileType type, Position pos) {
+		grid.put(pos, new Tile(pos, type));
+	}
+	
 	public TileType getTileType(Position p) {
 		TileType type = grid.get(p).getType();
 		if(type == null) {

@@ -5,7 +5,7 @@ import java.util.TimerTask;
 
 import javax.swing.JFrame;
 
-import com.m2dl.fenwicklife.engine.service.IFenwickGlobalStatus;
+import com.m2dl.fenwicklife.engine.service.IGlobalStatus;
 import com.m2dl.fenwicklife.ui.drawables.object.BoxDrawable;
 import com.m2dl.fenwicklife.ui.drawables.object.FenwickDrawable;
 import com.m2dl.fenwicklife.ui.drawables.object.WallDrawable;
@@ -72,12 +72,12 @@ public class UIMain {
 		// Retrieve scene grid size
 		Object[] paramsIntern = { 0 };
 		String engineData = (String) consumer.consumeService(serverAdress, serverPort,
-				IFenwickGlobalStatus.class, "getSize", paramsIntern);
+				IGlobalStatus.class, "getSize", paramsIntern);
 		String[] sizeArray = engineData.split(":");
 		panel.setVirtualSize(Integer.parseInt(sizeArray[0]), Integer.parseInt(sizeArray[1]));
 		// Retrieve all object position and display them 
 		engineData = (String) consumer.consumeService(serverAdress, serverPort,
-				IFenwickGlobalStatus.class, "getAllPositions", paramsIntern);
+				IGlobalStatus.class, "getAllPositions", paramsIntern);
 	    String[] engineDataLines = engineData.split("\n");
 	    panel.reset();
 	    for(String line : engineDataLines) {
