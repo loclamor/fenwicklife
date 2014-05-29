@@ -42,7 +42,7 @@ public class Agent extends Active {
 	}
 	
 	private Tile[][] getSurroundings() {
-		Tile[][] surroundings = Engine.getInstance().getField().getSurroundings(this.getX(), this.getY());
+		Tile[][] surroundings = EngineProxy.getInstance().getSurroundings(this);
 		
 		return surroundings;
 	}
@@ -53,7 +53,9 @@ public class Agent extends Active {
 	
 	private List<Tile> getAvailableDestinations(Tile[][] surroundings) {
 		List<Tile> availableDestinations = new ArrayList<Tile>();
-		
+		if(surroundings == null) {
+			return null;
+		}
 		for(int i=0; i < surroundings.length; i++) {
 			for(int j=0; j < surroundings[i].length; j++) {
 				Tile currentTile = surroundings[i][j];
@@ -68,8 +70,10 @@ public class Agent extends Active {
 	
 	public void perceive() {
 		// TODO changer Engine.getInstance() par proxy
-		
-		availableDestinations = getAvailableDestinations(getSurroundings());
+		availableDestinations = null;
+		while(availableDestinations == null) {
+			availableDestinations = getAvailableDestinations(getSurroundings());
+		}
 		isInStoreZone = Engine.getInstance().getField().getTileType(this.getX(), this.getY()) == TileType.STORE;
 		isInHomeZone = Engine.getInstance().getField().getTileType(this.getX(), this.getY()) == TileType.HOME;
 	}
