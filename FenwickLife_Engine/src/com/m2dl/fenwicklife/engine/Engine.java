@@ -11,6 +11,8 @@ public class Engine {
 	public static final int DEFAULT_CENTER_WALL_SIZE = 10;
 	public static final int DEFAULT_FIRST_CORRIDOR_Y = 3;
 	public static final int DEFAULT_SECOND_CORRIDOR_Y = 6;
+	public static final int DEFAULT_STORE_HOME_WIDTH = 10;
+	public static final int DEFAULT_STORE_HOME_HEIGHT = 20;
 	
 	
 	private List<Agent> listOfAgents;
@@ -20,7 +22,7 @@ public class Engine {
 	
 	private Engine() {
 		this.field = new Field(DEFAULT_SIZE_X, DEFAULT_SIZE_Y, DEFAULT_CENTER_WALL_SIZE,
-				DEFAULT_FIRST_CORRIDOR_Y, DEFAULT_SECOND_CORRIDOR_Y);
+				DEFAULT_FIRST_CORRIDOR_Y, DEFAULT_SECOND_CORRIDOR_Y, DEFAULT_STORE_HOME_WIDTH, DEFAULT_STORE_HOME_HEIGHT);
 		
 		this.listOfAgents = new ArrayList<Agent>();
 	}
