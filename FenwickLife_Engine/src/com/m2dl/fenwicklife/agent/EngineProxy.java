@@ -23,7 +23,7 @@ public class EngineProxy implements IEngineProxy {
 	
 	public static EngineProxy getInstance(){
 		if( instance == null ) {
-			instance = new EngineProxy("127.0.0.1",8080);
+			instance = new EngineProxy("127.0.0.1", 8080);
 		}
 		return instance;
 	}

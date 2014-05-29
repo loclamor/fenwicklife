@@ -12,7 +12,7 @@ import com.m2dl.fenwicklife.engine.TileType;
 public class Agent extends Active {
 	
 	private Box box;
-	private List<Tile> availableDestinations;
+	private List<Tile> availableDestinations = new ArrayList<Tile>();
 	private boolean isInStoreZone;
 	private boolean isInHomeZone;
 	
@@ -27,6 +27,8 @@ public class Agent extends Active {
 	public boolean takeBox(Box box) {
 		// TODO : exception if take box when already carrying one ?
 		if(this.isCarryingBox()) return false;
+		
+		EngineProxy.getInstance().takeBox(this);
 		this.box = box;
 		return true;
 	}
@@ -69,24 +71,27 @@ public class Agent extends Active {
 	}
 	
 	public void decide() {
-		
 		if(isCarryingBox()) {
 			if(isInHomeZone) {
-				// act = dropBox()
+				// TODO act = dropBox()
 			} else {
-				// act = move to right (vers home zone)
+				// TODO act = move to right (vers home zone)
 			}
 		} else {
 			if(isInStoreZone) {
-				// act = takeBox(...);
+				// TODO act = takeBox(...)
 			} else {
-				// act = move to left (vers store zone)
+				// TODO act = move to left (vers store zone)
 			}
 		}
 		
 	}
 	
 	public void act() {
-		// executer l'action decidee
+		// TODO executer l'action decidee
+		
+		// tmp : bouger n'importe ou
+		Tile firstDestination = availableDestinations.get(0);
+		EngineProxy.getInstance().move(this, firstDestination.getX(), firstDestination.getY());
 	}
 }

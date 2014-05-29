@@ -40,7 +40,7 @@ public class AgentMain {
 		// Initialize the agent
 		agent = new Agent(0, 0);
 		// Initialize the EngineProxy with server address and port
-		EngineProxy.getInstance(serverAdress, serverPort);
+		EngineProxy.getInstance(serverAddress, serverPort);
 		
 		// Launch the timer to get current state from engine server
 	    agentAction();   
