@@ -28,6 +28,13 @@ public interface IEngineProxy {
 	public boolean takeBox( Agent me );
 	
 	/**
+	 * ask the server to drop the box at {@link Agent} position
+	 * @param me, the {@link Agent}
+	 * @return true if the engine accept the {@link Agent} to drop the box, false otherwise
+	 */
+	public boolean dropBox( Agent me );
+	
+	/**
 	 * Retrieve tiles surrounding the {@link Agent}
 	 * @param me, the {@link Agent}
 	 * @return an array of tile

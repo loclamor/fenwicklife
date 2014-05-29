@@ -28,13 +28,17 @@ public class Agent extends Active {
 		// TODO : exception if take box when already carrying one ?
 		if(this.isCarryingBox()) return false;
 		
-		EngineProxy.getInstance().takeBox(this);
-		this.box = box;
+		if( EngineProxy.getInstance().takeBox(this) ) {
+			this.box = box;
+		}
+		
 		return true;
 	}
 	
 	public void dropBox() {
-		this.box = null;
+		if( EngineProxy.getInstance().dropBox(this) ) {
+			this.box = null;
+		}
 	}
 	
 	private Tile[][] getSurroundings() {

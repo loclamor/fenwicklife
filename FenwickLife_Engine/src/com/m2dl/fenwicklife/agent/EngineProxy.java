@@ -53,6 +53,12 @@ public class EngineProxy implements IEngineProxy {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public boolean dropBox(Agent me) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
 	public Tile[][] getSurroundings(Agent me) {
