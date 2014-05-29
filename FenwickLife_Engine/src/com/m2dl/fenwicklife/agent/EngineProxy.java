@@ -1,18 +1,35 @@
 package com.m2dl.fenwicklife.agent;
 
 import com.m2dl.fenwicklife.engine.Tile;
+import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
+import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
+import com.m2dl.fenwicklife.engine.service.IAgentAction;
 
 public class EngineProxy implements IEngineProxy {
 
 	private static EngineProxy instance = null;
 	
-	private EngineProxy() {
-		// TODO Auto-generated constructor stub
+	private String serverAdress;
+	private int serverPort;
+	
+	private IConsumer consumer;
+	
+	private EngineProxy( String serverAdress, int serverPort) {
+		this.serverAdress = serverAdress;
+		this.serverPort = serverPort;
+		
+		this.consumer = new ConsumerImpl(serverAdress, serverPort, IAgentAction.class);
 	}
 	
 	public static EngineProxy getInstance(){
 		if( instance == null ) {
-			instance = new EngineProxy();
+			instance = new EngineProxy("127.0.0.1",8080);
+		}
+		return instance;
+	}
+	public static EngineProxy getInstance(String serverAdress, int serverPort){
+		if( instance == null ) {
+			instance = new EngineProxy( serverAdress, serverPort );
 		}
 		return instance;
 	}

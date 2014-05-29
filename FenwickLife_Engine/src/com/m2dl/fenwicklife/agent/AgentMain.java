@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import javax.swing.JFrame;
 
+import com.m2dl.fenwicklife.engine.EngineMain;
 import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
 import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
 
@@ -14,8 +15,6 @@ public class AgentMain {
 	private static String serverAdress = "127.0.0.1";
 	// engine server port
 	private static Integer serverPort = 8081;
-	// consumer to do xml-rpc request
-	private static IConsumer consumer;
 	// Timer to refresh informations 
 	private static Timer timer;
 	// Agent
@@ -32,8 +31,8 @@ public class AgentMain {
 		}
 		// Initialize the agent
 		agent = new Agent(0, 0);
-		// Initialize the consumer
-		consumer = new ConsumerImpl();
+		// Initialize the EngineProxy with server address and port
+		EngineProxy.getInstance(serverAdress, serverPort);
 		
 		// Launch the timer to get current state from engine server
 	    agentAction();   

@@ -38,7 +38,7 @@ public class UIMain {
 		}
 
 		// Initialize the consumer
-		consumer = new ConsumerImpl();
+		consumer = new ConsumerImpl(serverAdress, serverPort, IFenwickGlobalStatus.class);
 		
 		// Initialize the windows
 		JFrame window = new JFrame();
@@ -71,13 +71,11 @@ public class UIMain {
 	public static void refreshdisplay() {
 		// Retrieve scene grid size
 		Object[] paramsIntern = { 0 };
-		String engineData = (String) consumer.consumeService(serverAdress, serverPort,
-				IFenwickGlobalStatus.class, "getSize", paramsIntern);
+		String engineData = (String) consumer.consumeService( "getSize", paramsIntern );
 		String[] sizeArray = engineData.split(":");
 		panel.setVirtualSize(Integer.parseInt(sizeArray[0]), Integer.parseInt(sizeArray[1]));
 		// Retrieve all object position and display them 
-		engineData = (String) consumer.consumeService(serverAdress, serverPort,
-				IFenwickGlobalStatus.class, "getAllPositions", paramsIntern);
+		engineData = (String) consumer.consumeService( "getAllPositions", paramsIntern );
 	    String[] engineDataLines = engineData.split("\n");
 	    panel.reset();
 	    for(String line : engineDataLines) {
