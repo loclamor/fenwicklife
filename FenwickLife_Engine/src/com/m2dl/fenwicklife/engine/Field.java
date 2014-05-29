@@ -26,7 +26,7 @@ public class Field {
 	private Position homeAreaTopCorner;
 	private Position homeAreaBottomCorner;
 	
-	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorY) {
+	public Field(int sizeX, int sizeY, int centerWallSize, int firstCorridorY, int secondCorridorY, int storeHomeWidth, int storeHomeHeight) {
 		if(sizeX < MIN_SIZE_X || sizeX > MAX_SIZE_X) {
 			throw new RuntimeException("Field Size X invalid");
 		}
@@ -47,6 +47,16 @@ public class Field {
 			throw new RuntimeException("Invalid corridor coordinates");
 		}
 		
+		if(storeHomeWidth > (sizeX - centerWallSize) / 2 || storeHomeWidth < 1) {
+			throw new RuntimeException("Invalid store and home areas width");
+		}
+		
+		if(storeHomeHeight > sizeY || storeHomeHeight < 1) {
+			throw new RuntimeException("Invalid store and home areas height");
+		}
+		
+		
+		
 		this.firstCorridorY = firstCorridorY;
 		this.secondCorridorY = secondCorridorY;
 		this.sizeX = sizeX;
@@ -54,6 +64,11 @@ public class Field {
 		this.centerWallXLeft   = (sizeX - centerWallSize) / 2;
 		this.centerWallXRight  = (sizeX + centerWallSize) / 2;
 		this.grid = initGrid();
+		// TODO : check coordiantes calculation
+		this.storeAreaTopCorner = new Position(storeHomeWidth, (sizeY - storeHomeHeight) / 2);
+		this.storeAreaBottomCorner = new Position(storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
+		this.homeAreaTopCorner = new Position(sizeX - storeHomeWidth, (sizeY - storeHomeHeight) / 2);
+		this.homeAreaBottomCorner = new Position(sizeX - storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
 	}
 	
 	private Map<Position, Tile> initGrid() {
@@ -78,6 +93,20 @@ public class Field {
 			map.get(new Position(i, secondCorridorY)).setType(TileType.WALL);
 		}
 		
+		// home area
+		for(int i = this.homeAreaTopCorner.getY(); i <= this.homeAreaBottomCorner.getY(); i++) {
+			for(int j = 0; j <= this.homeAreaBottomCorner.getX(); j++) {
+				map.get(new Position(j, i)).setType(TileType.HOME);
+			}
+		}
+		
+		// store area
+		for(int i = this.storeAreaTopCorner.getY(); i <= this.storeAreaBottomCorner.getY(); i++) {
+			for(int j = this.storeAreaTopCorner.getX(); j <= sizeX; j++) {
+				map.get(new Position(j, i)).setType(TileType.STORE);
+			}
+		}
+		
 		return map;
 	}
 
@@ -93,6 +122,9 @@ public class Field {
 		return secondCorridorY;
 	}
 	
+	/**
+	 * Returns the surrounding og the position at the given coordinates, with default size = 3
+	 */
 	public Tile[][] getSurroundings(int x, int y) {
 		return getSurroundings(x, y, 3);
 	}
