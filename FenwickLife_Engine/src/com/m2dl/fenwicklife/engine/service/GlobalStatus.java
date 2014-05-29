@@ -17,9 +17,7 @@ public class GlobalStatus implements IGlobalStatus{
 		Set<Position> positions = fieldState.keySet();
 		StringBuilder returnedValue = new StringBuilder();
 		for(Position p : positions) {
-			if(fieldState.get(p).getType() == TileType.WALL) {
-				returnedValue.append((int)p.getX()+":"+(int)p.getY()+":WALL\n");
-			}
+			returnedValue.append((int)p.getX()+":"+(int)p.getY()+":"+fieldState.get(p).getType().toString()+"\n");
 		}
 		return returnedValue.toString();
 	}
