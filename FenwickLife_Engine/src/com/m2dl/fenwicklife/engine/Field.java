@@ -96,20 +96,20 @@ public class Field {
 		
 		// corridors
 		for(int i = this.centerWallXLeft; i < this.centerWallXRight; i++) {
-			map.get(new Position(i, firstCorridorY)).setType(TileType.WALL);
-			map.get(new Position(i, secondCorridorY)).setType(TileType.WALL);
+			map.get(new Position(i, firstCorridorY)).setType(TileType.EMPTY);
+			map.get(new Position(i, secondCorridorY)).setType(TileType.EMPTY);
 		}
 		
 		// home area
 		for(int i = this.homeAreaTopCorner.getY(); i <= this.homeAreaBottomCorner.getY(); i++) {
-			for(int j = 0; j <= this.homeAreaBottomCorner.getX(); j++) {
+			for(int j = sizeX -1; j >= this.homeAreaBottomCorner.getX(); j--) {
 				map.get(new Position(j, i)).setType(TileType.HOME);
 			}
 		}
 		
 		// store area
 		for(int i = this.storeAreaTopCorner.getY(); i <= this.storeAreaBottomCorner.getY(); i++) {
-			for(int j = this.storeAreaTopCorner.getX(); j < sizeX; j++) {
+			for(int j = 0; j < this.storeAreaTopCorner.getX(); j++) {
 				map.get(new Position(j, i)).setType(TileType.STORE);
 			}
 		}
