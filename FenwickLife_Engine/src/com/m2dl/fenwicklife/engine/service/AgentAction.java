@@ -10,17 +10,17 @@ public class AgentAction implements IAgentAction{
 
 	@Override
 	public boolean hello(Agent me) {
-		return EngineMain.engine.hello(me);
+		return Engine.getInstance().hello(me);
 	}
 
 	@Override
 	public boolean move(Agent me, int to_x, int to_y) {
-		return EngineMain.engine.move(me, to_x, to_y);
+		return Engine.getInstance().move(me, to_x, to_y);
 	}
 
 	@Override
 	public boolean takeBox(Agent me) {
-		return EngineMain.engine.takeBox(me);
+		return Engine.getInstance().takeBox(me);
 	}
 
 	@Override
@@ -39,12 +39,12 @@ public class AgentAction implements IAgentAction{
 
 	@Override
 	public boolean create(Agent me, int x, int y) {
-		return EngineMain.engine.create(me, x, y);
+		return Engine.getInstance().create(me, x, y);
 	}
 
 	@Override
 	public void suicide(Agent me) {
-		EngineMain.engine.suicide(me);		
+		Engine.getInstance().suicide(me);		
 	}
 
 }

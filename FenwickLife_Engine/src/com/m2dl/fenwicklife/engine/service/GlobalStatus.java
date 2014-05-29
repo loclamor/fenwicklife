@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.m2dl.fenwicklife.Position;
+import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.engine.TileType;
 import com.m2dl.fenwicklife.engine.EngineMain;
@@ -13,7 +14,7 @@ public class GlobalStatus implements IGlobalStatus{
 
 	public String getAllPositions(int i1) {
 		System.out.println("[Service] : All positions requested.");
-		Map<Position, Tile> fieldState = EngineMain.engine.getField().getGrid();
+		Map<Position, Tile> fieldState = Engine.getInstance().getField().getGrid();
 		Set<Position> positions = fieldState.keySet();
 		StringBuilder returnedValue = new StringBuilder();
 		for(Position p : positions) {

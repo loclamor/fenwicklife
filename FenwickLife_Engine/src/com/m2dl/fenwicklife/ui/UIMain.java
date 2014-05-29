@@ -65,7 +65,7 @@ public class UIMain {
 			}	
 		};
 		timer = new Timer();
-		timer.scheduleAtFixedRate(task, 0, 1000);
+		timer.scheduleAtFixedRate(task, 0, 10);
 	}
 	
 	/**
@@ -80,6 +80,7 @@ public class UIMain {
 		panel.setVirtualSize(Integer.parseInt(sizeArray[0]), Integer.parseInt(sizeArray[1]));
 		// Retrieve all object position and display them 
 		engineData = (String) consumer.consumeService( "getAllPositions", paramsIntern );
+		System.out.println(engineData);
 	    String[] engineDataLines = engineData.split("\n");
 	    panel.reset();
 	    for(String line : engineDataLines) {

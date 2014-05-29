@@ -112,6 +112,13 @@ public class Agent extends Active implements Serializable {
 		
 		// tmp : bouger n'importe ou
 		Tile firstDestination = availableDestinations.get(0);
-		EngineProxy.getInstance().move(this, firstDestination.getX(), firstDestination.getY());
+		boolean hasMoved = EngineProxy.getInstance().move(this, firstDestination.getX(), firstDestination.getY());
+		if( hasMoved ) {
+			this.setX(firstDestination.getX());
+			this.setY(firstDestination.getY());
+		}
+		else {
+			//TODO : again untill move is OK ?
+		}
 	}
 }

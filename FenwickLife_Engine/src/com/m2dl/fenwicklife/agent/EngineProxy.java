@@ -1,6 +1,5 @@
 package com.m2dl.fenwicklife.agent;
 
-import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
 import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
@@ -11,14 +10,9 @@ public class EngineProxy implements IEngineProxy {
 
 	private static EngineProxy instance = null;
 	
-	private String serverAdress;
-	private int serverPort;
-	
 	private IConsumer consumer;
 	
 	private EngineProxy( String serverAdress, int serverPort) {
-		this.serverAdress = serverAdress;
-		this.serverPort = serverPort;
 		this.consumer = new ConsumerImpl(serverAdress, serverPort, IAgentAction.class);
 	}
 	
