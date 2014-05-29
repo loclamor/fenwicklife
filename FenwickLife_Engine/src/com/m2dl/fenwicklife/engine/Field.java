@@ -167,10 +167,26 @@ public class Field {
 	}
 
 	public void setFirstCorridorY(int firstCorridorY) {
+		if(firstCorridorY == secondCorridorY) {
+			throw new IllegalArgumentException("Both corridors on same coordinate");
+		}
+		
+		if(firstCorridorY < 0 || firstCorridorY > sizeY) {
+			throw new IllegalArgumentException("Invalid first corridor coordinates");
+		}
+		
 		this.firstCorridorY = firstCorridorY;
 	}
 	
-	public void setSecondCorridorX(int secondCorridorX) {
-		this.secondCorridorY = secondCorridorX;
+	public void setSecondCorridorY(int secondCorridorY) {
+		if(firstCorridorY == secondCorridorY) {
+			throw new IllegalArgumentException("Both corridors on same coordinate");
+		}
+		
+		if(secondCorridorY < 0 || secondCorridorY > sizeY) {
+			throw new IllegalArgumentException("Invalid first corridor coordinates");
+		}
+		
+		this.secondCorridorY = secondCorridorY;
 	}
 }
