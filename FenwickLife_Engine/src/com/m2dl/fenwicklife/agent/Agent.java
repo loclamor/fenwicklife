@@ -1,5 +1,6 @@
 package com.m2dl.fenwicklife.agent;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +10,20 @@ import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.engine.TileType;
 
-public class Agent extends Active {
+public class Agent extends Active implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Box box;
 	private List<Tile> availableDestinations = new ArrayList<Tile>();
 	private boolean isInStoreZone;
 	private boolean isInHomeZone;
+	
+	public Agent() {
+		super(1,1);
+	}
 	
 	public Agent(int x, int y) {
 		super(x, y);
@@ -48,7 +57,7 @@ public class Agent extends Active {
 	}
 	
 	private boolean canMove(Tile t) {
-		return !Engine.getInstance().getField().isObstacle(t.getX(), t.getY());
+		return t.getType() != TileType.AGENT && t.getType() != TileType.AGENTWITHBOX && t.getType() != TileType.WALL;
 	}
 	
 	private List<Tile> getAvailableDestinations(Tile[][] surroundings) {
@@ -69,16 +78,18 @@ public class Agent extends Active {
 	}
 	
 	public void perceive() {
-		// TODO changer Engine.getInstance() par proxy
+		System.out.println("Agent perceiver");
 		availableDestinations = null;
 		while(availableDestinations == null) {
 			availableDestinations = getAvailableDestinations(getSurroundings());
 		}
-		isInStoreZone = Engine.getInstance().getField().getTileType(this.getX(), this.getY()) == TileType.STORE;
-		isInHomeZone = Engine.getInstance().getField().getTileType(this.getX(), this.getY()) == TileType.HOME;
+		// TODO
+		isInStoreZone = false;
+		isInHomeZone = false;
 	}
 	
 	public void decide() {
+		System.out.println("Agent decide");
 		if(isCarryingBox()) {
 			if(isInHomeZone) {
 				// TODO act = dropBox()
@@ -96,6 +107,7 @@ public class Agent extends Active {
 	}
 	
 	public void act() {
+		System.out.println("Agent act");
 		// TODO executer l'action decidee
 		
 		// tmp : bouger n'importe ou

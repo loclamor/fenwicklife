@@ -4,6 +4,7 @@ import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.EngineMain;
 import com.m2dl.fenwicklife.engine.Tile;
+import com.m2dl.fenwicklife.xmlrpc.messages.TileArrayMessage;
 
 public class AgentAction implements IAgentAction{
 
@@ -23,13 +24,17 @@ public class AgentAction implements IAgentAction{
 	}
 
 	@Override
-	public Tile[][] getSurroundings(Agent me) {
-		return EngineMain.engine.getSurroundings(me, 3);
+	public TileArrayMessage getSurroundings(Agent me) {
+		TileArrayMessage message = new TileArrayMessage();
+		return getSurroundings(me, 3); 
 	}
 
 	@Override
-	public Tile[][] getSurroundings(Agent me, int size) {
-		return EngineMain.engine.getSurroundings(me, size);
+	public TileArrayMessage getSurroundings(Agent me, int size) {
+		Tile[][] tiles = Engine.getInstance().getSurroundings(me, size);
+		TileArrayMessage m = new TileArrayMessage();
+		m.tileArray = tiles;
+		return m;
 	}
 
 	@Override

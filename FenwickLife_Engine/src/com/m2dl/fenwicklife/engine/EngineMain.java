@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.m2dl.fenwicklife.agent.Agent;
+import com.m2dl.fenwicklife.engine.service.AgentAction;
 import com.m2dl.fenwicklife.engine.service.GlobalStatus;
+import com.m2dl.fenwicklife.engine.service.IAgentAction;
 import com.m2dl.fenwicklife.engine.service.IGlobalStatus;
 import com.m2dl.fenwicklife.xmlrpc.ClassInterfaceRelation;
 import com.m2dl.fenwicklife.xmlrpc.ClassInterfaceRelationException;
@@ -24,6 +26,7 @@ public class EngineMain {
 		// Init services list
 		List<Object> classesServices = new ArrayList<Object>();
 		classesServices.add(new ClassInterfaceRelation(GlobalStatus.class, IGlobalStatus.class));
+		classesServices.add(new ClassInterfaceRelation(AgentAction.class, IAgentAction.class));
 		provider = new ProviderImpl();
 		provider.initProvider(port, classesServices);
 	}

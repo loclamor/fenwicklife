@@ -1,8 +1,14 @@
 package com.m2dl.fenwicklife.engine;
 
+import java.io.Serializable;
+
 import com.m2dl.fenwicklife.Position;
 
-public class Tile {
+public class Tile implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int x;
 	private int y;
 	private TileType type;

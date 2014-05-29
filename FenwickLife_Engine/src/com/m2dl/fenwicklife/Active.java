@@ -1,6 +1,12 @@
 package com.m2dl.fenwicklife;
 
-public class Active {
+import java.io.Serializable;
+
+public class Active implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int x;
 	private int y;
 	public int getX() {
@@ -14,6 +20,10 @@ public class Active {
 	}
 	public void setY(int y) {
 		this.y = y;
+	}
+	public Active() {
+		this.x = 0;
+		this.y = 0;
 	}
 	public Active(int x, int y) {
 		super();

@@ -160,12 +160,15 @@ public class Field {
 	}
 	
 	public TileType getTileType(Position p) {
-		TileType type = grid.get(p).getType();
-		if(type == null) {
-			// if outside : wall
-			return TileType.WALL;
+		if(grid.containsKey(p)) {
+			TileType type = grid.get(p).getType();
+			if(type == null) {
+				// if outside : wall
+				return TileType.WALL;
+			}
+			return grid.get(p).getType();
 		}
-		return grid.get(p).getType();
+		return TileType.WALL; 
 	}
 	
 	public boolean isObstacle(int x, int y) {
