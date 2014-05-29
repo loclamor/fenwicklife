@@ -99,8 +99,8 @@ public class Field {
 
 	public Tile[][] getSurroundings(int x, int y, int size) {
 		Tile[][] tilesSubGrid = new Tile[7][7];
-		for( int i = 0; i < 7; i++) {
-			for( int j = 0; j < 7; j++) {
+		for( int i = 0; i < (2 * size + 1); i++) {
+			for( int j = 0; j < (2*size + 1); j++) {
 				TileType type = getTileType(x-size+i, y-size+j);
 				tilesSubGrid[i][j] = new Tile(x-size+i, y-size+j, type);
 			}
