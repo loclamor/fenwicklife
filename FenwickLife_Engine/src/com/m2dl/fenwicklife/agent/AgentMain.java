@@ -3,12 +3,6 @@ package com.m2dl.fenwicklife.agent;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.JFrame;
-
-import com.m2dl.fenwicklife.engine.EngineMain;
-import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
-import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
-
 public class AgentMain {
 	
 	// Engine server adress

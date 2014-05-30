@@ -77,15 +77,19 @@ public class ConsumerImpl implements IConsumer {
 		// Call the service's function
 		Object result;
 		try {
-			result = client.execute(serviceClass.getName() + "."
-					+ serviceFunction, params);
+			result = client.execute(serviceClass.getName() + "." + serviceFunction, params);
 		} catch (XmlRpcException e) {
 			e.printStackTrace();
-			System.err
-					.println("[Customer] : Can't use the service, maybe the function doesn't exist.");
+			System.err.println("[Customer] : Can't use the service, maybe the function doesn't exist.");
+			System.err.println("Tryed to invoque " + serviceClass.getName() + "." + serviceFunction + " on " + adress + ":" + port);
+			System.err.print("Params was : ");
+			for (Object object : params) {
+				System.err.print( object.getClass().getName() + " ");
+			}
+			System.out.println();
 			return null;
 		}
-		System.out.println("[Customer] : Provider " + adress + ":" + port + " respond" ); // + result);
+		System.out.println("[Customer] : Provider " + adress + ":" + port + " respond" );
 		return result;
 	}
 

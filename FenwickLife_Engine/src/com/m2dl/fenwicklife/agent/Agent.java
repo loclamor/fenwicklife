@@ -6,9 +6,7 @@ import java.util.List;
 
 import com.m2dl.fenwicklife.Active;
 import com.m2dl.fenwicklife.engine.Box;
-import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Tile;
-import com.m2dl.fenwicklife.engine.TileType;
 
 public class Agent extends Active implements Serializable {
 	
@@ -57,7 +55,7 @@ public class Agent extends Active implements Serializable {
 	}
 	
 	private boolean canMove(Tile t) {
-		return t.getType() != TileType.AGENT && t.getType() != TileType.AGENTWITHBOX && t.getType() != TileType.WALL;
+		return t.allowToPass();
 	}
 	
 	private List<Tile> getAvailableDestinations(Tile[][] surroundings) {
@@ -112,10 +110,10 @@ public class Agent extends Active implements Serializable {
 		
 		// tmp : bouger n'importe ou
 		Tile firstDestination = availableDestinations.get(0);
-		boolean hasMoved = EngineProxy.getInstance().move(this, firstDestination.getX(), firstDestination.getY());
+		boolean hasMoved = EngineProxy.getInstance().move(this, firstDestination.getPosition().getX(), firstDestination.getPosition().getY());
 		if( hasMoved ) {
-			this.setX(firstDestination.getX());
-			this.setY(firstDestination.getY());
+			this.setX(firstDestination.getPosition().getX());
+			this.setY(firstDestination.getPosition().getY());
 		}
 		else {
 			//TODO : again untill move is OK ?

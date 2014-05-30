@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.m2dl.fenwicklife.Position;
+import com.m2dl.fenwicklife.agent.Agent;
 
 public class Field {
 	public static final int MIN_SIZE_X = 10;
@@ -44,6 +45,7 @@ public class Field {
 		this.homeAreaBottomCorner = new Position(sizeX - storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
 	
 		this.grid = initGrid();
+		printField();
 	}
 
 	private void checkInitFieldParameters(int sizeX, int sizeY,
@@ -83,34 +85,34 @@ public class Field {
 		// first, fill all with empty
 		for(int i = 0; i < this.sizeX; i++) {
 			for(int j = 0; j < this.sizeY; j++) {
-				map.put(new Position(i, j), new Tile(i, j, TileType.EMPTY));
+				map.put(new Position(i, j), new Empty(i, j));
 			}
 		}
 		
 		// central wall
 		for(int i = this.centerWallXLeft; i < this.centerWallXRight; i++) {
 			for(int j = 0; j < this.sizeY; j++) {
-				map.get(new Position(i, j)).setType(TileType.WALL);
+				map.put(new Position(i, j), new Wall(i, j));
 			}
 		}
 		
 		// corridors
 		for(int i = this.centerWallXLeft; i < this.centerWallXRight; i++) {
-			map.get(new Position(i, firstCorridorY)).setType(TileType.EMPTY);
-			map.get(new Position(i, secondCorridorY)).setType(TileType.EMPTY);
+			map.put(new Position(i, firstCorridorY), new Empty(i, firstCorridorY));
+			map.put(new Position(i, secondCorridorY), new Empty(i, secondCorridorY));
 		}
 		
 		// home area
 		for(int i = this.homeAreaTopCorner.getY(); i <= this.homeAreaBottomCorner.getY(); i++) {
 			for(int j = sizeX -1; j >= this.homeAreaBottomCorner.getX(); j--) {
-				map.get(new Position(j, i)).setType(TileType.HOME);
+				map.put(new Position(j, i), new Home(j,i));
 			}
 		}
 		
 		// store area
 		for(int i = this.storeAreaTopCorner.getY(); i <= this.storeAreaBottomCorner.getY(); i++) {
 			for(int j = 0; j < this.storeAreaTopCorner.getX(); j++) {
-				map.get(new Position(j, i)).setType(TileType.STORE);
+				map.put(new Position(j, i), new Storage(j, i));
 			}
 		}
 		
@@ -129,6 +131,70 @@ public class Field {
 		return secondCorridorY;
 	}
 	
+	public Tile getTile( int x, int y ) {
+		return getTile( new Position( x, y ) );
+	}
+	
+	public Tile getTile( Position pos ) {
+		if(grid.containsKey(pos)) {
+			Tile t = grid.get(pos);
+			if(t == null) {
+				// if outside : wall
+				return new Wall( pos );
+			}
+			return grid.get(pos);
+		}
+		return new Wall( pos ); 
+	}
+	
+	public void setTile( int x, int y, Tile t ) {
+		setTile( new Position(x,y), t );
+	}
+	
+	public void setTile( Position p, Tile t ) {
+		grid.put( p, t);
+	}
+	
+	public void setAgent( int x, int y, Agent a ) {
+		setAgent( new Position(x,y), a );
+	}
+	
+	public void setAgent( Position p, Agent a ) {
+		Tile t = getTile( p );
+		t.setAgent( a );
+		setTile( p, t);
+	}
+	
+	public void removeAgent( int x, int y ) {
+		removeAgent( new Position(x,y) );
+	}
+	
+	public void removeAgent( Position p ) {
+		Tile t = getTile( p );
+		t.removeAgent();
+		setTile( p, t);
+	}
+	
+	public void setBox(int x,int y) {
+		setBox( new Position(x, y) );
+	}
+	
+	public void setBox( Position p ) {
+		Tile t = getTile( p );
+		t.setBox();
+		setTile( p, t);
+	}
+	
+	public void removeBox(int x,int y) {
+		removeBox( new Position(x, y) );
+	}
+	
+	public void removeBox( Position p ) {
+		Tile t = getTile( p );
+		t.removeBox();
+		setTile( p, t);
+	}
+	
 	/**
 	 * Returns the surrounding og the position at the given coordinates, with default size = 3
 	 */
@@ -140,43 +206,18 @@ public class Field {
 		Tile[][] tilesSubGrid = new Tile[7][7];
 		for( int i = 0; i < (2 * size + 1); i++) {
 			for( int j = 0; j < (2*size + 1); j++) {
-				TileType type = getTileType(x-size+i, y-size+j);
-				tilesSubGrid[i][j] = new Tile(x-size+i, y-size+j, type);
+				tilesSubGrid[i][j] = getTile(x-size+i, y-size+j);
 			}
 		}
 		return tilesSubGrid;
 	}
 
-	public TileType getTileType(int x, int y) {
-		return getTileType(new Position(x, y));
-	}
-	
-	public void setTileType(TileType type, int x, int y) {
-		setTileType(type, new Position(x, y));
-	}
-	
-	public void setTileType(TileType type, Position pos) {
-		grid.put(pos, new Tile(pos, type));
-	}
-	
-	public TileType getTileType(Position p) {
-		if(grid.containsKey(p)) {
-			TileType type = grid.get(p).getType();
-			if(type == null) {
-				// if outside : wall
-				return TileType.WALL;
-			}
-			return grid.get(p).getType();
-		}
-		return TileType.WALL; 
-	}
-	
 	public boolean isObstacle(int x, int y) {
 		return isObstacle(new Position(x, y));
 	}
 	
 	public boolean isObstacle(Position p) {
-		return grid.get(p).getType() != TileType.EMPTY;
+		return !grid.get(p).allowToPass();
 	}
 
 	public void setFirstCorridorY(int firstCorridorY) {
@@ -201,5 +242,14 @@ public class Field {
 		}
 		
 		this.secondCorridorY = secondCorridorY;
+	}
+	
+	public void printField() {
+		for(int i = 0; i < this.sizeX; i++) {
+			System.out.println("| ");
+			for(int j = 0; j < this.sizeY; j++) {
+				System.out.print( grid.get( new Position(i,j)).getClass().getSimpleName() + " ");
+			}
+		}
 	}
 }

@@ -80,36 +80,34 @@ public class UIMain {
 		panel.setVirtualSize(Integer.parseInt(sizeArray[0]), Integer.parseInt(sizeArray[1]));
 		// Retrieve all object position and display them 
 		engineData = (String) consumer.consumeService( "getAllPositions", paramsIntern );
-		System.out.println(engineData);
 	    String[] engineDataLines = engineData.split("\n");
 	    panel.reset();
 	    for(String line : engineDataLines) {
-	    	if(line.matches("[0-9]*:[0-9]*:[A-Z]*")) {
+	    	if(line.matches("[0-9]*:[0-9]*:[a-zA-Z]*:[0-9]:[0-9]")) {
 	    		String[] lineInformations = line.split(":");
 		    	int x = Integer.parseInt(lineInformations[0]);
 		    	int y = Integer.parseInt(lineInformations[1]);
 		    	String type = lineInformations[2];
+		    	boolean hasAgent = Integer.parseInt(lineInformations[3]) == 1;
+		    	boolean hasBox = Integer.parseInt(lineInformations[4]) == 1;
 		    			
 		    	switch(type) {
-		    	case "AGENTWITHBOX" :
-		    		panel.addGraphics(new FenwickDrawable(x, y, false));
-		    		break;
-		    	case "AGENT" :
-		    		panel.addGraphics(new FenwickDrawable(x, y, true));
-		    		break;
-		    	case "BOX" :
-		    		panel.addGraphics(new BoxDrawable(x, y));
-		    		break;
-		    	case "WALL" :
+		    	case "Wall" :
 		    		panel.addGraphics(new WallDrawable(x, y));
 		    		break;
-		    	case "HOME" :
+		    	case "Home" :
 		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.GREEN));
 		    		break;
-		    	case "STORE" :
+		    	case "Storage" :
 		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.YELLOW));
 		    		break;
-		    	}	
+		    	}
+		    	if( hasAgent ) {
+		    		panel.addGraphics(new FenwickDrawable(x, y, !hasBox));
+		    	}
+		    	else if( hasBox ) {
+		    		panel.addGraphics(new BoxDrawable(x, y));
+		    	}
 	    	}
 	    }
 	    panel.repaint();

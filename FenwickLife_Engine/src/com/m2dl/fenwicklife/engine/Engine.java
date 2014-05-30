@@ -1,7 +1,5 @@
 package com.m2dl.fenwicklife.engine;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.m2dl.fenwicklife.agent.Agent;
 
 public class Engine {
@@ -14,8 +12,6 @@ public class Engine {
 	public static final int DEFAULT_STORE_HOME_WIDTH = 10;
 	public static final int DEFAULT_STORE_HOME_HEIGHT = 20;
 	
-	
-	private List<Agent> listOfAgents;
 	private Field field;
 	
 	private static Engine instance = new Engine(); 
@@ -23,16 +19,10 @@ public class Engine {
 	private Engine() {
 		this.field = new Field(DEFAULT_SIZE_X, DEFAULT_SIZE_Y, DEFAULT_CENTER_WALL_SIZE,
 				DEFAULT_FIRST_CORRIDOR_Y, DEFAULT_SECOND_CORRIDOR_Y, DEFAULT_STORE_HOME_WIDTH, DEFAULT_STORE_HOME_HEIGHT);
-		
-		this.listOfAgents = new ArrayList<Agent>();
 	}
 	
 	public Field getField() {
 		return field;
-	}
-	
-	public List<Agent> getAllAgents() {
-		return this.listOfAgents;
 	}
 	
 	public static Engine getInstance() {
@@ -40,8 +30,8 @@ public class Engine {
 	}
 
 	public boolean hello(Agent me) {
-		if(!listOfAgents.contains(me) && !field.isObstacle(me.getX(), me.getY())) {
-			listOfAgents.add(me);
+		if( !field.isObstacle(me.getX(), me.getY())) {
+			field.setAgent( me.getX(), me.getY(), me);
 			return true;
 		}
 		return false;
@@ -53,21 +43,22 @@ public class Engine {
 		}
 		if(to_x >= me.getX() - 1 && to_x <= me.getX() + 1 
 		&& to_y >= me.getY() - 1 && to_y <= me.getY() + 1) {
-			field.setTileType(TileType.EMPTY, me.getX(), me.getY());
+			field.removeAgent( me.getX(), me.getY() );
+			field.removeBox( me.getX(), me.getY() );
 			if(me.isCarryingBox()) {
-				field.setTileType(TileType.AGENTWITHBOX, to_x, to_y);
+				field.setBox(to_x, to_y);
 			}
-			else {
-				field.setTileType(TileType.AGENT, to_x, to_y);
-			}
+			
+			field.setAgent(to_x, to_y, me);
+			
 			return true;
 		}
 		return false;
 	}
 
 	public boolean takeBox(Agent me) {
-		if(field.getTileType(me.getX(), me.getY()) == TileType.BOX) {
-			//TODO
+		if(field.getTile(me.getX(), me.getY()).hasBox() ) {
+			//FIXME : is a carrying box stored in agent or in field ?
 			return true;
 		}
 		return false;
@@ -79,20 +70,14 @@ public class Engine {
 		}
 		if(x >= me.getX() - 1 && x <= me.getX() + 1 
 		&& y >= me.getY() - 1 && y <= me.getY() + 1) {
-			if(me.isCarryingBox()) {
-				field.setTileType(TileType.AGENT, x, y);
-				// TODO
-			}
+			field.setAgent(x, y, new Agent(x, y));
 			return true;
 		}
 		return false;
 	}
 
 	public void suicide(Agent me) {
-		if(!listOfAgents.contains(me)) {
-			listOfAgents.remove(me);
-		}
-		field.setTileType(TileType.EMPTY, me.getX(), me.getY());
+		field.removeAgent(me.getX(), me.getY());
 	}
 
 	public Tile[][] getSurroundings(Agent me, int size) {

@@ -1,14 +1,11 @@
 package com.m2dl.fenwicklife.engine.service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Tile;
-import com.m2dl.fenwicklife.engine.TileType;
-import com.m2dl.fenwicklife.engine.EngineMain;
 
 public class GlobalStatus implements IGlobalStatus{
 
@@ -18,7 +15,10 @@ public class GlobalStatus implements IGlobalStatus{
 		Set<Position> positions = fieldState.keySet();
 		StringBuilder returnedValue = new StringBuilder();
 		for(Position p : positions) {
-			returnedValue.append((int)p.getX()+":"+(int)p.getY()+":"+fieldState.get(p).getType().toString()+"\n");
+			Tile t = fieldState.get(p);
+			String box = t.hasBox()?"1":"0";
+			String agent = t.hasAgent()?"1":"0";
+			returnedValue.append((int)p.getX()+":"+(int)p.getY()+":"+t.getClass().getSimpleName()+":"+agent+":"+box+"\n");
 		}
 		return returnedValue.toString();
 	}

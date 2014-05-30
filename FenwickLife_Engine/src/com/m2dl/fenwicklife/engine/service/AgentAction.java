@@ -2,7 +2,6 @@ package com.m2dl.fenwicklife.engine.service;
 
 import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.engine.Engine;
-import com.m2dl.fenwicklife.engine.EngineMain;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.messages.TileArrayMessage;
 
@@ -25,7 +24,6 @@ public class AgentAction implements IAgentAction{
 
 	@Override
 	public TileArrayMessage getSurroundings(Agent me) {
-		TileArrayMessage message = new TileArrayMessage();
 		return getSurroundings(me, 3); 
 	}
 

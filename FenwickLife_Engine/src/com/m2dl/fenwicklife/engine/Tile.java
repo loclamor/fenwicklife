@@ -3,44 +3,57 @@ package com.m2dl.fenwicklife.engine;
 import java.io.Serializable;
 
 import com.m2dl.fenwicklife.Position;
+import com.m2dl.fenwicklife.agent.Agent;
 
-public class Tile implements Serializable {
+public abstract class Tile implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int x;
-	private int y;
-	private TileType type;
 	
-	public Tile(Position pos, TileType type) {
-		super();
-		this.x = pos.getX();
-		this.y = pos.getY();
-		this.type = type;
+	private Position pos;
+	private boolean hasBox;
+	private Agent agent = null;
+	
+	public Tile(Position pos) {
+		this.pos = pos;
 	}
-	public Tile(int x, int y, TileType type) {
-		super();
-		this.x = x;
-		this.y = y;
-		this.type = type;
+	public Tile(int x, int y) {
+		this( new Position( x, y ) );
 	}
-	public int getX() {
-		return x;
+	
+	public void setAgent( Agent agent ) {
+		this.agent = agent;
 	}
-	public void setX(int x) {
-		this.x = x;
+	
+	public void removeAgent() {
+		this.agent = null;
 	}
-	public int getY() {
-		return y;
+	
+	public boolean allowToPass() {
+		return !hasAgent();// && !hasBox(); //FIXME : can we pass over a box ?
 	}
-	public void setY(int y) {
-		this.y = y;
+	
+	public Position getPosition() {
+		return this.pos;
 	}
-	public TileType getType() {
-		return type;
+	
+	public boolean hasAgent() {
+		return this.agent != null;
 	}
-	public void setType(TileType type) {
-		this.type = type;
+	
+	public boolean hasBox() {
+		return this.hasBox;
 	}
+	public void setPosition(Position pos) {
+		this.pos = pos;
+	}
+	public void setBox() {
+		this.hasBox = true;
+	}
+	
+	public void removeBox() {
+		this.hasBox = false;
+	}
+
 }

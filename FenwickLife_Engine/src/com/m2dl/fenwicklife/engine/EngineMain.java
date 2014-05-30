@@ -3,7 +3,6 @@ package com.m2dl.fenwicklife.engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.engine.service.AgentAction;
 import com.m2dl.fenwicklife.engine.service.GlobalStatus;
 import com.m2dl.fenwicklife.engine.service.IAgentAction;
