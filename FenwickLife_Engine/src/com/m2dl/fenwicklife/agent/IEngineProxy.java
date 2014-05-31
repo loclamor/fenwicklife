@@ -1,6 +1,7 @@
 package com.m2dl.fenwicklife.agent;
 
 import com.m2dl.fenwicklife.engine.Tile;
+import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public interface IEngineProxy {
 	
@@ -39,7 +40,7 @@ public interface IEngineProxy {
 	 * @param me, the {@link Agent}
 	 * @return an array of tile
 	 */
-	public Tile[][] getSurroundings( Agent me );
+	public Surroundings getSurroundings( Agent me );
 	
 	/**
 	 * Retrieve tiles surrounding the {@link Agent} in the size rayon
@@ -47,7 +48,7 @@ public interface IEngineProxy {
 	 * @param size, the size to surround
 	 * @return an array of tile
 	 */
-	public Tile[][] getSurroundings( Agent me, int size );
+	public Surroundings getSurroundings( Agent me, int size );
 	
 	/**
 	 * Ask the server that {@link Agent} me to create a new {@link Agent} in x y position

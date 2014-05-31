@@ -3,7 +3,7 @@ package com.m2dl.fenwicklife.agent;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
 import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
-import com.m2dl.fenwicklife.xmlrpc.messages.TileArrayMessage;
+import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 import com.m2dl.fenwicklife.engine.service.IAgentAction;
 
 public class EngineProxy implements IEngineProxy {
@@ -56,17 +56,15 @@ public class EngineProxy implements IEngineProxy {
 	}
 
 	@Override
-	public Tile[][] getSurroundings(Agent me) {
+	public Surroundings getSurroundings(Agent me) {
 		Object[] paramsIntern = { me };
-		TileArrayMessage r = (TileArrayMessage)consumer.consumeService( "getSurroundings", paramsIntern );
-	
-		return r.tileArray;
+		return (Surroundings)consumer.consumeService( "getSurroundings", paramsIntern );
 	}
 
 	@Override
-	public Tile[][] getSurroundings(Agent me, int size) {
+	public Surroundings getSurroundings(Agent me, int size) {
 		Object[] paramsIntern = { me, size };
-		return (Tile[][]) consumer.consumeService( "getSurroundings", paramsIntern );
+		return (Surroundings) consumer.consumeService( "getSurroundings", paramsIntern );
 	}
 
 	@Override

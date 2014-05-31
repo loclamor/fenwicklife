@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.agent.Agent;
+import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public class Field {
 	public static final int MIN_SIZE_X = 10;
@@ -198,18 +199,20 @@ public class Field {
 	/**
 	 * Returns the surrounding og the position at the given coordinates, with default size = 3
 	 */
-	public Tile[][] getSurroundings(int x, int y) {
+	public Surroundings getSurroundings(int x, int y) {
 		return getSurroundings(x, y, 3);
 	}
 
-	public Tile[][] getSurroundings(int x, int y, int size) {
+	public Surroundings getSurroundings(int x, int y, int size) {
 		Tile[][] tilesSubGrid = new Tile[7][7];
 		for( int i = 0; i < (2 * size + 1); i++) {
 			for( int j = 0; j < (2*size + 1); j++) {
 				tilesSubGrid[i][j] = getTile(x-size+i, y-size+j);
 			}
 		}
-		return tilesSubGrid;
+		Surroundings surroundings = new Surroundings();
+		surroundings.setTileArray( tilesSubGrid );
+		return surroundings;
 	}
 
 	public boolean isObstacle(int x, int y) {

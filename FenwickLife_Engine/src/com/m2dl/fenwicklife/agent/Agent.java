@@ -7,6 +7,7 @@ import java.util.List;
 import com.m2dl.fenwicklife.Active;
 import com.m2dl.fenwicklife.engine.Box;
 import com.m2dl.fenwicklife.engine.Tile;
+import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public class Agent extends Active implements Serializable {
 	
@@ -48,13 +49,17 @@ public class Agent extends Active implements Serializable {
 		}
 	}
 	
-	private Tile[][] getSurroundings() {
-		Tile[][] surroundings = EngineProxy.getInstance().getSurroundings(this);
+	private Surroundings getSurroundings() {
+		Surroundings surroundings = EngineProxy.getInstance().getSurroundings(this);
 		
 		return surroundings;
 	}
 	
 	private boolean canMove(Tile t) {
+		if( t == null ) {
+			System.err.println("WARN : Tile is null");
+			return false;
+		}
 		return t.allowToPass();
 	}
 	
@@ -79,7 +84,7 @@ public class Agent extends Active implements Serializable {
 		System.out.println("Agent perceiver");
 		availableDestinations = null;
 		while(availableDestinations == null) {
-			availableDestinations = getAvailableDestinations(getSurroundings());
+			availableDestinations = getAvailableDestinations(getSurroundings().getSurroundings(1));
 		}
 		// TODO
 		isInStoreZone = false;
@@ -109,7 +114,7 @@ public class Agent extends Active implements Serializable {
 		// TODO executer l'action decidee
 		
 		// tmp : bouger n'importe ou
-		Tile firstDestination = availableDestinations.get(0);
+		Tile firstDestination = availableDestinations.get( getRandomInRange(0,availableDestinations.size() ) );
 		boolean hasMoved = EngineProxy.getInstance().move(this, firstDestination.getPosition().getX(), firstDestination.getPosition().getY());
 		if( hasMoved ) {
 			this.setX(firstDestination.getPosition().getX());
@@ -118,5 +123,9 @@ public class Agent extends Active implements Serializable {
 		else {
 			//TODO : again untill move is OK ?
 		}
+	}
+	
+	public int getRandomInRange( int min, int max ) {
+		return (int) (min + (Math.random() * (max - min)));
 	}
 }

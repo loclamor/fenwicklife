@@ -2,7 +2,7 @@ package com.m2dl.fenwicklife.engine.service;
 
 import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.engine.Tile;
-import com.m2dl.fenwicklife.xmlrpc.messages.TileArrayMessage;
+import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public interface IAgentAction {
 	
@@ -12,8 +12,8 @@ public interface IAgentAction {
 
 	public boolean takeBox( Agent me );
 	
-	public TileArrayMessage getSurroundings( Agent me );
-	public TileArrayMessage getSurroundings( Agent me, int size );
+	public Surroundings getSurroundings( Agent me );
+	public Surroundings getSurroundings( Agent me, int size );
 	
 	public boolean create( Agent me, int x, int y ) ;
 	

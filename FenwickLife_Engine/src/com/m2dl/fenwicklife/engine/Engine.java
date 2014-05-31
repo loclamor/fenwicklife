@@ -1,6 +1,7 @@
 package com.m2dl.fenwicklife.engine;
 
 import com.m2dl.fenwicklife.agent.Agent;
+import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public class Engine {
 	
@@ -80,7 +81,7 @@ public class Engine {
 		field.removeAgent(me.getX(), me.getY());
 	}
 
-	public Tile[][] getSurroundings(Agent me, int size) {
+	public Surroundings getSurroundings(Agent me, int size) {
 		return field.getSurroundings(me.getX(), me.getY(), size);
 	}
 	
