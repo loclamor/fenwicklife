@@ -49,11 +49,6 @@ public class ConsumerImpl implements IConsumer {
 	@Override
 	public Object consumeService( String serviceFunction, Object[] params ) {
 
-		System.out.println("[Customer] : Try to consume :");
-		System.out.println("\t The function " + serviceFunction + " from service "
-				+ serviceClass.getSimpleName() + " on server " + adress + ":"
-				+ port + " with params " + params + ".");
-
 		// Create the configuration
 		XmlRpcClientConfigImpl configRepartiteur = new XmlRpcClientConfigImpl();
 		try {
@@ -63,6 +58,9 @@ public class ConsumerImpl implements IConsumer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.err.println("[Customer] : Can't connect to the service / server.");
+			System.err.println("\t for the function " + serviceFunction + " from service "
+			+ serviceClass.getSimpleName() + " on server " + adress + ":"
+			+ port + " with params " + params + ".");
 			return null;
 		}
 		configRepartiteur.setEnabledForExtensions(true);
@@ -89,7 +87,6 @@ public class ConsumerImpl implements IConsumer {
 			System.out.println();
 			return null;
 		}
-		System.out.println("[Customer] : Provider " + adress + ":" + port + " respond" );
 		return result;
 	}
 

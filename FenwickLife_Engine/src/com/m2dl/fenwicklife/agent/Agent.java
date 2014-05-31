@@ -81,7 +81,6 @@ public class Agent extends Active implements Serializable {
 	}
 	
 	public void perceive() {
-		System.out.println("Agent perceiver");
 		availableDestinations = null;
 		while(availableDestinations == null) {
 			availableDestinations = getAvailableDestinations(getSurroundings().getSurroundings(1));
@@ -92,7 +91,6 @@ public class Agent extends Active implements Serializable {
 	}
 	
 	public void decide() {
-		System.out.println("Agent decide");
 		if(isCarryingBox()) {
 			if(isInHomeZone) {
 				// TODO act = dropBox()
@@ -110,7 +108,6 @@ public class Agent extends Active implements Serializable {
 	}
 	
 	public void act() {
-		System.out.println("Agent act");
 		// TODO executer l'action decidee
 		
 		// tmp : bouger n'importe ou

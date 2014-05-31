@@ -10,7 +10,6 @@ import com.m2dl.fenwicklife.engine.Tile;
 public class GlobalStatus implements IGlobalStatus{
 
 	public String getAllPositions(int i1) {
-		System.out.println("[Service] : All positions requested.");
 		Map<Position, Tile> fieldState = Engine.getInstance().getField().getGrid();
 		Set<Position> positions = fieldState.keySet();
 		StringBuilder returnedValue = new StringBuilder();
