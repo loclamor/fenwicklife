@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.m2dl.fenwicklife.Active;
+import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.engine.Box;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
@@ -17,15 +18,30 @@ public class Agent extends Active implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Box box;
 	private List<Tile> availableDestinations = new ArrayList<Tile>();
-	private boolean isInStoreZone;
-	private boolean isInHomeZone;
+	
+	private Position storeAreaTopCorner;
+	private Position storeAreaBottomCorner;
+	private Position homeAreaTopCorner;
+	private Position homeAreaBottomCorner;
+	
+	private Surroundings currentSurroundings;
+	
+	private static final int EAST = 0;
+	private static final int NORTH = 1;
+	private static final int WEST = 2;
+	private static final int SOUTH = 3;
 	
 	public Agent() {
-		super(1,1);
+		this(1,1);
 	}
 	
 	public Agent(int x, int y) {
 		super(x, y);
+		//first, get positions of home and store
+		storeAreaTopCorner = EngineProxy.getInstance().getStoreAreaTopCorner();
+		storeAreaBottomCorner = EngineProxy.getInstance().getStoreAreaBottomCorner();
+		homeAreaTopCorner = EngineProxy.getInstance().getHomeAreaTopCorner();
+		homeAreaBottomCorner = EngineProxy.getInstance().getHomeAreaBottomCorner();
 	}
 	
 	public boolean isCarryingBox() {
@@ -49,10 +65,13 @@ public class Agent extends Active implements Serializable {
 		}
 	}
 	
+	/**
+	 * Get actual surroundings from Engine, store it in private currentSurroundings field and return it
+	 * @return current currentSurroundings {@link Surroundings}
+	 */
 	private Surroundings getSurroundings() {
-		Surroundings surroundings = EngineProxy.getInstance().getSurroundings(this);
-		
-		return surroundings;
+		currentSurroundings = EngineProxy.getInstance().getSurroundings(this);
+		return currentSurroundings;
 	}
 	
 	private boolean canMove(Tile t) {
@@ -85,20 +104,37 @@ public class Agent extends Active implements Serializable {
 		while(availableDestinations == null) {
 			availableDestinations = getAvailableDestinations(getSurroundings().getSurroundings(1));
 		}
-		// TODO
-		isInStoreZone = false;
-		isInHomeZone = false;
+	}
+	
+	private boolean isInHomeZone() {
+		if( this.getY() >= homeAreaTopCorner.getY() && this.getY() <= homeAreaBottomCorner.getY() 
+			&& this.getX() >= homeAreaTopCorner.getX() ) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	private boolean isInStoreZone() {
+		if( this.getY() >= storeAreaTopCorner.getY() && this.getY() <= storeAreaBottomCorner.getY() 
+			&& this.getX() <= storeAreaTopCorner.getX() ) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public void decide() {
 		if(isCarryingBox()) {
-			if(isInHomeZone) {
+			if(isInHomeZone()) {
 				// TODO act = dropBox()
 			} else {
 				// TODO act = move to right (vers home zone)
 			}
 		} else {
-			if(isInStoreZone) {
+			if(isInStoreZone()) {
 				// TODO act = takeBox(...)
 			} else {
 				// TODO act = move to left (vers store zone)

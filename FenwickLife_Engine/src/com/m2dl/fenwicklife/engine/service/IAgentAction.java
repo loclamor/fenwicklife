@@ -1,6 +1,8 @@
 package com.m2dl.fenwicklife.engine.service;
 
+import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.agent.Agent;
+import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
@@ -18,4 +20,12 @@ public interface IAgentAction {
 	public boolean create( Agent me, int x, int y ) ;
 	
 	public void suicide( Agent me );
+	
+	public Position getStoreAreaTopCorner( boolean please );
+
+	public Position getStoreAreaBottomCorner( boolean please );
+
+	public Position getHomeAreaTopCorner( boolean please );
+
+	public Position getHomeAreaBottomCorner( boolean please );
 }

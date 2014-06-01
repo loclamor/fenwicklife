@@ -1,5 +1,6 @@
 package com.m2dl.fenwicklife.engine.service;
 
+import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Tile;
@@ -30,6 +31,22 @@ public class AgentAction implements IAgentAction{
 	@Override
 	public Surroundings getSurroundings(Agent me, int size) {
 		return Engine.getInstance().getSurroundings(me, size);
+	}
+	
+	public Position getStoreAreaTopCorner( boolean please ) {
+		return Engine.getInstance().getStoreAreaTopCorner();
+	}
+
+	public Position getStoreAreaBottomCorner( boolean please ) {
+		return Engine.getInstance().getStoreAreaBottomCorner();
+	}
+
+	public Position getHomeAreaTopCorner( boolean please ) {
+		return Engine.getInstance().getHomeAreaTopCorner();
+	}
+
+	public Position getHomeAreaBottomCorner( boolean please ) {
+		return Engine.getInstance().getHomeAreaBottomCorner();
 	}
 
 	@Override

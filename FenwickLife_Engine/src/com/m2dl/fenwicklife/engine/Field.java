@@ -40,8 +40,8 @@ public class Field {
 		this.centerWallXRight  = (sizeX + centerWallSize) / 2;
 		
 		// TODO : check coordiantes calculation
-		this.storeAreaTopCorner = new Position(storeHomeWidth, (sizeY - storeHomeHeight) / 2);
-		this.storeAreaBottomCorner = new Position(storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
+		this.storeAreaTopCorner = new Position(storeHomeWidth -1, (sizeY - storeHomeHeight) / 2); //width - 1 because field start at 0
+		this.storeAreaBottomCorner = new Position(storeHomeWidth -1, sizeY - ((sizeY - storeHomeHeight) / 2));
 		this.homeAreaTopCorner = new Position(sizeX - storeHomeWidth, (sizeY - storeHomeHeight) / 2);
 		this.homeAreaBottomCorner = new Position(sizeX - storeHomeWidth, sizeY - ((sizeY - storeHomeHeight) / 2));
 	
@@ -112,7 +112,7 @@ public class Field {
 		
 		// store area
 		for(int i = this.storeAreaTopCorner.getY(); i <= this.storeAreaBottomCorner.getY(); i++) {
-			for(int j = 0; j < this.storeAreaTopCorner.getX(); j++) {
+			for(int j = 0; j <= this.storeAreaTopCorner.getX(); j++) {
 				map.put(new Position(j, i), new Storage(j, i));
 			}
 		}
@@ -247,12 +247,35 @@ public class Field {
 		this.secondCorridorY = secondCorridorY;
 	}
 	
+	public Position getStoreAreaTopCorner() {
+		return storeAreaTopCorner;
+	}
+
+	public Position getStoreAreaBottomCorner() {
+		return storeAreaBottomCorner;
+	}
+
+	public Position getHomeAreaTopCorner() {
+		return homeAreaTopCorner;
+	}
+
+	public Position getHomeAreaBottomCorner() {
+		return homeAreaBottomCorner;
+	}
+	
 	public void printField() {
-		for(int i = 0; i < this.sizeX; i++) {
-			System.out.println("| ");
-			for(int j = 0; j < this.sizeY; j++) {
-				System.out.print( grid.get( new Position(i,j)).getClass().getSimpleName() + " ");
+		Position p;
+		for(int y = 0; y < this.sizeY; y++) {
+			
+			for(int x = 0; x < this.sizeX; x++) {
+				p = new Position( x, y );
+				System.out.print( p + " "+ grid.get( p ).getTileType() + "\t");//
 			}
+			System.out.println("| ");
 		}
+		System.out.println("Home top corner : " + getHomeAreaTopCorner() );
+		System.out.println("Home bottom corner : " + getHomeAreaBottomCorner() );
+		System.out.println("Store top corner : " + getStoreAreaTopCorner() );
+		System.out.println("Store bottom corner : " + getStoreAreaBottomCorner() );
 	}
 }

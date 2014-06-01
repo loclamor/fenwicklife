@@ -1,5 +1,6 @@
 package com.m2dl.fenwicklife.agent;
 
+import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
@@ -65,4 +66,11 @@ public interface IEngineProxy {
 	 */
 	public void suicide( Agent me );
 
+	public Position getStoreAreaTopCorner();
+
+	public Position getStoreAreaBottomCorner();
+
+	public Position getHomeAreaTopCorner();
+
+	public Position getHomeAreaBottomCorner();
 }

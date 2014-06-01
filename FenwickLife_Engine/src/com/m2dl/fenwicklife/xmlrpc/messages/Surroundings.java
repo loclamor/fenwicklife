@@ -11,7 +11,12 @@ public class Surroundings implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Tile[][] tileArray = null;
 	
+	/**
+	 * tileArray has to be a scare (x.length == y.length) with a center Tile (x.length % 2 == 1)
+	 * @param tileArray
+	 */
 	public void setTileArray( Tile[][] tileArray ) {
+		//TODO verify preconditions on tileArray
 		this.tileArray = tileArray;
 	}
 	
@@ -42,5 +47,9 @@ public class Surroundings implements Serializable{
 	 */
 	public int getSurroundingsSize() {
 		return (tileArray.length - 1) / 2;
+	}
+	
+	public Tile getLocalTile() {
+		return tileArray[getSurroundingsSize()+1][getSurroundingsSize()+1];
 	}
 }

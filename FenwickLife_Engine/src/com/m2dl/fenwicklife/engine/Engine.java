@@ -1,5 +1,6 @@
 package com.m2dl.fenwicklife.engine;
 
+import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
@@ -84,5 +85,21 @@ public class Engine {
 	public Surroundings getSurroundings(Agent me, int size) {
 		return field.getSurroundings(me.getX(), me.getY(), size);
 	}
+	public Position getStoreAreaTopCorner() {
+		return field.getStoreAreaTopCorner();
+	}
+
+	public Position getStoreAreaBottomCorner() {
+		return field.getStoreAreaBottomCorner();
+	}
+
+	public Position getHomeAreaTopCorner() {
+		return field.getHomeAreaTopCorner();
+	}
+
+	public Position getHomeAreaBottomCorner() {
+		return field.getHomeAreaBottomCorner();
+	}
+	
 	
 }

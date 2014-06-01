@@ -1,5 +1,6 @@
 package com.m2dl.fenwicklife.agent;
 
+import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
 import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
@@ -79,5 +80,23 @@ public class EngineProxy implements IEngineProxy {
 		consumer.consumeService( "suicide", paramsIntern );
 	}
 
-	
+	public Position getStoreAreaTopCorner() {
+		Object[] paramsIntern = { true };
+		return (Position)consumer.consumeService( "getStoreAreaTopCorner", paramsIntern );
+	}
+
+	public Position getStoreAreaBottomCorner() {
+		Object[] paramsIntern = { true };
+		return (Position)consumer.consumeService( "getStoreAreaBottomCorner", paramsIntern );
+	}
+
+	public Position getHomeAreaTopCorner() {
+		Object[] paramsIntern = { true };
+		return (Position)consumer.consumeService( "getHomeAreaTopCorner", paramsIntern );
+	}
+
+	public Position getHomeAreaBottomCorner() {
+		Object[] paramsIntern = { true };
+		return (Position)consumer.consumeService( "getHomeAreaBottomCorner", paramsIntern );
+	}
 }

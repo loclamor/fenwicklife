@@ -56,4 +56,7 @@ public abstract class Tile implements Serializable {
 		this.hasBox = false;
 	}
 
+	public String getTileType() {
+		return this.getClass().getSimpleName();
+	}
 }
