@@ -15,13 +15,11 @@ public class EngineProxy implements IEngineProxy {
 	
 	private EngineProxy( String serverAdress, int serverPort) {
 		this.consumer = new ConsumerImpl(serverAdress, serverPort, IAgentAction.class);
+		System.out.println("EngineProxy consumer initialised with " + serverAdress + ":" + serverPort);
 	}
 	
 	public static EngineProxy getInstance(){
-		if( instance == null ) {
-			instance = new EngineProxy("127.0.0.1", 8080);
-		}
-		return instance;
+		return getInstance("127.0.0.1", 8080);
 	}
 	public static EngineProxy getInstance(String serverAdress, int serverPort){
 		if( instance == null ) {

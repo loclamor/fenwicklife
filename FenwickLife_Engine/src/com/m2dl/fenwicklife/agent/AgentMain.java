@@ -31,10 +31,12 @@ public class AgentMain {
 			agentExecSpeed = new Integer(args[2]).intValue();
 		}
 		
-		// Initialize the agent
-		agent = new Agent(0, 0);
 		// Initialize the EngineProxy with server address and port
 		EngineProxy.getInstance(serverAddress, serverPort);
+		
+		// Initialize the agent
+		agent = new Agent(0, 0);
+		
 		EngineProxy.getInstance().hello(agent);
 		
 		// Launch the timer to get current state from engine server
