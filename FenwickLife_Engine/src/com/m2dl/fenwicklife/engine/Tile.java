@@ -31,7 +31,7 @@ public abstract class Tile implements Serializable {
 	}
 	
 	public boolean allowToPass() {
-		return !hasAgent();// && !hasBox(); //FIXME : can we pass over a box ?
+		return !hasAgent() ;
 	}
 	
 	public Position getPosition() {

@@ -2,6 +2,7 @@ package com.m2dl.fenwicklife.xmlrpc.messages;
 
 import java.io.Serializable;
 
+import com.m2dl.fenwicklife.agent.Direction;
 import com.m2dl.fenwicklife.engine.Tile;
 
 public class Surroundings implements Serializable{
@@ -51,5 +52,30 @@ public class Surroundings implements Serializable{
 	
 	public Tile getLocalTile() {
 		return tileArray[getSurroundingsSize()+1][getSurroundingsSize()+1];
+	}
+	
+	public Tile getTileInDirection(Direction direction) {
+		Tile[][] surrondings = getSurroundings(1);
+		Tile tileToReturn = surrondings[1][1];
+		switch(direction) {
+			case NORTH :
+				tileToReturn = surrondings[1][0];
+				break;
+			case WEST : 
+				tileToReturn = surrondings[0][1];
+				break;
+			case SOUTH :
+				tileToReturn = surrondings[1][2];
+				break;
+			case EAST :
+				tileToReturn = surrondings[2][1];
+				break;
+		}
+		System.out.println("Try to get a " + tileToReturn.getTileType() + " tile in " + direction.toString());
+		System.out.println("Tile in NORTH : " + surrondings[1][0].getTileType());
+		System.out.println("Tile in SOUTH : " + surrondings[1][2].getTileType());
+		System.out.println("Tile in EAST : " + surrondings[2][1].getTileType());
+		System.out.println("Tile in WEST : " + surrondings[0][1].getTileType());
+		return tileToReturn;
 	}
 }

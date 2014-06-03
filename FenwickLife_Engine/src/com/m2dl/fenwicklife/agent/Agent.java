@@ -24,12 +24,9 @@ public class Agent extends Active implements Serializable {
 	private Position homeAreaTopCorner;
 	private Position homeAreaBottomCorner;
 	
-	private Surroundings currentSurroundings;
+	private Direction nextMove;
 	
-	private static final int EAST = 0;
-	private static final int NORTH = 1;
-	private static final int WEST = 2;
-	private static final int SOUTH = 3;
+	private Surroundings currentSurroundings;
 	
 	public Agent() {
 		this(1,1);
@@ -42,6 +39,7 @@ public class Agent extends Active implements Serializable {
 		storeAreaBottomCorner = EngineProxy.getInstance().getStoreAreaBottomCorner();
 		homeAreaTopCorner = EngineProxy.getInstance().getHomeAreaTopCorner();
 		homeAreaBottomCorner = EngineProxy.getInstance().getHomeAreaBottomCorner();
+		nextMove = Direction.NONE;
 	}
 	
 	public boolean isCarryingBox() {
@@ -100,10 +98,7 @@ public class Agent extends Active implements Serializable {
 	}
 	
 	public void perceive() {
-		availableDestinations = null;
-		while(availableDestinations == null) {
-			availableDestinations = getAvailableDestinations(getSurroundings().getSurroundings(1));
-		}
+		getSurroundings();
 	}
 	
 	private boolean isInHomeZone() {
@@ -127,31 +122,133 @@ public class Agent extends Active implements Serializable {
 	}
 	
 	public void decide() {
-		if(isCarryingBox()) {
-			if(isInHomeZone()) {
-				// TODO act = dropBox()
-			} else {
-				// TODO act = move to right (vers home zone)
+		System.out.println("Agent Decide");
+		Tile northTile = currentSurroundings.getTileInDirection(Direction.NORTH);
+		Tile southTile = currentSurroundings.getTileInDirection(Direction.SOUTH);
+		Tile westTile = currentSurroundings.getTileInDirection(Direction.WEST);
+		Tile eastTile = currentSurroundings.getTileInDirection(Direction.EAST);
+		if(!isCarryingBox()) {
+			System.out.println("Agent doesn't have box");
+			if(isInStoreZone() && !isCarryingBox()) {
+				System.out.println("Agent is in store");
+				nextMove = Direction.NONE;
+			}
+			else {
+				if(canMove(westTile)) {
+					nextMove = Direction.WEST;
+				}
+				else if(nextMove == Direction.NORTH
+			     	 && canMove(northTile)) {
+					nextMove = Direction.NORTH;
+				}
+				else if(nextMove == Direction.SOUTH
+				   	 && canMove(southTile)) {
+					nextMove = Direction.SOUTH;
+				}
+				else if(nextMove == Direction.WEST 
+					 && !canMove(westTile)
+					 && !canMove(northTile)
+					 && !canMove(southTile)
+					 && canMove(eastTile)) {
+					nextMove = Direction.EAST;
+				}
+				else if(nextMove == Direction.SOUTH 
+					 && !canMove(southTile)
+					 && canMove(northTile)) {
+					nextMove = Direction.NORTH;
+				}
+				else if(nextMove == Direction.NORTH 
+					 && !canMove(northTile)
+					 && canMove(southTile)) {
+					nextMove = Direction.SOUTH;
+				}
+				else if(canMove(northTile)){
+					nextMove = Direction.NORTH;
+				}
+				else if(canMove(southTile)){
+					nextMove = Direction.SOUTH;
+				}
+				else {
+					nextMove = Direction.NONE;
+				}
 			}
 		} else {
-			if(isInStoreZone()) {
-				// TODO act = takeBox(...)
-			} else {
-				// TODO act = move to left (vers store zone)
+			System.out.println("Agent has box");
+			if(isInHomeZone() && isCarryingBox()) {
+				System.out.println("Agent is at home");
+				nextMove = Direction.NONE;
+			}
+			else {
+				if(canMove(eastTile)) {
+					nextMove = Direction.EAST;
+				}
+				else if(nextMove == Direction.NORTH
+			     	 && canMove(northTile)) {
+					nextMove = Direction.NORTH;
+				}
+				else if(nextMove == Direction.SOUTH
+				   	 && canMove(southTile)) {
+					nextMove = Direction.SOUTH;
+				}
+				else if(nextMove == Direction.SOUTH 
+					 && !canMove(southTile)
+					 && canMove(northTile)) {
+					nextMove = Direction.NORTH;
+				}
+				else if(nextMove == Direction.NORTH 
+					 && !canMove(northTile)
+					 && canMove(southTile)) {
+					nextMove = Direction.SOUTH;
+				}
+				else if(canMove(northTile)){
+					nextMove = Direction.NORTH;
+				}
+				else if(canMove(southTile)){
+					nextMove = Direction.SOUTH;
+				}
+				else {
+					nextMove = Direction.NONE;
+				}
 			}
 		}
-		
+		System.out.println("Agent next move would be " + nextMove.toString());
 	}
 	
 	public void act() {
 		// TODO executer l'action decidee
 		
 		// tmp : bouger n'importe ou
-		Tile firstDestination = availableDestinations.get( getRandomInRange(0,availableDestinations.size() ) );
-		boolean hasMoved = EngineProxy.getInstance().move(this, firstDestination.getPosition().getX(), firstDestination.getPosition().getY());
+		boolean hasMoved = false;
+		int nextX = getX();
+		int nextY = getY();
+		switch(nextMove) {
+			case NORTH :
+				nextY--;
+				break;
+			case WEST : 
+				nextX--;
+				break;
+			case SOUTH :
+				nextY++;
+				break;
+			case EAST :
+				nextX++;
+				break;
+			case NONE :
+				if(isInHomeZone() && isCarryingBox()) {
+					box = null;
+					// TODO Send to server
+				}
+				else if(isInStoreZone()  && !isCarryingBox()) {
+					box = new Box();
+					// TODO Send to server
+				}
+				return;
+		}
+		hasMoved = EngineProxy.getInstance().move(this, nextX, nextY);
 		if( hasMoved ) {
-			this.setX(firstDestination.getPosition().getX());
-			this.setY(firstDestination.getPosition().getY());
+			this.setX(nextX);
+			this.setY(nextY);
 		}
 		else {
 			//TODO : again untill move is OK ?

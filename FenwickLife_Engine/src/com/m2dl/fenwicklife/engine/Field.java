@@ -220,6 +220,9 @@ public class Field {
 	}
 	
 	public boolean isObstacle(Position p) {
+		if(grid.get(p) == null) {
+			return false;
+		}
 		return !grid.get(p).allowToPass();
 	}
 
