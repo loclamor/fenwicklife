@@ -51,7 +51,7 @@ public class AgentMain {
 			}	
 		};
 		timer = new Timer();
-		timer.scheduleAtFixedRate(task, 0, agentExecSpeed);
+		timer.schedule(task, 0, agentExecSpeed);//AtFixedRate
 	}
 
 	private static void agentAction() {

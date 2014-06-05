@@ -65,7 +65,7 @@ public class UIMain {
 			}	
 		};
 		timer = new Timer();
-		timer.scheduleAtFixedRate(task, 0, 10);
+		timer.schedule(task, 0, 100);//AtFixedRate
 	}
 	
 	/**

@@ -71,11 +71,11 @@ public class Surroundings implements Serializable{
 				tileToReturn = surrondings[2][1];
 				break;
 		}
-		System.out.println("Try to get a " + tileToReturn.getTileType() + " tile in " + direction.toString());
-		System.out.println("Tile in NORTH : " + surrondings[1][0].getTileType());
-		System.out.println("Tile in SOUTH : " + surrondings[1][2].getTileType());
-		System.out.println("Tile in EAST : " + surrondings[2][1].getTileType());
-		System.out.println("Tile in WEST : " + surrondings[0][1].getTileType());
+//		System.out.println("Try to get a " + tileToReturn.getTileType() + " tile in " + direction.toString());
+//		System.out.println("Tile in NORTH : " + surrondings[1][0].getTileType());
+//		System.out.println("Tile in SOUTH : " + surrondings[1][2].getTileType());
+//		System.out.println("Tile in EAST : " + surrondings[2][1].getTileType());
+//		System.out.println("Tile in WEST : " + surrondings[0][1].getTileType());
 		return tileToReturn;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.agent.Agent;
+import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public class Field {
@@ -156,11 +157,11 @@ public class Field {
 		grid.put( p, t);
 	}
 	
-	public void setAgent( int x, int y, Agent a ) {
+	public void setAgent( int x, int y, SimpleAgent a ) {
 		setAgent( new Position(x,y), a );
 	}
 	
-	public void setAgent( Position p, Agent a ) {
+	public void setAgent( Position p, SimpleAgent a ) {
 		Tile t = getTile( p );
 		t.setAgent( a );
 		setTile( p, t);

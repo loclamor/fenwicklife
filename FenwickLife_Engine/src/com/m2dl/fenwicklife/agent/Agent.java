@@ -122,15 +122,15 @@ public class Agent extends Active implements Serializable {
 	}
 	
 	public void decide() {
-		System.out.println("Agent Decide");
+//		System.out.println("Agent Decide");
 		Tile northTile = currentSurroundings.getTileInDirection(Direction.NORTH);
 		Tile southTile = currentSurroundings.getTileInDirection(Direction.SOUTH);
 		Tile westTile = currentSurroundings.getTileInDirection(Direction.WEST);
 		Tile eastTile = currentSurroundings.getTileInDirection(Direction.EAST);
 		if(!isCarryingBox()) {
-			System.out.println("Agent doesn't have box");
+//			System.out.println("Agent doesn't have box");
 			if(isInStoreZone() && !isCarryingBox()) {
-				System.out.println("Agent is in store");
+//				System.out.println("Agent is in store");
 				nextMove = Direction.NONE;
 			}
 			else {
@@ -173,9 +173,9 @@ public class Agent extends Active implements Serializable {
 				}
 			}
 		} else {
-			System.out.println("Agent has box");
+//			System.out.println("Agent has box");
 			if(isInHomeZone() && isCarryingBox()) {
-				System.out.println("Agent is at home");
+//				System.out.println("Agent is at home");
 				nextMove = Direction.NONE;
 			}
 			else {
@@ -211,7 +211,7 @@ public class Agent extends Active implements Serializable {
 				}
 			}
 		}
-		System.out.println("Agent next move would be " + nextMove.toString());
+//		System.out.println("Agent next move would be " + nextMove.toString());
 	}
 	
 	public void act() {

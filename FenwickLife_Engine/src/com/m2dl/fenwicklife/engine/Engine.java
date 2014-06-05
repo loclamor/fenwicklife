@@ -2,9 +2,11 @@ package com.m2dl.fenwicklife.engine;
 
 import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.agent.Agent;
+import com.m2dl.fenwicklife.engine.service.IAgentAction;
+import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
-public class Engine {
+public class Engine implements IAgentAction {
 	
 	public static final int DEFAULT_SIZE_X = 60;
 	public static final int DEFAULT_SIZE_Y = 40;
@@ -31,7 +33,7 @@ public class Engine {
 		return instance;
 	}
 
-	public boolean hello(Agent me) {
+	public boolean hello(SimpleAgent me) {
 		if( !field.isObstacle(me.getX(), me.getY())) {
 			field.setAgent( me.getX(), me.getY(), me);
 			return true;
@@ -39,7 +41,7 @@ public class Engine {
 		return false;
 	}
 
-	public boolean move(Agent me, int to_x, int to_y) {
+	public boolean move(SimpleAgent me, int to_x, int to_y) {
 		if(field.isObstacle(to_x, to_y)) {
 			return false;
 		}
@@ -58,7 +60,7 @@ public class Engine {
 		return false;
 	}
 
-	public boolean takeBox(Agent me) {
+	public boolean takeBox(SimpleAgent me) {
 		if(field.getTile(me.getX(), me.getY()).hasBox() ) {
 			//FIXME : is a carrying box stored in agent or in field ?
 			return true;
@@ -66,39 +68,44 @@ public class Engine {
 		return false;
 	}
 
-	public boolean create(Agent me, int x, int y) {
+	public boolean create(SimpleAgent me, int x, int y) {
 		if(field.isObstacle(x, y)) {
 			return false;
 		}
 		if(x >= me.getX() - 1 && x <= me.getX() + 1 
 		&& y >= me.getY() - 1 && y <= me.getY() + 1) {
-			field.setAgent(x, y, new Agent(x, y));
+			field.setAgent(x, y, new SimpleAgent(x, y));
 			return true;
 		}
 		return false;
 	}
 
-	public void suicide(Agent me) {
+	public void suicide(SimpleAgent me) {
 		field.removeAgent(me.getX(), me.getY());
 	}
 
-	public Surroundings getSurroundings(Agent me, int size) {
+	public Surroundings getSurroundings(SimpleAgent me, int size) {
 		return field.getSurroundings(me.getX(), me.getY(), size);
 	}
-	public Position getStoreAreaTopCorner() {
+	public Position getStoreAreaTopCorner(boolean please) {
 		return field.getStoreAreaTopCorner();
 	}
 
-	public Position getStoreAreaBottomCorner() {
+	public Position getStoreAreaBottomCorner(boolean please) {
 		return field.getStoreAreaBottomCorner();
 	}
 
-	public Position getHomeAreaTopCorner() {
+	public Position getHomeAreaTopCorner(boolean please) {
 		return field.getHomeAreaTopCorner();
 	}
 
-	public Position getHomeAreaBottomCorner() {
+	public Position getHomeAreaBottomCorner(boolean please) {
 		return field.getHomeAreaBottomCorner();
+	}
+
+	@Override
+	public Surroundings getSurroundings(SimpleAgent me) {
+		return getSurroundings(me, 3);
 	}
 	
 	

@@ -4,6 +4,7 @@ import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
 import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
+import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 import com.m2dl.fenwicklife.engine.service.IAgentAction;
 
@@ -32,19 +33,19 @@ public class EngineProxy implements IEngineProxy {
 	
 	@Override
 	public boolean hello(Agent me) {
-		Object[] paramsIntern = { me };
+		Object[] paramsIntern = { new SimpleAgent(me) };
 		return (boolean)consumer.consumeService( "hello", paramsIntern );
 	}
 
 	@Override
 	public boolean move(Agent me, int to_x, int to_y) {
-		Object[] paramsIntern = { me, to_x, to_y };
+		Object[] paramsIntern = { new SimpleAgent(me), to_x, to_y };
 		return (boolean)consumer.consumeService( "move", paramsIntern );
 	}
 
 	@Override
 	public boolean takeBox(Agent me) {
-		Object[] paramsIntern = { me };
+		Object[] paramsIntern = { new SimpleAgent(me) };
 		return (boolean)consumer.consumeService( "takeBox", paramsIntern );
 	}
 	
@@ -56,25 +57,25 @@ public class EngineProxy implements IEngineProxy {
 
 	@Override
 	public Surroundings getSurroundings(Agent me) {
-		Object[] paramsIntern = { me };
+		Object[] paramsIntern = { new SimpleAgent(me) };
 		return (Surroundings)consumer.consumeService( "getSurroundings", paramsIntern );
 	}
 
 	@Override
 	public Surroundings getSurroundings(Agent me, int size) {
-		Object[] paramsIntern = { me, size };
+		Object[] paramsIntern = { new SimpleAgent(me), size };
 		return (Surroundings) consumer.consumeService( "getSurroundings", paramsIntern );
 	}
 
 	@Override
 	public boolean create(Agent me, int x, int y) {
-		Object[] paramsIntern = { me, x, y };
+		Object[] paramsIntern = { new SimpleAgent(me), x, y };
 		return (boolean)consumer.consumeService( "create", paramsIntern );
 	}
 
 	@Override
 	public void suicide(Agent me) {
-		Object[] paramsIntern = { me };
+		Object[] paramsIntern = { new SimpleAgent(me) };
 		consumer.consumeService( "suicide", paramsIntern );
 	}
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.agent.Agent;
+import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 
 public abstract class Tile implements Serializable {
 	/**
@@ -13,7 +14,7 @@ public abstract class Tile implements Serializable {
 	
 	private Position pos;
 	private boolean hasBox;
-	private Agent agent = null;
+	private SimpleAgent agent = null;
 	
 	public Tile(Position pos) {
 		this.pos = pos;
@@ -22,7 +23,7 @@ public abstract class Tile implements Serializable {
 		this( new Position( x, y ) );
 	}
 	
-	public void setAgent( Agent agent ) {
+	public void setAgent( SimpleAgent agent ) {
 		this.agent = agent;
 	}
 	
