@@ -96,10 +96,10 @@ public class UIMain {
 		    		panel.addGraphics(new WallDrawable(x, y));
 		    		break;
 		    	case "Home" :
-		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.GREEN));
+		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.decode("0x40FF87")));
 		    		break;
 		    	case "Storage" :
-		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.YELLOW));
+		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.decode("0xCC6D14")));
 		    		break;
 		    	}
 		    	if( hasAgent ) {

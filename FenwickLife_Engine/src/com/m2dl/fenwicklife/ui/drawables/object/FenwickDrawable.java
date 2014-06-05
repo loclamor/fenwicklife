@@ -8,14 +8,14 @@ import com.m2dl.fenwicklife.ui.drawables.Drawable;
 public class FenwickDrawable extends Drawable {
 	
 	public FenwickDrawable(int x, int y, boolean isEmpty) {
-		super(x, y, BasicDrawable.ROUNDRECTANGLE, Color.ORANGE);
+		super(x, y, BasicDrawable.ROUNDRECTANGLE, Color.GRAY);
 		if(!isEmpty) {
-			this.setColor(Color.GREEN);
+			this.setColor(Color.ORANGE);
 		}
 	}
 	
 	public FenwickDrawable(int x, int y) {
-		super(x, y, BasicDrawable.ROUNDRECTANGLE, Color.ORANGE);
+		this(x, y, true);
 	}
 
 }
