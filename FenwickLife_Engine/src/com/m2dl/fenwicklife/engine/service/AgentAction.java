@@ -1,9 +1,7 @@
 package com.m2dl.fenwicklife.engine.service;
 
 import com.m2dl.fenwicklife.Position;
-import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.engine.Engine;
-import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
@@ -22,6 +20,10 @@ public class AgentAction implements IAgentAction{
 	@Override
 	public boolean takeBox(SimpleAgent me) {
 		return Engine.getInstance().takeBox(me);
+	}
+	
+	public boolean dropBox( SimpleAgent me ){
+		return Engine.getInstance().dropBox(me);
 	}
 
 	@Override

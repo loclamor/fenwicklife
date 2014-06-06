@@ -3,7 +3,6 @@ package com.m2dl.fenwicklife.engine;
 import java.io.Serializable;
 
 import com.m2dl.fenwicklife.Position;
-import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 
 public abstract class Tile implements Serializable {
@@ -46,6 +45,14 @@ public abstract class Tile implements Serializable {
 	public boolean hasBox() {
 		return this.hasBox;
 	}
+	
+	public boolean hasAgentWithBox() {
+		if( hasAgent() ) {
+			return agent.isCarryingBox();
+		}
+		return false;
+	}
+	
 	public void setPosition(Position pos) {
 		this.pos = pos;
 	}

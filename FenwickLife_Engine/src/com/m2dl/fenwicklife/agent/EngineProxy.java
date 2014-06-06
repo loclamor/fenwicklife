@@ -1,7 +1,6 @@
 package com.m2dl.fenwicklife.agent;
 
 import com.m2dl.fenwicklife.Position;
-import com.m2dl.fenwicklife.engine.Tile;
 import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
 import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
 import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
@@ -51,8 +50,8 @@ public class EngineProxy implements IEngineProxy {
 	
 	@Override
 	public boolean dropBox(Agent me) {
-		// TODO Auto-generated method stub
-		return false;
+		Object[] paramsIntern = { new SimpleAgent(me) };
+		return (boolean)consumer.consumeService( "dropBox", paramsIntern );
 	}
 
 	@Override

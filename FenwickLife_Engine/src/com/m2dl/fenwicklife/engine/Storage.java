@@ -13,12 +13,12 @@ public class Storage extends Empty implements Serializable {
 
 	public Storage(Position pos) {
 		super(pos);
+		this.setBox(); // set a box by default in storage
 		// TODO Auto-generated constructor stub
 	}
 
 	public Storage(int x, int y) {
-		super(x, y);
-		// TODO Auto-generated constructor stub
+		this(new Position(x, y));
 	}
 
 }

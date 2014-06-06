@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.m2dl.fenwicklife.Position;
-import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
@@ -141,10 +140,11 @@ public class Field {
 		if(grid.containsKey(pos)) {
 			Tile t = grid.get(pos);
 			if(t == null) {
-				// if outside : wall
+				// if no tile : wall
 				return new Wall( pos );
 			}
-			return grid.get(pos);
+			// if outside : wall
+			return t;
 		}
 		return new Wall( pos ); 
 	}
@@ -165,6 +165,14 @@ public class Field {
 		Tile t = getTile( p );
 		t.setAgent( a );
 		setTile( p, t);
+	}
+	
+	public void setAgent( SimpleAgent a ) {
+		setAgent(a.getX(), a.getY(), a );
+	}
+	
+	public void removeAgent( SimpleAgent a ) {
+		removeAgent( a.getX(), a.getY() );
 	}
 	
 	public void removeAgent( int x, int y ) {

@@ -1,7 +1,6 @@
 package com.m2dl.fenwicklife.engine;
 
 import com.m2dl.fenwicklife.Position;
-import com.m2dl.fenwicklife.agent.Agent;
 import com.m2dl.fenwicklife.engine.service.IAgentAction;
 import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
@@ -35,7 +34,7 @@ public class Engine implements IAgentAction {
 
 	public boolean hello(SimpleAgent me) {
 		if( !field.isObstacle(me.getX(), me.getY())) {
-			field.setAgent( me.getX(), me.getY(), me);
+			field.setAgent( me );
 			return true;
 		}
 		return false;
@@ -47,14 +46,9 @@ public class Engine implements IAgentAction {
 		}
 		if(to_x >= me.getX() - 1 && to_x <= me.getX() + 1 
 		&& to_y >= me.getY() - 1 && to_y <= me.getY() + 1) {
-			field.removeAgent( me.getX(), me.getY() );
-			field.removeBox( me.getX(), me.getY() );
-			if(me.isCarryingBox()) {
-				field.setBox(to_x, to_y);
-			}
-			
+			//move the agent
+			field.removeAgent( me );
 			field.setAgent(to_x, to_y, me);
-			
 			return true;
 		}
 		return false;
@@ -62,7 +56,17 @@ public class Engine implements IAgentAction {
 
 	public boolean takeBox(SimpleAgent me) {
 		if(field.getTile(me.getX(), me.getY()).hasBox() ) {
-			//FIXME : is a carrying box stored in agent or in field ?
+			field.removeBox( me.getX(), me.getY() );
+			field.setAgent( me );
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean dropBox(SimpleAgent me) {
+		Tile t = field.getTile(me.getX(), me.getY());
+		if( !t.hasBox() && t instanceof Home && t.hasAgentWithBox() && me.isCarryingBox() ) {
+			field.setBox( t.getPosition() );
 			return true;
 		}
 		return false;

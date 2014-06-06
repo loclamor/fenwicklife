@@ -15,7 +15,7 @@ public class GlobalStatus implements IGlobalStatus{
 		StringBuilder returnedValue = new StringBuilder();
 		for(Position p : positions) {
 			Tile t = fieldState.get(p);
-			String box = t.hasBox()?"1":"0";
+			String box = t.hasBox() || t.hasAgentWithBox()?"1":"0";
 			String agent = t.hasAgent()?"1":"0";
 			returnedValue.append((int)p.getX()+":"+(int)p.getY()+":"+t.getClass().getSimpleName()+":"+agent+":"+box+"\n");
 		}

@@ -1,8 +1,6 @@
 package com.m2dl.fenwicklife.agent;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.m2dl.fenwicklife.Active;
 import com.m2dl.fenwicklife.Position;
@@ -17,7 +15,7 @@ public class Agent extends Active implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Box box;
-	private List<Tile> availableDestinations = new ArrayList<Tile>();
+//	private List<Tile> availableDestinations = new ArrayList<Tile>();
 	
 	private Position storeAreaTopCorner;
 	private Position storeAreaBottomCorner;
@@ -46,15 +44,19 @@ public class Agent extends Active implements Serializable {
 		return box != null;
 	}
 	
-	public boolean takeBox(Box box) {
+	public boolean takeBox() {
 		// TODO : exception if take box when already carrying one ?
-		if(this.isCarryingBox()) return false;
-		
-		if( EngineProxy.getInstance().takeBox(this) ) {
-			this.box = box;
+		if( this.isCarryingBox() ) {
+			System.err.println("Already has a box");
+			return false;
 		}
 		
-		return true;
+		if( EngineProxy.getInstance().takeBox(this) ) {
+			this.box = new Box( getX(), getY() );
+			return true;
+		}
+		System.err.println("Cannot take box");
+		return false;
 	}
 	
 	public void dropBox() {
@@ -80,22 +82,23 @@ public class Agent extends Active implements Serializable {
 		return t.allowToPass();
 	}
 	
-	private List<Tile> getAvailableDestinations(Tile[][] surroundings) {
-		List<Tile> availableDestinations = new ArrayList<Tile>();
-		if(surroundings == null) {
-			return null;
-		}
-		for(int i=0; i < surroundings.length; i++) {
-			for(int j=0; j < surroundings[i].length; j++) {
-				Tile currentTile = surroundings[i][j];
-				if(canMove(currentTile)) {
-					availableDestinations.add(currentTile);
-				}
-			}
-		}
-		
-		return availableDestinations;
-	}
+	//FIXME : is it still useful ?
+//	private List<Tile> getAvailableDestinations(Tile[][] surroundings) {
+//		List<Tile> availableDestinations = new ArrayList<Tile>();
+//		if(surroundings == null) {
+//			return null;
+//		}
+//		for(int i=0; i < surroundings.length; i++) {
+//			for(int j=0; j < surroundings[i].length; j++) {
+//				Tile currentTile = surroundings[i][j];
+//				if(canMove(currentTile)) {
+//					availableDestinations.add(currentTile);
+//				}
+//			}
+//		}
+//		
+//		return availableDestinations;
+//	}
 	
 	public void perceive() {
 		getSurroundings();
@@ -122,15 +125,12 @@ public class Agent extends Active implements Serializable {
 	}
 	
 	public void decide() {
-//		System.out.println("Agent Decide");
 		Tile northTile = currentSurroundings.getTileInDirection(Direction.NORTH);
 		Tile southTile = currentSurroundings.getTileInDirection(Direction.SOUTH);
 		Tile westTile = currentSurroundings.getTileInDirection(Direction.WEST);
 		Tile eastTile = currentSurroundings.getTileInDirection(Direction.EAST);
 		if(!isCarryingBox()) {
-//			System.out.println("Agent doesn't have box");
 			if(isInStoreZone() && !isCarryingBox()) {
-//				System.out.println("Agent is in store");
 				nextMove = Direction.NONE;
 			}
 			else {
@@ -173,9 +173,7 @@ public class Agent extends Active implements Serializable {
 				}
 			}
 		} else {
-//			System.out.println("Agent has box");
 			if(isInHomeZone() && isCarryingBox()) {
-//				System.out.println("Agent is at home");
 				nextMove = Direction.NONE;
 			}
 			else {
@@ -211,7 +209,6 @@ public class Agent extends Active implements Serializable {
 				}
 			}
 		}
-//		System.out.println("Agent next move would be " + nextMove.toString());
 	}
 	
 	public void act() {
@@ -236,22 +233,19 @@ public class Agent extends Active implements Serializable {
 				break;
 			case NONE :
 				if(isInHomeZone() && isCarryingBox()) {
-					box = null;
-					// TODO Send to server
+					dropBox();
 				}
 				else if(isInStoreZone()  && !isCarryingBox()) {
-					box = new Box();
-					// TODO Send to server
+					takeBox();
 				}
 				return;
 		}
-		hasMoved = EngineProxy.getInstance().move(this, nextX, nextY);
-		if( hasMoved ) {
-			this.setX(nextX);
-			this.setY(nextY);
-		}
-		else {
-			//TODO : again untill move is OK ?
+		if( nextMove != Direction.NONE ) {
+			hasMoved = EngineProxy.getInstance().move(this, nextX, nextY);
+			if( hasMoved ) {
+				this.setX(nextX);
+				this.setY(nextY);
+			}
 		}
 	}
 	
