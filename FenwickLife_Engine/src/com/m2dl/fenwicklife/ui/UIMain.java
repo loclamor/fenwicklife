@@ -80,7 +80,13 @@ public class UIMain {
 		panel.setVirtualSize(Integer.parseInt(sizeArray[0]), Integer.parseInt(sizeArray[1]));
 		// Retrieve all object position and display them 
 		engineData = (String) consumer.consumeService( "getAllPositions", paramsIntern );
-	    String[] engineDataLines = engineData.split("\n");
+	    if(engineData == null) {
+	    	return;
+	    }
+		String[] engineDataLines = engineData.split("\n");
+	    if(engineDataLines == null) {
+	    	return;
+	    }
 	    panel.reset();
 	    for(String line : engineDataLines) {
 	    	if(line.matches("[0-9]*:[0-9]*:[a-zA-Z]*:[0-9]:[0-9]")) {

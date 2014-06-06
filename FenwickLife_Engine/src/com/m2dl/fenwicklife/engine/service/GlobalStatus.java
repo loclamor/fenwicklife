@@ -23,6 +23,6 @@ public class GlobalStatus implements IGlobalStatus{
 	}
 
 	public String getSize(int i1) {
-		return "60:40";
+		return Engine.getInstance().getWidth()+":"+Engine.getInstance().getHeight();
 	}
 }
