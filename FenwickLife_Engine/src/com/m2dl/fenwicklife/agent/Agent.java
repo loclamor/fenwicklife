@@ -131,7 +131,7 @@ public class Agent extends Active implements Serializable {
 		Tile eastTile = currentSurroundings.getTileInDirection(Direction.EAST);
 		if(!isCarryingBox()) {
 			if(isInStoreZone() && !isCarryingBox()) {
-				nextMove = Direction.NONE;
+				nextMove = Direction.TAKE;
 			}
 			else {
 				if(canMove(westTile)) {
@@ -174,7 +174,7 @@ public class Agent extends Active implements Serializable {
 			}
 		} else {
 			if(isInHomeZone() && isCarryingBox()) {
-				nextMove = Direction.NONE;
+				nextMove = Direction.DROP;
 			}
 			else {
 				if(canMove(eastTile)) {
@@ -231,13 +231,13 @@ public class Agent extends Active implements Serializable {
 			case EAST :
 				nextX++;
 				break;
+			case DROP :
+				dropBox();
+				return;
+			case TAKE :
+				takeBox();
+				return;
 			case NONE :
-				if(isInHomeZone() && isCarryingBox()) {
-					dropBox();
-				}
-				else if(isInStoreZone()  && !isCarryingBox()) {
-					takeBox();
-				}
 				return;
 		}
 		if( nextMove != Direction.NONE ) {
