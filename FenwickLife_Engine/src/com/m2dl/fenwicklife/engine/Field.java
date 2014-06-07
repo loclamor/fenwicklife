@@ -171,18 +171,20 @@ public class Field {
 		setAgent(a.getX(), a.getY(), a );
 	}
 	
-	public void removeAgent( SimpleAgent a ) {
-		removeAgent( a.getX(), a.getY() );
+	public boolean removeAgent( SimpleAgent a ) {
+		return removeAgent( a.getX(), a.getY() );
 	}
 	
-	public void removeAgent( int x, int y ) {
-		removeAgent( new Position(x,y) );
+	public boolean removeAgent( int x, int y ) {
+		return removeAgent( new Position(x,y) );
 	}
 	
-	public void removeAgent( Position p ) {
+	public boolean removeAgent( Position p ) {
 		Tile t = getTile( p );
+		boolean hasAgent = t.hasAgent();
 		t.removeAgent();
 		setTile( p, t);
+		return hasAgent;
 	}
 	
 	public void setBox(int x,int y) {

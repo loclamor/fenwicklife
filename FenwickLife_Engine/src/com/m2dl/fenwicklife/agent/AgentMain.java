@@ -58,5 +58,10 @@ public class AgentMain {
 		agent.perceive();
 		agent.decide();
 		agent.act();
+		if(agent.isDead() && timer != null) {
+			timer.cancel();
+			timer = null;
+			return;
+		}
 	}
 }

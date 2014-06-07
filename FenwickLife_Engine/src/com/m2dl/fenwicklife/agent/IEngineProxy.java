@@ -62,8 +62,9 @@ public interface IEngineProxy {
 	/**
 	 * Inform the engine that the me {@link Agent} as killed himself
 	 * @param me, the feu {@link Agent}
+	 * @return 
 	 */
-	public void suicide( Agent me );
+	public boolean suicide( Agent me );
 
 	public Position getStoreAreaTopCorner();
 

@@ -58,8 +58,8 @@ public class AgentAction implements IAgentAction{
 	}
 
 	@Override
-	public void suicide(SimpleAgent me) {
-		Engine.getInstance().suicide(me);		
+	public boolean suicide(SimpleAgent me) {
+		return Engine.getInstance().suicide(me);		
 	}
 
 }

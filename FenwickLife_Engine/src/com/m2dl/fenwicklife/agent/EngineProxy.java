@@ -73,9 +73,9 @@ public class EngineProxy implements IEngineProxy {
 	}
 
 	@Override
-	public void suicide(Agent me) {
+	public boolean suicide(Agent me) {
 		Object[] paramsIntern = { new SimpleAgent(me) };
-		consumer.consumeService( "suicide", paramsIntern );
+		return (boolean) consumer.consumeService( "suicide", paramsIntern );
 	}
 
 	public Position getStoreAreaTopCorner() {

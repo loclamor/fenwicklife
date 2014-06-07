@@ -44,6 +44,12 @@ public class Agent extends Active implements Serializable {
 	private int southScore;
 	private int westScore;
 	private int eastScore;
+	
+	// Number of move without finding a box
+	private int nbMoveUseless;
+	
+	// The agent is dead
+	private boolean isDead;
 
 
 	public Agent() {
@@ -66,6 +72,8 @@ public class Agent extends Active implements Serializable {
 		southScore = 0;
 		westScore = 0;
 		eastScore = 0;
+		nbMoveUseless = 0;
+		isDead = false;
 	}
 
 	/**
@@ -102,6 +110,20 @@ public class Agent extends Active implements Serializable {
 		if( EngineProxy.getInstance().dropBox(this) ) {
 			this.box = null;
 			return true;
+		}
+		return false;
+	}
+	
+	/** 
+	 * Try to suicide
+	 * @return true if succeed
+	 */
+	public boolean suicide() {
+		if(!isCarryingBox()) {
+			if(EngineProxy.getInstance().suicide(this)) {
+				isDead = true;
+				return true;
+			}
 		}
 		return false;
 	}
@@ -200,18 +222,18 @@ public class Agent extends Active implements Serializable {
 		}
 		// Do the same to force the agent to go back only when needed
 		if(lastPosition.getX() == tX && lastPosition.getY() == tY) {
-			return Math.abs(nowInterest)*-2;	
+			return Math.abs(nowInterest)*-3;	
 		}
 		// Compute the score of the tile depending of his position and chere the agent want to go
 		if(isCarryingBox()) {
 			if(isInHomeZone()) {
 				// Maybe improve this one
 				if(t instanceof Home) {
-					if(!((Home)t).hasBox() && tX > aX) {
+					if(!((Home)t).hasBox()) {
 						return Math.abs(nowInterest)*10;
 					}
 				}
-				if(tX < homeX) {
+				if(tY > homeDown || tY < homeUp || tX < homeX) {
 					nowInterest=Math.abs(nowInterest)*-1;
 				}
 			}
@@ -236,7 +258,7 @@ public class Agent extends Active implements Serializable {
 		}
 		else {
 			
-			if(isInStoreZone() && tX > storeX) {
+			if(isInStoreZone() && (tY > storeDown || tY < storeUp || tX > storeX)) {
 				nowInterest=Math.abs(nowInterest)*-1;
 			}
 			if(t instanceof Storage) {
@@ -282,6 +304,9 @@ public class Agent extends Active implements Serializable {
 	 * Used to perceive the environnement
 	 */
 	public void perceive() {
+		if(isDead) {
+			return;
+		}
 		// First retrieve the surronding
 		getSurroundings();
 		// For each tile perceived, refresh field memory
@@ -294,18 +319,24 @@ public class Agent extends Active implements Serializable {
 				for(Tile t : tArray) {
 					if(t != null) {
 						if(!tmpFieldMemory.containsKey(t.getPosition())) {
-							tmpFieldMemory.put(t.getPosition(), 0);
+							tmpFieldMemory.put(t.getPosition(), 1);
 						}
 						if(tmpFieldMemory.containsKey(t.getPosition())) {
 							int oldCount = tmpFieldMemory.get(t.getPosition()).intValue();
 							if(!canMove(t)) {
 								if(oldCount > 0) {
-									oldCount /= 2;
+									oldCount = -1;
 								}
 								else {
 									oldCount *= 2;
 								}
 							}
+							else {
+								if(oldCount < 0) {
+									oldCount = oldCount / 2 + 1;	
+								}
+							}
+							oldCount = oldCount == 0 ? 1 : oldCount;
 							tmpFieldMemory.put(t.getPosition(), oldCount);
 						}
 					}
@@ -361,6 +392,9 @@ public class Agent extends Active implements Serializable {
 	 * Used to decide where to go
 	 */
 	public void decide() {
+		if(isDead) {
+			return;
+		}
 		// Now, choose a direction depending of the directions score and agent possibility
 		if(northScore > southScore
 		&& northScore > westScore
@@ -394,6 +428,12 @@ public class Agent extends Active implements Serializable {
 			}
 		}
 		cantTakeBoxLastTime = false;
+		if(isCarryingBox()) {
+			nbMoveUseless = 0;
+		}
+		if(!isCarryingBox() && isInStoreZone()) {
+			nbMoveUseless++;
+		}
 		System.out.println("Decide to go to " + nextMove.toString());
 		System.out.println("North Score : " + northScore);
 		System.out.println("East Score : " + eastScore);
@@ -405,6 +445,12 @@ public class Agent extends Active implements Serializable {
 	 * Used to act on the environnement (move, take box, drop box)
 	 */
 	public void act() {
+		if(nbMoveUseless > 50) {
+			suicide();
+		}
+		if(isDead) {
+			return;
+		}
 		boolean hasMoved = false;
 		int nextX = getX();
 		int nextY = getY();
@@ -439,5 +485,9 @@ public class Agent extends Active implements Serializable {
 				this.setY(nextY);
 			}
 		}
+	}
+	
+	public boolean isDead() {
+		return isDead;
 	}
 }

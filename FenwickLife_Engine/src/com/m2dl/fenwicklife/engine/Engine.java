@@ -7,13 +7,13 @@ import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public class Engine implements IAgentAction {
 	
-	public static final int DEFAULT_SIZE_X = 15;
-	public static final int DEFAULT_SIZE_Y = 10;
-	public static final int DEFAULT_CENTER_WALL_SIZE = 3;
-	public static final int DEFAULT_FIRST_CORRIDOR_Y = 7;
-	public static final int DEFAULT_SECOND_CORRIDOR_Y = 3;
-	public static final int DEFAULT_STORE_HOME_WIDTH = 3;
-	public static final int DEFAULT_STORE_HOME_HEIGHT = 3;
+	public static final int DEFAULT_SIZE_X = 30;
+	public static final int DEFAULT_SIZE_Y = 20;
+	public static final int DEFAULT_CENTER_WALL_SIZE = 10;
+	public static final int DEFAULT_FIRST_CORRIDOR_Y = 2;
+	public static final int DEFAULT_SECOND_CORRIDOR_Y = 18;
+	public static final int DEFAULT_STORE_HOME_WIDTH = 5;
+	public static final int DEFAULT_STORE_HOME_HEIGHT = 5;
 	
 	private Field field;
 	
@@ -84,8 +84,8 @@ public class Engine implements IAgentAction {
 		return false;
 	}
 
-	public void suicide(SimpleAgent me) {
-		field.removeAgent(me.getX(), me.getY());
+	public boolean suicide(SimpleAgent me) {
+		return field.removeAgent(me.getX(), me.getY());
 	}
 
 	public Surroundings getSurroundings(SimpleAgent me, int size) {

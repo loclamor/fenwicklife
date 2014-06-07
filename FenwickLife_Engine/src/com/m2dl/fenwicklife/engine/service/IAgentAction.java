@@ -19,7 +19,7 @@ public interface IAgentAction {
 	
 	public boolean create( SimpleAgent me, int x, int y ) ;
 	
-	public void suicide( SimpleAgent me );
+	public boolean suicide( SimpleAgent me );
 	
 	public Position getStoreAreaTopCorner( boolean please );
 
