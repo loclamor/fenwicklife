@@ -462,7 +462,7 @@ public class Agent extends Active implements Serializable {
 			if(random < 20) { 
 				nextMove = AgentDecision.EAST;
 			}
-			else if(random < 40) { 
+			else if(random < 50) { 
 				nextMove = AgentDecision.NORTH;
 			}
 			else if(random < 80) {
