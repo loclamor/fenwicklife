@@ -13,6 +13,7 @@ import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Home;
 import com.m2dl.fenwicklife.engine.Storage;
 import com.m2dl.fenwicklife.engine.Tile;
+import com.m2dl.fenwicklife.engine.service.AgentAction;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public class Agent extends Active implements Serializable {
@@ -29,6 +30,7 @@ public class Agent extends Active implements Serializable {
 	private Map<Position, Integer> fieldMemoryWhenNotCarrying;
 	private List<Position> lastPositionsWhenNotCarrying;
 	private int NUMBER_OF_POSITIONS_MEMORIZED = 50;
+	private AgentDecision lastVerticalMove;
 
 	// Used to know current surronding tiles
 	private Surroundings currentSurroundings;
@@ -75,6 +77,7 @@ public class Agent extends Active implements Serializable {
 		eastScore = 0;
 		nbMoveUseless = 0;
 		isDead = false;
+		lastVerticalMove = nextMove.NONE;
 	}
 
 	/**
@@ -427,6 +430,9 @@ public class Agent extends Active implements Serializable {
 	 * Used to decide where to go
 	 */
 	public void decide() {
+		if(nextMove == AgentDecision.NORTH || nextMove == AgentDecision.SOUTH) {
+			lastVerticalMove = nextMove;
+		}
 		if(isDead) {
 			return;
 		}
@@ -452,6 +458,35 @@ public class Agent extends Active implements Serializable {
 		else {
 			nextMove = AgentDecision.NONE;
 		}
+		if(northScore == southScore && (nextMove == AgentDecision.NORTH || nextMove == AgentDecision.SOUTH)) {
+			nextMove = lastVerticalMove;
+			if(lastVerticalMove == AgentDecision.NONE) {
+				if(Math.random() > 0.5) {
+					nextMove = AgentDecision.NORTH;
+				}
+				else {
+					nextMove = AgentDecision.SOUTH;
+				}
+			}
+		}
+		// Doesn't move if can approch the zone and want to go away
+		if(isCarryingBox()) {
+			if(getX() > homeAreaTopCorner.getX() && getY() < homeAreaTopCorner.getY() && nextMove == AgentDecision.NORTH) {
+				nextMove = AgentDecision.NONE;
+			}
+			if(getX() > homeAreaBottomCorner.getX() && getY() > homeAreaBottomCorner.getY() && nextMove == AgentDecision.SOUTH) {
+				nextMove = AgentDecision.NONE;
+			}
+		}
+		if(!isCarryingBox()) {
+			if(getX() < storeAreaTopCorner.getX() && getY() < storeAreaTopCorner.getY() && nextMove == AgentDecision.NORTH) {
+				nextMove = AgentDecision.NONE;
+			}
+			if(getX() < storeAreaBottomCorner.getX() && getY() > storeAreaBottomCorner.getY() && nextMove == AgentDecision.SOUTH) {
+				nextMove = AgentDecision.NONE;
+			}
+		}
+		
 		// When can't find / drop a box for a long time, suicide
 		if(!isCarryingBox() && isInStoreZone() && nbMoveUseless > Engine.DEFAULT_STORE_HOME_WIDTH * Engine.DEFAULT_STORE_HOME_HEIGHT * 3) {
 			nextMove = AgentDecision.SUICIDE;
