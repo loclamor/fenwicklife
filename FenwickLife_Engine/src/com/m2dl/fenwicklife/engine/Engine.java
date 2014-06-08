@@ -85,6 +85,10 @@ public class Engine implements IAgentAction {
 	}
 
 	public boolean suicide(SimpleAgent me) {
+		if( me.isCarryingBox() ) {
+			System.err.println("Engine : Try to remove an agent with box !");
+			return false;
+		}
 		return field.removeAgent(me.getX(), me.getY());
 	}
 

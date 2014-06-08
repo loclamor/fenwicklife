@@ -181,6 +181,10 @@ public class Field {
 	
 	public boolean removeAgent( Position p ) {
 		Tile t = getTile( p );
+		if( t.hasAgentWithBox() ) {
+			System.err.println("Field : Try to remove an agent with box !");
+			return false;
+		}
 		boolean hasAgent = t.hasAgent();
 		t.removeAgent();
 		setTile( p, t);
