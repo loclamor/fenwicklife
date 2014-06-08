@@ -452,9 +452,11 @@ public class Agent extends Active implements Serializable {
 		else {
 			nextMove = AgentDecision.NONE;
 		}
-		if(isInStoreZone() && nbMoveUseless > Engine.DEFAULT_STORE_HOME_WIDTH * Engine.DEFAULT_STORE_HOME_HEIGHT * 3) {
+		// When can't find / drop a box for a long time, suicide
+		if(!isCarryingBox() && isInStoreZone() && nbMoveUseless > Engine.DEFAULT_STORE_HOME_WIDTH * Engine.DEFAULT_STORE_HOME_HEIGHT * 3) {
 			nextMove = AgentDecision.SUICIDE;
 		}
+		// When can't find / drop box, use random mouvement
 		if((isInHomeZone() || isInStoreZone()) && nbMoveUseless > Engine.DEFAULT_STORE_HOME_WIDTH * Engine.DEFAULT_STORE_HOME_HEIGHT
 		&& southScore < 200 && northScore < 200 && eastScore < 200 && westScore < 200) {
 			int random = (int) (Math.random() * 100);
@@ -462,7 +464,7 @@ public class Agent extends Active implements Serializable {
 			if(random < 20) { 
 				nextMove = AgentDecision.EAST;
 			}
-			else if(random < 50) { 
+			else if(random < 60) { 
 				nextMove = AgentDecision.NORTH;
 			}
 			else if(random < 80) {
@@ -482,6 +484,8 @@ public class Agent extends Active implements Serializable {
 		if(isInHomeZone() && isCarryingBox() && !currentSurroundings.getLocalTile().hasBox() ) {
 			nextMove = AgentDecision.DROP;
 		}
+		// If can't find / drop a box, improve the number of useless move
+		// to enable random mouvement or suicide
 		if(((isCarryingBox() && isInStoreZone()) || (!isCarryingBox() && isInHomeZone()))) {
 			nbMoveUseless = 0;
 		}
