@@ -7,5 +7,7 @@ public enum AgentDecision {
 	WEST,
 	NONE,
 	TAKE,
-	DROP
+	DROP,
+	SUICIDE,
+	RANDOM
 }

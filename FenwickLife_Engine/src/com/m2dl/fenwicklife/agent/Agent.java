@@ -1,7 +1,9 @@
 package com.m2dl.fenwicklife.agent;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.m2dl.fenwicklife.Active;
@@ -23,8 +25,11 @@ public class Agent extends Active implements Serializable {
 	// The global interest for moving into a position
 	// More the integer is, more the agent like to move into the position (not usually blocked)
 	private Map<Position, Integer> fieldMemoryWhenCarrying;
+	private List<Position> lastPositionsWhenCarrying;
 	private Map<Position, Integer> fieldMemoryWhenNotCarrying;
-	
+	private List<Position> lastPositionsWhenNotCarrying;
+	private int NUMBER_OF_POSITIONS_MEMORIZED = 50;
+
 	// Used to know current surronding tiles
 	private Surroundings currentSurroundings;
 
@@ -33,11 +38,6 @@ public class Agent extends Active implements Serializable {
 	private Position storeAreaBottomCorner;
 	private Position homeAreaTopCorner;
 	private Position homeAreaBottomCorner;
-	
-	// Memorize if there is a problem when taking box last time
-	private boolean cantTakeBoxLastTime;
-	// Memorize last position
-	private Position lastPosition;
 
 	// Computing next move
 	private AgentDecision nextMove; 
@@ -45,10 +45,10 @@ public class Agent extends Active implements Serializable {
 	private int southScore;
 	private int westScore;
 	private int eastScore;
-	
+
 	// Number of move without finding a box
 	private int nbMoveUseless;
-	
+
 	// The agent is dead
 	private boolean isDead;
 
@@ -65,10 +65,10 @@ public class Agent extends Active implements Serializable {
 		homeAreaTopCorner = EngineProxy.getInstance().getHomeAreaTopCorner();
 		homeAreaBottomCorner = EngineProxy.getInstance().getHomeAreaBottomCorner();
 		nextMove = AgentDecision.NONE;
-		cantTakeBoxLastTime = false;
 		fieldMemoryWhenCarrying = new HashMap<Position, Integer>();
 		fieldMemoryWhenNotCarrying = new HashMap<Position, Integer>();
-		lastPosition = new Position(x,y);
+		lastPositionsWhenCarrying = new ArrayList<Position>();
+		lastPositionsWhenNotCarrying = new ArrayList<Position>();
 		northScore = 0;
 		southScore = 0;
 		westScore = 0;
@@ -114,7 +114,7 @@ public class Agent extends Active implements Serializable {
 		}
 		return false;
 	}
-	
+
 	/** 
 	 * Try to suicide
 	 * @return true if succeed
@@ -178,7 +178,7 @@ public class Agent extends Active implements Serializable {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Compute the interest to go to the tile in parameter
 	 * Depending of his type, his position and the position of the agent
@@ -190,21 +190,21 @@ public class Agent extends Active implements Serializable {
 		// The score of the tile, more important the szcore is, 
 		// more the tile is a good one to go 
 		int nowInterest = 1;
-		
+
 		int tX = t.getPosition().getX();
 		int tY = t.getPosition().getY();
 
 		int aX = getX();
 		int aY = getY();
-		
+
 		int storeX    = storeAreaTopCorner.getX();
 		int storeUp   = storeAreaTopCorner.getY();
 		int storeDown = storeAreaBottomCorner.getY();
-		
+
 		int homeX    = homeAreaTopCorner.getX();
 		int homeUp   = homeAreaTopCorner.getY();
 		int homeDown = homeAreaBottomCorner.getY();
-		
+
 		// Start with the score memorized
 		if(!isInHomeZone() && !isInStoreZone()) {
 			if(isCarryingBox()) {
@@ -216,7 +216,7 @@ public class Agent extends Active implements Serializable {
 		}
 		nowInterest = nowInterest == 0 ? 1 : nowInterest;
 
-		
+
 		// If we can't move on the tile, we make it very uninterested
 		if(!canMove(t)) {
 			if(t instanceof Storage || t instanceof Home) {
@@ -225,7 +225,10 @@ public class Agent extends Active implements Serializable {
 			return -70;
 		}
 		// Do the same to force the agent to go back only when needed
-		if(lastPosition.getX() == tX && lastPosition.getY() == tY) {
+		if(isCarryingBox() && lastPositionsWhenCarrying.contains(t.getPosition())) {
+			return -100;	
+		}
+		if(!isCarryingBox() && lastPositionsWhenNotCarrying.contains(t.getPosition())) {
 			return -100;	
 		}
 		// Compute the score of the tile depending of his position and chere the agent want to go
@@ -293,10 +296,10 @@ public class Agent extends Active implements Serializable {
 				nowInterest=Math.abs(nowInterest)*-1;
 			}
 		}
-		
+
 		// When not in the vertical range of the store or the home, prefer go horizontally
 		if(aY == tY && nowInterest > 0
-		&& aX < homeX && aX > storeX) {
+				&& aX < homeX && aX > storeX) {
 			nowInterest = (nowInterest + 1) * 3;
 		}
 
@@ -367,7 +370,7 @@ public class Agent extends Active implements Serializable {
 				for(Tile t : tArray) {
 					int tX = t.getPosition().getX();
 					int tY = t.getPosition().getY();
-	
+
 					int aX = getX();
 					int aY = getY();
 					if(!isInHomeZone() && !isInStoreZone()) {
@@ -405,6 +408,19 @@ public class Agent extends Active implements Serializable {
 				}
 			}
 		}
+		Position lastPosition = new Position(getX(), getY());
+		if(isCarryingBox()) {
+			lastPositionsWhenCarrying.add(lastPosition);
+			if(lastPositionsWhenCarrying.size() >= NUMBER_OF_POSITIONS_MEMORIZED) {
+				lastPositionsWhenCarrying.remove(0);
+			}
+		}
+		else {
+			lastPositionsWhenNotCarrying.add(lastPosition);
+			if(lastPositionsWhenNotCarrying.size() >= NUMBER_OF_POSITIONS_MEMORIZED) {
+				lastPositionsWhenNotCarrying.remove(0);
+			}
+		}
 	}
 
 	/**
@@ -416,18 +432,18 @@ public class Agent extends Active implements Serializable {
 		}
 		// Now, choose a direction depending of the directions score and agent possibility
 		if(northScore > southScore
-		&& northScore > westScore
-		&& northScore > eastScore
-		&& canMove(currentSurroundings.getTileInDirection(AgentDecision.NORTH))) {
+				&& northScore > westScore
+				&& northScore > eastScore
+				&& canMove(currentSurroundings.getTileInDirection(AgentDecision.NORTH))) {
 			nextMove = AgentDecision.NORTH;
 		}
 		else if(southScore > westScore
-		&& southScore > eastScore
-		&& canMove(currentSurroundings.getTileInDirection(AgentDecision.SOUTH))) {
+				&& southScore > eastScore
+				&& canMove(currentSurroundings.getTileInDirection(AgentDecision.SOUTH))) {
 			nextMove = AgentDecision.SOUTH;
 		}
 		else if(eastScore > westScore
-		&& canMove(currentSurroundings.getTileInDirection(AgentDecision.EAST))){ 
+				&& canMove(currentSurroundings.getTileInDirection(AgentDecision.EAST))){ 
 			nextMove = AgentDecision.EAST;
 		}
 		else if(canMove(currentSurroundings.getTileInDirection(AgentDecision.WEST))) {
@@ -436,22 +452,40 @@ public class Agent extends Active implements Serializable {
 		else {
 			nextMove = AgentDecision.NONE;
 		}
+		if(isInStoreZone() && nbMoveUseless > Engine.DEFAULT_STORE_HOME_WIDTH * Engine.DEFAULT_STORE_HOME_HEIGHT * 3) {
+			nextMove = AgentDecision.SUICIDE;
+		}
+		if((isInHomeZone() || isInStoreZone()) && nbMoveUseless > Engine.DEFAULT_STORE_HOME_WIDTH * Engine.DEFAULT_STORE_HOME_HEIGHT
+		&& southScore < 200 && northScore < 200 && eastScore < 200 && westScore < 200) {
+			int random = (int) (Math.random() * 100);
+			// FAVORIZE NORTH DIRECTION (because agent naturally prefer go in south)
+			if(random < 20) { 
+				nextMove = AgentDecision.EAST;
+			}
+			else if(random < 40) { 
+				nextMove = AgentDecision.NORTH;
+			}
+			else if(random < 80) {
+				nextMove = AgentDecision.SOUTH;
+			}
+			else {
+				nextMove = AgentDecision.WEST;
+			}
+		}
 
 		// Force the agent to move if he can't take or drop the box last time
-//		if(!cantTakeBoxLastTime) {
-			if(isInStoreZone() && !isCarryingBox() && currentSurroundings.getLocalTile().hasBox() ) {
-				System.out.println( currentSurroundings.getLocalTile().hasBox()?"Box":"PasBox");
-				nextMove = AgentDecision.TAKE;
-			}
-			if(isInHomeZone() && isCarryingBox() && !currentSurroundings.getLocalTile().hasBox() ) {
-				nextMove = AgentDecision.DROP;
-			}
-//		}
-		cantTakeBoxLastTime = false;
-		if(isCarryingBox()) {
+		//		if(!cantTakeBoxLastTime) {
+		if(isInStoreZone() && !isCarryingBox() && currentSurroundings.getLocalTile().hasBox() ) {
+			System.out.println( currentSurroundings.getLocalTile().hasBox()?"Box":"PasBox");
+			nextMove = AgentDecision.TAKE;
+		}
+		if(isInHomeZone() && isCarryingBox() && !currentSurroundings.getLocalTile().hasBox() ) {
+			nextMove = AgentDecision.DROP;
+		}
+		if(((isCarryingBox() && isInStoreZone()) || (!isCarryingBox() && isInHomeZone()))) {
 			nbMoveUseless = 0;
 		}
-		if(!isCarryingBox() && isInStoreZone()) {
+		if((!isCarryingBox() && isInStoreZone()) || (isInHomeZone() && isCarryingBox())) {
 			nbMoveUseless++;
 		}
 		System.out.println("Decide to go to " + nextMove.toString());
@@ -465,7 +499,7 @@ public class Agent extends Active implements Serializable {
 	 * Used to act on the environnement (move, take box, drop box)
 	 */
 	public void act() {
-		if(nbMoveUseless > Engine.DEFAULT_STORE_HOME_WIDTH * Engine.DEFAULT_STORE_HOME_HEIGHT ) {
+		if(nextMove == AgentDecision.SUICIDE) {
 			suicide();
 		}
 		if(isDead) {
@@ -488,25 +522,23 @@ public class Agent extends Active implements Serializable {
 			nextX++;
 			break;
 		case TAKE :
-			cantTakeBoxLastTime = !takeBox();
+			takeBox();
 			return;
 		case DROP :
-			cantTakeBoxLastTime = !dropBox();
+			dropBox();
 			return;
 		case NONE :
 			return;
 		}
 		if( nextMove != AgentDecision.NONE ) {
 			hasMoved = EngineProxy.getInstance().move(this, nextX, nextY);
-			lastPosition.setX(getX());
-			lastPosition.setY(getY());
 			if( hasMoved ) {
 				this.setX(nextX);
 				this.setY(nextY);
 			}
 		}
 	}
-	
+
 	public boolean isDead() {
 		return isDead;
 	}
