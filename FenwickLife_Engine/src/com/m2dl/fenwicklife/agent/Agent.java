@@ -511,9 +511,7 @@ public class Agent extends Active implements Serializable {
 		}
 
 		// Force the agent to move if he can't take or drop the box last time
-		//		if(!cantTakeBoxLastTime) {
 		if(isInStoreZone() && !isCarryingBox() && currentSurroundings.getLocalTile().hasBox() ) {
-			System.out.println( currentSurroundings.getLocalTile().hasBox()?"Box":"PasBox");
 			nextMove = AgentDecision.TAKE;
 		}
 		if(isInHomeZone() && isCarryingBox() && !currentSurroundings.getLocalTile().hasBox() ) {
@@ -527,11 +525,6 @@ public class Agent extends Active implements Serializable {
 		if((!isCarryingBox() && isInStoreZone()) || (isInHomeZone() && isCarryingBox())) {
 			nbMoveUseless++;
 		}
-		System.out.println("Decide to go to " + nextMove.toString());
-		System.out.println("North Score : " + northScore);
-		System.out.println("East Score : " + eastScore);
-		System.out.println("West Score : " + westScore);
-		System.out.println("South Score : " + southScore);
 	}
 
 	/**
