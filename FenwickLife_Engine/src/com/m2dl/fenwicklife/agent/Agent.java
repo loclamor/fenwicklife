@@ -18,6 +18,7 @@ import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public class Agent extends Active implements Serializable {
 
+	private String ID = "";
 	/**
 	 * 
 	 */
@@ -56,11 +57,12 @@ public class Agent extends Active implements Serializable {
 
 
 	public Agent() {
-		this(1,1);
+		this(1,1,"agent-"+String.valueOf( Math.random() ));
 	}
 
-	public Agent(int x, int y) {
+	public Agent(int x, int y, String id) {
 		super(x, y);
+		this.ID = id;
 		//first, get positions of home and store
 		storeAreaTopCorner = EngineProxy.getInstance().getStoreAreaTopCorner();
 		storeAreaBottomCorner = EngineProxy.getInstance().getStoreAreaBottomCorner();
@@ -80,6 +82,14 @@ public class Agent extends Active implements Serializable {
 		lastVerticalMove = nextMove.NONE;
 	}
 
+	/**
+	 * retrieve Agent's ID
+	 * @return the Agent's ID
+	 */
+	public String getId() {
+		return this.ID;
+	}
+	
 	/**
 	 * Return if the agent is caarying a box
 	 * @return true if yes
@@ -573,5 +583,11 @@ public class Agent extends Active implements Serializable {
 
 	public boolean isDead() {
 		return isDead;
+	}
+	
+	public String toString() {
+		return "[Agent " + ID + (isDead?" est mort":" est vivant") + " en " + getX() + "-" + getY() + " ; "
+				+ (box!=null?"a une Box":"n'a pas de Box") + " ; "
+				+ "dernière action " + nextMove + " ; a fait " + nbMoveUseless + " mouvements inutiles" + "]";
 	}
 }
