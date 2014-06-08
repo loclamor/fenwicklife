@@ -10,8 +10,8 @@ public class Engine implements IAgentAction {
 	public static final int DEFAULT_SIZE_X = 60;
 	public static final int DEFAULT_SIZE_Y = 40;
 	public static final int DEFAULT_CENTER_WALL_SIZE = 10;
-	public static final int DEFAULT_FIRST_CORRIDOR_Y = 2;
-	public static final int DEFAULT_SECOND_CORRIDOR_Y = 18;
+	public static final int DEFAULT_FIRST_CORRIDOR_Y = 3;
+	public static final int DEFAULT_SECOND_CORRIDOR_Y = 36;
 	public static final int DEFAULT_STORE_HOME_WIDTH = 10;
 	public static final int DEFAULT_STORE_HOME_HEIGHT = 20;
 	
