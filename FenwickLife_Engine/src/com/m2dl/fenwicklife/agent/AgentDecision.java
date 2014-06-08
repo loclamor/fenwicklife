@@ -1,9 +1,11 @@
 package com.m2dl.fenwicklife.agent;
 
-public enum Direction {
+public enum AgentDecision {
 	NORTH,
 	SOUTH,
 	EAST,
 	WEST,
-	NONE
+	NONE,
+	TAKE,
+	DROP
 }

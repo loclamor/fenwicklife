@@ -14,7 +14,7 @@ public class AgentMain {
 	// Agent
 	private static Agent agent;
 	// Agent execution speed (in ms)
-	private static int agentExecSpeed = 300;
+	private static int agentExecSpeed = 100;
 		
 	public static void main(String[] args) {
 		// Get params for 

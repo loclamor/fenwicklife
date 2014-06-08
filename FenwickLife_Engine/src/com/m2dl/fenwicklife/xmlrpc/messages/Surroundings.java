@@ -2,7 +2,7 @@ package com.m2dl.fenwicklife.xmlrpc.messages;
 
 import java.io.Serializable;
 
-import com.m2dl.fenwicklife.agent.Direction;
+import com.m2dl.fenwicklife.agent.AgentDecision;
 import com.m2dl.fenwicklife.engine.Tile;
 
 public class Surroundings implements Serializable{
@@ -50,11 +50,14 @@ public class Surroundings implements Serializable{
 		return (tileArray.length - 1) / 2;
 	}
 	
+	/**
+	 * @return the {@link Tile} in the center of the surroundings (the position of the agent) 
+	 */
 	public Tile getLocalTile() {
-		return tileArray[getSurroundingsSize()+1][getSurroundingsSize()+1];
+		return tileArray[getSurroundingsSize()][getSurroundingsSize()];//F*ck of the f*cking +1
 	}
 	
-	public Tile getTileInDirection(Direction direction) {
+	public Tile getTileInDirection(AgentDecision direction) {
 		Tile[][] surrondings = getSurroundings(1);
 		Tile tileToReturn = surrondings[1][1];
 		switch(direction) {

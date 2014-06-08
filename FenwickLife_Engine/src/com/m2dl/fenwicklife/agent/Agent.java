@@ -7,6 +7,7 @@ import java.util.Map;
 import com.m2dl.fenwicklife.Active;
 import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.engine.Box;
+import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Home;
 import com.m2dl.fenwicklife.engine.Storage;
 import com.m2dl.fenwicklife.engine.Tile;
@@ -39,7 +40,7 @@ public class Agent extends Active implements Serializable {
 	private Position lastPosition;
 
 	// Computing next move
-	private Direction nextMove; 
+	private AgentDecision nextMove; 
 	private int northScore;
 	private int southScore;
 	private int westScore;
@@ -63,7 +64,7 @@ public class Agent extends Active implements Serializable {
 		storeAreaBottomCorner = EngineProxy.getInstance().getStoreAreaBottomCorner();
 		homeAreaTopCorner = EngineProxy.getInstance().getHomeAreaTopCorner();
 		homeAreaBottomCorner = EngineProxy.getInstance().getHomeAreaBottomCorner();
-		nextMove = Direction.NONE;
+		nextMove = AgentDecision.NONE;
 		cantTakeBoxLastTime = false;
 		fieldMemoryWhenCarrying = new HashMap<Position, Integer>();
 		fieldMemoryWhenNotCarrying = new HashMap<Position, Integer>();
@@ -399,34 +400,35 @@ public class Agent extends Active implements Serializable {
 		if(northScore > southScore
 		&& northScore > westScore
 		&& northScore > eastScore
-		&& canMove(currentSurroundings.getTileInDirection(Direction.NORTH))) {
-			nextMove = Direction.NORTH;
+		&& canMove(currentSurroundings.getTileInDirection(AgentDecision.NORTH))) {
+			nextMove = AgentDecision.NORTH;
 		}
 		else if(southScore > westScore
 		&& southScore > eastScore
-		&& canMove(currentSurroundings.getTileInDirection(Direction.SOUTH))) {
-			nextMove = Direction.SOUTH;
+		&& canMove(currentSurroundings.getTileInDirection(AgentDecision.SOUTH))) {
+			nextMove = AgentDecision.SOUTH;
 		}
 		else if(eastScore > westScore
-		&& canMove(currentSurroundings.getTileInDirection(Direction.EAST))){ 
-			nextMove = Direction.EAST;
+		&& canMove(currentSurroundings.getTileInDirection(AgentDecision.EAST))){ 
+			nextMove = AgentDecision.EAST;
 		}
-		else if(canMove(currentSurroundings.getTileInDirection(Direction.WEST))) {
-			nextMove = Direction.WEST;
+		else if(canMove(currentSurroundings.getTileInDirection(AgentDecision.WEST))) {
+			nextMove = AgentDecision.WEST;
 		}
 		else {
-			nextMove = Direction.NONE;
+			nextMove = AgentDecision.NONE;
 		}
 
 		// Force the agent to move if he can't take or drop the box last time
-		if(!cantTakeBoxLastTime) {
-			if(isInStoreZone() && !isCarryingBox()) {
-				nextMove = Direction.NONE;
+//		if(!cantTakeBoxLastTime) {
+			if(isInStoreZone() && !isCarryingBox() && currentSurroundings.getLocalTile().hasBox() ) {
+				System.out.println( currentSurroundings.getLocalTile().hasBox()?"Box":"PasBox");
+				nextMove = AgentDecision.TAKE;
 			}
-			if(isInHomeZone() && isCarryingBox()) {
-				nextMove = Direction.NONE;
+			if(isInHomeZone() && isCarryingBox() && !currentSurroundings.getLocalTile().hasBox() ) {
+				nextMove = AgentDecision.DROP;
 			}
-		}
+//		}
 		cantTakeBoxLastTime = false;
 		if(isCarryingBox()) {
 			nbMoveUseless = 0;
@@ -445,7 +447,7 @@ public class Agent extends Active implements Serializable {
 	 * Used to act on the environnement (move, take box, drop box)
 	 */
 	public void act() {
-		if(nbMoveUseless > 50) {
+		if(nbMoveUseless > Engine.DEFAULT_STORE_HOME_WIDTH * Engine.DEFAULT_STORE_HOME_HEIGHT ) {
 			suicide();
 		}
 		if(isDead) {
@@ -467,16 +469,16 @@ public class Agent extends Active implements Serializable {
 		case EAST :
 			nextX++;
 			break;
+		case TAKE :
+			cantTakeBoxLastTime = !takeBox();
+			return;
+		case DROP :
+			cantTakeBoxLastTime = !dropBox();
+			return;
 		case NONE :
-			if(isInHomeZone() && isCarryingBox()) {
-				cantTakeBoxLastTime = !dropBox();
-			}
-			else if(isInStoreZone()  && !isCarryingBox()) {
-				cantTakeBoxLastTime = !takeBox();
-			}
 			return;
 		}
-		if( nextMove != Direction.NONE ) {
+		if( nextMove != AgentDecision.NONE ) {
 			hasMoved = EngineProxy.getInstance().move(this, nextX, nextY);
 			lastPosition.setX(getX());
 			lastPosition.setY(getY());
