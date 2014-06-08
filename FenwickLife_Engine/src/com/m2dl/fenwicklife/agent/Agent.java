@@ -219,11 +219,14 @@ public class Agent extends Active implements Serializable {
 		
 		// If we can't move on the tile, we make it very uninterested
 		if(!canMove(t)) {
-			return Math.abs(nowInterest)*-1;
+			if(t instanceof Storage || t instanceof Home) {
+				return 0;
+			}
+			return -70;
 		}
 		// Do the same to force the agent to go back only when needed
 		if(lastPosition.getX() == tX && lastPosition.getY() == tY) {
-			return Math.abs(nowInterest)*-3;	
+			return -100;	
 		}
 		// Compute the score of the tile depending of his position and chere the agent want to go
 		if(isCarryingBox()) {
@@ -231,7 +234,7 @@ public class Agent extends Active implements Serializable {
 				// Maybe improve this one
 				if(t instanceof Home) {
 					if(!((Home)t).hasBox()) {
-						return Math.abs(nowInterest)*10;
+						return 105;
 					}
 				}
 				if(tY > homeDown || tY < homeUp || tX < homeX) {
@@ -258,18 +261,17 @@ public class Agent extends Active implements Serializable {
 			}
 		}
 		else {
-			
 			if(isInStoreZone() && (tY > storeDown || tY < storeUp || tX > storeX)) {
 				nowInterest=Math.abs(nowInterest)*-1;
 			}
 			if(t instanceof Storage) {
 				if(((Storage)t).hasBox()) {
-					nowInterest=Math.abs(nowInterest)*10;
+					return 105;
 				}
 			}
 			else {
 				if("Box".equals(t.getTileType())) {
-					nowInterest=Math.abs(nowInterest)*10;
+					return 105;
 				}
 			}
 			if(aX < storeX) {
@@ -295,10 +297,10 @@ public class Agent extends Active implements Serializable {
 		// When not in the vertical range of the store or the home, prefer go horizontally
 		if(aY == tY && nowInterest > 0
 		&& aX < homeX && aX > storeX) {
-			nowInterest = (nowInterest + 1) * 20;
+			nowInterest = (nowInterest + 1) * 3;
 		}
 
-		return nowInterest;
+		return Math.max(-100, Math.min(nowInterest, 100));
 	}
 
 	/**
@@ -326,7 +328,7 @@ public class Agent extends Active implements Serializable {
 							int oldCount = tmpFieldMemory.get(t.getPosition()).intValue();
 							if(!canMove(t)) {
 								if(oldCount > 0) {
-									oldCount = -1;
+									oldCount = -10;
 								}
 								else {
 									oldCount *= 2;
@@ -338,6 +340,7 @@ public class Agent extends Active implements Serializable {
 								}
 							}
 							oldCount = oldCount == 0 ? 1 : oldCount;
+							oldCount = Math.max(Math.min(oldCount, 100), -100);
 							tmpFieldMemory.put(t.getPosition(), oldCount);
 						}
 					}
@@ -367,20 +370,35 @@ public class Agent extends Active implements Serializable {
 	
 					int aX = getX();
 					int aY = getY();
-					
-					if(aX == tX) {
-						if(tY > aY) {
+					if(!isInHomeZone() && !isInStoreZone()) {
+						if(aX == tX) {
+							if(tY > aY) {
+								southScore += getTileScore(t);
+							}
+							if(tY < aY) {
+								northScore += getTileScore(t);
+							}	
+						}
+						if(aY == tY) {
+							if(tX > aX) {
+								eastScore += getTileScore(t);
+							}
+							if(tX < aX) {
+								westScore += getTileScore(t);
+							}	
+						}
+					}
+					else {
+						if(tY > aY && Math.abs(tY - aY) <= 1 && Math.abs(tX - aX) <= Math.abs(tY - aY) ) {
 							southScore += getTileScore(t);
 						}
-						if(tY < aY) {
+						if(tY < aY && Math.abs(tY - aY) <= 1 && Math.abs(tX - aX) <= Math.abs(tY - aY)) {
 							northScore += getTileScore(t);
-						}	
-					}
-					if(aY == tY) {
-						if(tX > aX) {
+						}
+						if(tX > aX && Math.abs(tX - aX) <= 1 && Math.abs(tY - aY) <= Math.abs(tX - aX)) {
 							eastScore += getTileScore(t);
 						}
-						if(tX < aX) {
+						if(tX < aX && Math.abs(tX - aX) <= 1 && Math.abs(tY - aY) <= Math.abs(tX - aX)) {
 							westScore += getTileScore(t);
 						}	
 					}
