@@ -73,4 +73,6 @@ public interface IEngineProxy {
 	public Position getHomeAreaTopCorner();
 
 	public Position getHomeAreaBottomCorner();
+	
+	public boolean isInPauseMode();
 }

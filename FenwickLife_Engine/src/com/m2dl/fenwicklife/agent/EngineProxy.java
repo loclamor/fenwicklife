@@ -97,4 +97,9 @@ public class EngineProxy implements IEngineProxy {
 		Object[] paramsIntern = { true };
 		return (Position)consumer.consumeService( "getHomeAreaBottomCorner", paramsIntern );
 	}
+
+	@Override
+	public boolean isInPauseMode() {
+		return (boolean) consumer.consumeService( "isInPauseMode" );
+	}
 }

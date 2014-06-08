@@ -7,6 +7,8 @@ import com.m2dl.fenwicklife.engine.service.AgentAction;
 import com.m2dl.fenwicklife.engine.service.GlobalStatus;
 import com.m2dl.fenwicklife.engine.service.IAgentAction;
 import com.m2dl.fenwicklife.engine.service.IGlobalStatus;
+import com.m2dl.fenwicklife.engine.service.IUIAction;
+import com.m2dl.fenwicklife.engine.service.UIAction;
 import com.m2dl.fenwicklife.xmlrpc.ClassInterfaceRelation;
 import com.m2dl.fenwicklife.xmlrpc.ClassInterfaceRelationException;
 import com.m2dl.fenwicklife.xmlrpc.provider.IProvider;
@@ -26,6 +28,8 @@ public class EngineMain {
 		List<Object> classesServices = new ArrayList<Object>();
 		classesServices.add(new ClassInterfaceRelation(GlobalStatus.class, IGlobalStatus.class));
 		classesServices.add(new ClassInterfaceRelation(AgentAction.class, IAgentAction.class));
+		classesServices.add(new ClassInterfaceRelation(UIAction.class, IUIAction.class));
+		
 		provider = new ProviderImpl();
 		provider.initProvider(port, classesServices);
 	}

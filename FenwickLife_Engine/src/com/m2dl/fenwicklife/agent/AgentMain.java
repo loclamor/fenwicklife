@@ -6,12 +6,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class AgentMain {
-	
+
 	// Engine server adress
 	private static String serverAddress = "127.0.0.1";
 	// engine server port
 	private static Integer serverPort = 8081;
-	// Timer to refresh informations 
+	// Timer to refresh informations
 	private static Timer timer;
 	// Agent
 	private static List<Agent> agentList;
@@ -19,21 +19,29 @@ public class AgentMain {
 	private static int agentExecSpeed = 50;
 	// Number of agents to create
 	private static int numberOfAgents = 10;
-	
+
 	private static boolean displayLogs = true;
-		
+
 	public static void main(String[] args) {
-		
+
 		if (args.length == 0) {
-			System.out.println("Options are : [ serverAddress [, serverPort [, agentExecSpeed [, numberOfAgents [, displayLogs ]]]]]");
-			System.out.println("\tserverAddress :\t String, optional, default " + serverAddress);
-			System.out.println("\tserverPort :\t int, optional, default " + serverPort);
-			System.out.println("\tagentExecSpeed : int (ms), optional, default " + agentExecSpeed);
-			System.out.println("\tnumberOfAgents : int, optional, default " + numberOfAgents);
-			System.out.println("\tdisplayLogs :\t int [0=false,1=true], optional, default " + (displayLogs?"1":"0"));
+			System.out
+					.println("Options are : [ serverAddress [, serverPort [, agentExecSpeed [, numberOfAgents [, displayLogs ]]]]]");
+			System.out.println("\tserverAddress :\t String, optional, default "
+					+ serverAddress);
+			System.out.println("\tserverPort :\t int, optional, default "
+					+ serverPort);
+			System.out
+					.println("\tagentExecSpeed : int (ms), optional, default "
+							+ agentExecSpeed);
+			System.out.println("\tnumberOfAgents : int, optional, default "
+					+ numberOfAgents);
+			System.out
+					.println("\tdisplayLogs :\t int [0=false,1=true], optional, default "
+							+ (displayLogs ? "1" : "0"));
 		}
-		
-		// Get params for 
+
+		// Get params for
 		if (args.length >= 1) {
 			serverAddress = args[0];
 		}
@@ -45,59 +53,60 @@ public class AgentMain {
 		}
 		if (args.length >= 4) {
 			numberOfAgents = new Integer(args[3]).intValue();
-			if( numberOfAgents < 1 ) { numberOfAgents = 1; }
+			if (numberOfAgents < 1) {
+				numberOfAgents = 1;
+			}
 		}
 		if (args.length >= 5) {
 			displayLogs = (new Integer(args[3]).intValue()) == 1;
 		}
-		
-		
-		
+
 		agentList = new ArrayList<Agent>();
-		
+
 		// Initialize the EngineProxy with server address and port
 		EngineProxy.getInstance(serverAddress, serverPort);
-		
+
 		// Initialize the agent
-		for(int i=0; i<numberOfAgents; i++) {
+		for (int i = 0; i < numberOfAgents; i++) {
 			Agent agent = new Agent(i, 0, uniqid());
-			//Add the agent to the list if Engine has take him
-			if( EngineProxy.getInstance().hello(agent) ) {
-				agentList.add( agent );
+			// Add the agent to the list if Engine has take him
+			if (EngineProxy.getInstance().hello(agent)) {
+				agentList.add(agent);
 			}
-			
+
 		}
-		
+
 		// Launch the timer to get current state from engine server
-	    agentsAction();   
-	    TimerTask task = new TimerTask()
-		{
+		agentsAction();
+		TimerTask task = new TimerTask() {
 			@Override
-			public void run() 
-			{
+			public void run() {
 				// Refresh the UI
-				agentsAction();
-			}	
+				if (!EngineProxy.getInstance().isInPauseMode()) {
+					agentsAction();
+				}
+			}
 		};
 		timer = new Timer();
-		timer.schedule(task, 0, agentExecSpeed);//AtFixedRate
+		timer.schedule(task, 0, agentExecSpeed);// AtFixedRate
 	}
 
 	private static void agentsAction() {
-		//Make the awesome for all agents !
-		for ( Agent agent : agentList ) {
+		// Make the awesome for all agents !
+		for (Agent agent : agentList) {
 			agent.perceive();
 			agent.decide();
 			agent.act();
-			System.out.println( agent.toString() );
-			if(agent.isDead() && timer != null) {
+			System.out.println(agent.toString());
+			if (agent.isDead() && timer != null) {
 				timer.cancel();
 				timer = null;
 			}
 		}
 	}
-	
+
 	private static String uniqid() {
-		return String.valueOf( 1000000 + (int)(Math.random() * ((9999999 - 1000000) + 1)) );
+		return String
+				.valueOf(1000000 + (int) (Math.random() * ((9999999 - 1000000) + 1)));
 	}
 }

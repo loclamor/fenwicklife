@@ -62,4 +62,9 @@ public class AgentAction implements IAgentAction{
 		return Engine.getInstance().suicide(me);		
 	}
 
+	@Override
+	public boolean isInPauseMode() {
+		return Engine.getInstance().isInPauseMode();
+	}
+
 }

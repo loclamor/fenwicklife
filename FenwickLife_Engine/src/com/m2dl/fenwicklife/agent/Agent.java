@@ -13,7 +13,6 @@ import com.m2dl.fenwicklife.engine.Engine;
 import com.m2dl.fenwicklife.engine.Home;
 import com.m2dl.fenwicklife.engine.Storage;
 import com.m2dl.fenwicklife.engine.Tile;
-import com.m2dl.fenwicklife.engine.service.AgentAction;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public class Agent extends Active implements Serializable {
@@ -79,7 +78,7 @@ public class Agent extends Active implements Serializable {
 		eastScore = 0;
 		nbMoveUseless = 0;
 		isDead = false;
-		lastVerticalMove = nextMove.NONE;
+		lastVerticalMove = AgentDecision.NONE;
 	}
 
 	/**
@@ -571,6 +570,8 @@ public class Agent extends Active implements Serializable {
 			return;
 		case NONE :
 			return;
+		default:
+			break;
 		}
 		if( nextMove != AgentDecision.NONE ) {
 			hasMoved = EngineProxy.getInstance().move(this, nextX, nextY);

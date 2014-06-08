@@ -28,4 +28,6 @@ public interface IAgentAction {
 	public Position getHomeAreaTopCorner( boolean please );
 
 	public Position getHomeAreaBottomCorner( boolean please );
+	
+	public boolean isInPauseMode();
 }

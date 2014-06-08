@@ -1,10 +1,13 @@
 package com.m2dl.fenwicklife.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import com.m2dl.fenwicklife.engine.service.IGlobalStatus;
 import com.m2dl.fenwicklife.ui.drawables.BasicDrawable;
@@ -20,7 +23,7 @@ import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
  */
 public class UIMain {
 	// Displayed panel
-	private static ScenePanel panel;
+	private static ScenePanel displayPanel;
 	// Timer to refresh informations 
 	private static Timer timer;
 	// Engine server adress
@@ -29,6 +32,13 @@ public class UIMain {
 	private static Integer serverPort = 8081;
 	// consumer to do xml-rpc request
 	private static IConsumer consumer;
+	
+	private static final int DEFAULT_WIDTH = 900;
+	private static final int DEFAULT_CONTROL_WIDTH = 300;
+	private static final int DEFAULT_HEIGHT = 400;
+	
+	private static JPanel globalPanel = new JPanel();
+	private static JPanel controlPanel = new ControlPanel();
 	
 	public static void main(String[] args) {
 		// Get params for 
@@ -46,12 +56,18 @@ public class UIMain {
 		// Initialize the windows
 		JFrame window = new JFrame();
 	    window.setVisible(true);
-	    window.setSize(600, 400);
+	    window.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	    window.setTitle("Fenwick Life UI");
 	    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    // Init the panel to display drawables
-	    panel = new ScenePanel(1, 1);
-	    window.add(panel);
+	    displayPanel = new ScenePanel(1, 1);
+	    window.add(globalPanel);
+//	    window.add(displayPanel);
+	    displayPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH - DEFAULT_CONTROL_WIDTH, DEFAULT_HEIGHT));
+	    controlPanel.setPreferredSize(new Dimension(DEFAULT_CONTROL_WIDTH, DEFAULT_HEIGHT));
+	    globalPanel.setLayout(new GridLayout());
+	    globalPanel.add(displayPanel);
+	    globalPanel.add(controlPanel);
 	    
 	    // Launch the timer to get current state from engine server
 	    refreshdisplay();   
@@ -77,7 +93,7 @@ public class UIMain {
 
 		String engineData = (String) consumer.consumeService( "getSize", paramsIntern );
 		String[] sizeArray = engineData.split(":");
-		panel.setVirtualSize(Integer.parseInt(sizeArray[0]), Integer.parseInt(sizeArray[1]));
+		displayPanel.setVirtualSize(Integer.parseInt(sizeArray[0]), Integer.parseInt(sizeArray[1]));
 		// Retrieve all object position and display them 
 		engineData = (String) consumer.consumeService( "getAllPositions", paramsIntern );
 	    if(engineData == null) {
@@ -87,7 +103,7 @@ public class UIMain {
 	    if(engineDataLines == null) {
 	    	return;
 	    }
-	    panel.reset();
+	    displayPanel.reset();
 	    for(String line : engineDataLines) {
 	    	if(line.matches("[0-9]*:[0-9]*:[a-zA-Z]*:[0-9]:[0-9]")) {
 	    		String[] lineInformations = line.split(":");
@@ -99,24 +115,24 @@ public class UIMain {
 		    			
 		    	switch(type) {
 		    	case "Wall" :
-		    		panel.addGraphics(new WallDrawable(x, y));
+		    		displayPanel.addGraphics(new WallDrawable(x, y));
 		    		break;
 		    	case "Home" :
-		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.decode("0x40FF87")));
+		    		displayPanel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.decode("0x40FF87")));
 		    		break;
 		    	case "Storage" :
-		    		panel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.decode("0xCC6D14")));
+		    		displayPanel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.decode("0xCC6D14")));
 		    		break;
 		    	}
 		    	if( hasAgent ) {
-		    		panel.addGraphics(new FenwickDrawable(x, y, !hasBox));
+		    		displayPanel.addGraphics(new FenwickDrawable(x, y, !hasBox));
 		    	}
 		    	else if( hasBox ) {
-		    		panel.addGraphics(new BoxDrawable(x, y));
+		    		displayPanel.addGraphics(new BoxDrawable(x, y));
 		    	}
 	    	}
 	    }
-	    panel.repaint();
+	    displayPanel.repaint();
 	}
 
 }
