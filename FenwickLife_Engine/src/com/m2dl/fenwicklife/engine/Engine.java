@@ -14,9 +14,14 @@ public class Engine implements IAgentAction {
 	public static final int DEFAULT_SECOND_CORRIDOR_Y = 36;
 	public static final int DEFAULT_STORE_HOME_WIDTH = 10;
 	public static final int DEFAULT_STORE_HOME_HEIGHT = 20;
+	public static final int SPEED_STEP = 25; // time between each action in ms
+	public static final int MAX_SPEED = 50; // time between each action in ms
+	public static final int MIN_SPEED = 3000; // time between each action in ms
+	public static final int DEFAULT_SPEED = 100;
 
 	private Field field;
 	private boolean isInPauseMode = false;
+	private int speed = 100; // time between each action in ms
 
 	private static Engine instance = new Engine();
 
@@ -135,9 +140,24 @@ public class Engine implements IAgentAction {
 	}
 
 	public boolean setPauseMode(boolean pause) {
-		System.out.println("SetPauseMode(" + pause);
 		this.isInPauseMode = pause;
 		return this.isInPauseMode;
 	}
 
+	public void increaseSpeed() {
+		if (this.speed > MAX_SPEED) {
+			this.speed -= SPEED_STEP;
+		}
+	}
+
+	public void decreaseSpeed() {
+		if (this.speed < MIN_SPEED) {
+			this.speed += SPEED_STEP;
+		}
+	}
+
+	@Override
+	public int getSpeed() {
+		return this.speed;
+	}
 }

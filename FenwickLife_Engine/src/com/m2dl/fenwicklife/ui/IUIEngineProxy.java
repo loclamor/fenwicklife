@@ -4,5 +4,9 @@ public interface IUIEngineProxy {
 	
 
 	boolean pause();
+	
+	boolean speedUp();
+	
+	boolean speedDown();
 
 }

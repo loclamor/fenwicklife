@@ -30,4 +30,6 @@ public interface IAgentAction {
 	public Position getHomeAreaBottomCorner( boolean please );
 	
 	public boolean isInPauseMode();
+	
+	public int getSpeed();
 }

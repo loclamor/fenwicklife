@@ -9,4 +9,16 @@ public class UIAction implements IUIAction {
 		return Engine.getInstance().setPauseMode(!Engine.getInstance().isInPauseMode());
 	}
 
+	@Override
+	public boolean speedUp() {
+		Engine.getInstance().increaseSpeed();
+		return true;
+	}
+
+	@Override
+	public boolean speedDown() {
+		Engine.getInstance().decreaseSpeed();
+		return true;
+	}
+
 }

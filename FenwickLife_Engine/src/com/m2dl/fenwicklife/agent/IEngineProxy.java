@@ -75,4 +75,6 @@ public interface IEngineProxy {
 	public Position getHomeAreaBottomCorner();
 	
 	public boolean isInPauseMode();
+	
+	public int getSpeed();
 }

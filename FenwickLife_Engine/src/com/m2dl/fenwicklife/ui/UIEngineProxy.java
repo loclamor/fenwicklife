@@ -34,4 +34,16 @@ public class UIEngineProxy implements IUIEngineProxy {
 		return true;
 	}
 
+	@Override
+	public boolean speedUp() {
+		consumer.consumeService( "speedUp" );
+		return true;
+	}
+
+	@Override
+	public boolean speedDown() {
+		consumer.consumeService( "speedDown" );
+		return true;
+	}
+
 }

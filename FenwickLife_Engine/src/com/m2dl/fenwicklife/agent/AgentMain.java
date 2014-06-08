@@ -22,6 +22,8 @@ public class AgentMain {
 
 	private static boolean displayLogs = true;
 
+	private static TimerTask task = null;
+
 	public static void main(String[] args) {
 
 		if (args.length == 0) {
@@ -78,15 +80,7 @@ public class AgentMain {
 
 		// Launch the timer to get current state from engine server
 		agentsAction();
-		TimerTask task = new TimerTask() {
-			@Override
-			public void run() {
-				// Refresh the UI
-				if (!EngineProxy.getInstance().isInPauseMode()) {
-					agentsAction();
-				}
-			}
-		};
+		task = new CustomTimerTask();
 		timer = new Timer();
 		timer.schedule(task, 0, agentExecSpeed);// AtFixedRate
 	}
@@ -108,5 +102,24 @@ public class AgentMain {
 	private static String uniqid() {
 		return String
 				.valueOf(1000000 + (int) (Math.random() * ((9999999 - 1000000) + 1)));
+	}
+
+	private static class CustomTimerTask extends TimerTask {
+
+		@Override
+		public void run() {
+			if (!EngineProxy.getInstance().isInPauseMode()) {
+				AgentMain.agentsAction();
+
+				int engineSpeed = EngineProxy.getInstance().getSpeed();
+				if (engineSpeed != AgentMain.agentExecSpeed) {
+					AgentMain.agentExecSpeed = engineSpeed;
+					// reschedule
+					AgentMain.timer.schedule(new CustomTimerTask(), 0,
+							AgentMain.agentExecSpeed);
+					this.cancel();
+				}
+			}
+		}
 	}
 }
