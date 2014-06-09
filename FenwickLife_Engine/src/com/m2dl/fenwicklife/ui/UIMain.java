@@ -125,7 +125,7 @@ public class UIMain {
 		    		displayPanel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.decode("0x40FF87")));
 		    		break;
 		    	case "Storage" :
-		    		displayPanel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.decode("0xCC6D14")));
+		    		displayPanel.addGraphics(new Drawable(x, y, BasicDrawable.RECTANGLE, Color.decode("0x996739")));
 		    		break;
 		    	}
 		    	if( hasAgent ) {

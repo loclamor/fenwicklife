@@ -102,9 +102,9 @@ public class Drawable {
 					g.drawRoundRect(x, y, width, height, width/3, height/3);
 					break;
 				case OVAL : 
-					g.fillOval(x, y, width, height);
+					g.fillOval(x+width/6, y+height/6, width-width/3, height-height/3);
 					g.setColor(Color.black);
-					g.drawOval(x, y, width, height);
+					g.drawOval(x+width/6, y+height/6, width-width/3, height-height/3);
 					break;
 				case TRIANGLE :
 					Polygon polygon = new Polygon();
