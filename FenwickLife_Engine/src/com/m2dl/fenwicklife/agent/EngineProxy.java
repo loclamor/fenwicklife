@@ -3,6 +3,7 @@ package com.m2dl.fenwicklife.agent;
 import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.xmlrpc.consumer.ConsumerImpl;
 import com.m2dl.fenwicklife.xmlrpc.consumer.IConsumer;
+import com.m2dl.fenwicklife.xmlrpc.messages.EngineState;
 import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 import com.m2dl.fenwicklife.engine.service.IAgentAction;
@@ -97,14 +98,18 @@ public class EngineProxy implements IEngineProxy {
 		Object[] paramsIntern = { true };
 		return (Position)consumer.consumeService( "getHomeAreaBottomCorner", paramsIntern );
 	}
-
-	@Override
-	public boolean isInPauseMode() {
-		return (boolean) consumer.consumeService( "isInPauseMode" );
+	
+	public EngineState getEngineState() {
+		return (EngineState)consumer.consumeService( "getEngineState" );
 	}
 
-	@Override
-	public int getSpeed() {
-		return (int) consumer.consumeService( "getSpeed" );
-	}
+//	@Override
+//	public boolean isInPauseMode() {
+//		return (boolean) consumer.consumeService( "isInPauseMode" );
+//	}
+//
+//	@Override
+//	public int getSpeed() {
+//		return (int) consumer.consumeService( "getSpeed" );
+//	}
 }

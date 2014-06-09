@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.m2dl.fenwicklife.xmlrpc.messages.EngineState;
+
 public class AgentMain {
 
 	// Engine server adress
@@ -21,6 +23,8 @@ public class AgentMain {
 	private static int numberOfAgents = 10;
 
 	private static boolean displayLogs = true;
+	
+	private static EngineState eState;
 
 	private static TimerTask task = null;
 
@@ -62,7 +66,9 @@ public class AgentMain {
 		// Initialize the EngineProxy with server address and port
 		EngineProxy.getInstance(serverAddress, serverPort);
 		
-		agentExecSpeed = EngineProxy.getInstance().getSpeed();
+		eState = EngineProxy.getInstance().getEngineState();
+		
+		agentExecSpeed = eState.getSpeed();
 
 		// Initialize the agent
 		for (int i = 0; i < numberOfAgents; i++) {
@@ -79,7 +85,7 @@ public class AgentMain {
 		}
 
 		// Launch the timer to get current state from engine server
-		if (!EngineProxy.getInstance().isInPauseMode()) {
+		if (!eState.isInPauseMode()) {
 			agentsAction();
 		}
 		task = new CustomTimerTask();
@@ -112,12 +118,12 @@ public class AgentMain {
 
 		@Override
 		public void run() {
-			if (!EngineProxy.getInstance().isInPauseMode()) {
+			eState = EngineProxy.getInstance().getEngineState();
+			if (!eState.isInPauseMode()) {
 				AgentMain.agentsAction();
 
-				int engineSpeed = EngineProxy.getInstance().getSpeed();
-				if (engineSpeed != AgentMain.agentExecSpeed) {
-					AgentMain.agentExecSpeed = engineSpeed;
+				if (eState.getSpeed() != AgentMain.agentExecSpeed) {
+					AgentMain.agentExecSpeed = eState.getSpeed();
 					// reschedule
 					AgentMain.timer.schedule(new CustomTimerTask(), 0,
 							AgentMain.agentExecSpeed);

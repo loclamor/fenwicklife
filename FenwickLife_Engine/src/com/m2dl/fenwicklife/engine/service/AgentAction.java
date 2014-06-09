@@ -2,6 +2,7 @@ package com.m2dl.fenwicklife.engine.service;
 
 import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.engine.Engine;
+import com.m2dl.fenwicklife.xmlrpc.messages.EngineState;
 import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
@@ -61,15 +62,20 @@ public class AgentAction implements IAgentAction{
 	public boolean suicide(SimpleAgent me) {
 		return Engine.getInstance().suicide(me);		
 	}
-
+	
 	@Override
-	public boolean isInPauseMode() {
-		return Engine.getInstance().isInPauseMode();
+	public EngineState getEngineState() {
+		return Engine.getInstance().getEngineState();
 	}
 
-	@Override
-	public int getSpeed() {
-		return Engine.getInstance().getSpeed();
-	}
+//	@Override
+//	public boolean isInPauseMode() {
+//		return Engine.getInstance().isInPauseMode();
+//	}
+//
+//	@Override
+//	public int getSpeed() {
+//		return Engine.getInstance().getSpeed();
+//	}
 
 }

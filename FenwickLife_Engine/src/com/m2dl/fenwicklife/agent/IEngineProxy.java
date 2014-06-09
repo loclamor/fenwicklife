@@ -1,6 +1,7 @@
 package com.m2dl.fenwicklife.agent;
 
 import com.m2dl.fenwicklife.Position;
+import com.m2dl.fenwicklife.xmlrpc.messages.EngineState;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
 public interface IEngineProxy {
@@ -74,7 +75,9 @@ public interface IEngineProxy {
 
 	public Position getHomeAreaBottomCorner();
 	
-	public boolean isInPauseMode();
+	public EngineState getEngineState();
 	
-	public int getSpeed();
+//	public boolean isInPauseMode();
+//	
+//	public int getSpeed();
 }

@@ -1,6 +1,7 @@
 package com.m2dl.fenwicklife.engine.service;
 
 import com.m2dl.fenwicklife.Position;
+import com.m2dl.fenwicklife.xmlrpc.messages.EngineState;
 import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
@@ -29,7 +30,9 @@ public interface IAgentAction {
 
 	public Position getHomeAreaBottomCorner( boolean please );
 	
-	public boolean isInPauseMode();
+	public EngineState getEngineState();
 	
-	public int getSpeed();
+//	public boolean isInPauseMode();
+//	
+//	public int getSpeed();
 }

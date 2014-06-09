@@ -2,6 +2,7 @@ package com.m2dl.fenwicklife.engine;
 
 import com.m2dl.fenwicklife.Position;
 import com.m2dl.fenwicklife.engine.service.IAgentAction;
+import com.m2dl.fenwicklife.xmlrpc.messages.EngineState;
 import com.m2dl.fenwicklife.xmlrpc.messages.SimpleAgent;
 import com.m2dl.fenwicklife.xmlrpc.messages.Surroundings;
 
@@ -22,6 +23,9 @@ public class Engine implements IAgentAction {
 	private Field field;
 	private boolean isInPauseMode = false;
 	private int speed = 100; // time between each action in ms
+	
+	private boolean isInStepMode = false;
+	private int currentStep = 0;
 
 	private static Engine instance = new Engine();
 
@@ -143,7 +147,6 @@ public class Engine implements IAgentAction {
 		return DEFAULT_SIZE_Y;
 	}
 
-	@Override
 	public boolean isInPauseMode() {
 		return isInPauseMode;
 	}
@@ -165,8 +168,20 @@ public class Engine implements IAgentAction {
 		}
 	}
 
-	@Override
 	public int getSpeed() {
 		return this.speed;
+	}
+
+	public boolean isInStepMode() {
+		return this.isInStepMode;
+	}
+
+	public int getCurrentStep() {
+		return this.currentStep;
+	}
+	
+	@Override
+	public EngineState getEngineState() {
+		return new EngineState( this );
 	}
 }
