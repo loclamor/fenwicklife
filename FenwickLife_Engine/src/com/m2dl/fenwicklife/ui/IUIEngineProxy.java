@@ -9,4 +9,6 @@ public interface IUIEngineProxy {
 	
 	boolean speedDown();
 
+	boolean nextStep();
+
 }

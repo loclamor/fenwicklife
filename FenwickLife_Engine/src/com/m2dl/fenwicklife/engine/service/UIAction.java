@@ -20,5 +20,10 @@ public class UIAction implements IUIAction {
 		Engine.getInstance().decreaseSpeed();
 		return true;
 	}
+	
+	public boolean nextStep() {
+		Engine.getInstance().nextStep();
+		return true;
+	}
 
 }

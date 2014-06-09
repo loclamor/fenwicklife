@@ -184,4 +184,8 @@ public class Engine implements IAgentAction {
 	public EngineState getEngineState() {
 		return new EngineState( this );
 	}
+	
+	public void nextStep() {
+		this.currentStep++;
+	}
 }

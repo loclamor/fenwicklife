@@ -8,4 +8,6 @@ public interface IUIAction {
 	
 	public boolean speedDown();
 
+	public boolean nextStep();
+	
 }

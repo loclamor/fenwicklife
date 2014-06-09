@@ -103,13 +103,4 @@ public class EngineProxy implements IEngineProxy {
 		return (EngineState)consumer.consumeService( "getEngineState" );
 	}
 
-//	@Override
-//	public boolean isInPauseMode() {
-//		return (boolean) consumer.consumeService( "isInPauseMode" );
-//	}
-//
-//	@Override
-//	public int getSpeed() {
-//		return (int) consumer.consumeService( "getSpeed" );
-//	}
 }

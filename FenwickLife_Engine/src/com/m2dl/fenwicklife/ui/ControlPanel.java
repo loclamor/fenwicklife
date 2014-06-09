@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 public class ControlPanel extends JPanel {
 
 	private static final String PAUSE_TEXT = "Pause";
+	private static final String PLAY_TEXT = "Play";
+	private static String currText = PAUSE_TEXT;
 	private static final String NEXT_TEXT = "Next";
 	private static final String SPEED_UP_TEXT = "Increase Speed";
 	private static final String SPEED_DOWN_TEXT = "Decrease Speed";
@@ -26,7 +28,15 @@ public class ControlPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				UIEngineProxy.getInstance().pause();
+				
+				if( UIEngineProxy.getInstance().pause() ) { //get true if inPause
+					stopButton.setText( PLAY_TEXT );
+					nextButton.setEnabled( true );
+				}
+				else {
+					stopButton.setText( PAUSE_TEXT );
+					nextButton.setEnabled( false );
+				}
 			}
 		});
 		
@@ -38,7 +48,7 @@ public class ControlPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
+				UIEngineProxy.getInstance().nextStep();
 			}
 		});
 		

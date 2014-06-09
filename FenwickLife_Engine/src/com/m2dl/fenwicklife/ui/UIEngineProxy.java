@@ -30,8 +30,7 @@ public class UIEngineProxy implements IUIEngineProxy {
 	
 	@Override
 	public boolean pause() {
-		consumer.consumeService( "pause" );
-		return true;
+		return (boolean)consumer.consumeService( "pause" );
 	}
 
 	@Override
@@ -43,6 +42,12 @@ public class UIEngineProxy implements IUIEngineProxy {
 	@Override
 	public boolean speedDown() {
 		consumer.consumeService( "speedDown" );
+		return true;
+	}
+	
+	@Override
+	public boolean nextStep() {
+		consumer.consumeService( "nextStep" );
 		return true;
 	}
 

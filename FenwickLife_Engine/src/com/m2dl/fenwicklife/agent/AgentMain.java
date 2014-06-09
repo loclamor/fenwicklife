@@ -25,6 +25,8 @@ public class AgentMain {
 	private static boolean displayLogs = true;
 	
 	private static EngineState eState;
+	
+	private static int currentStep = 0;
 
 	private static TimerTask task = null;
 
@@ -86,7 +88,11 @@ public class AgentMain {
 
 		// Launch the timer to get current state from engine server
 		if (!eState.isInPauseMode()) {
+			currentStep = eState.getCurrentStep();
 			agentsAction();
+		}
+		else {
+			currentStep = eState.getCurrentStep() -1;
 		}
 		task = new CustomTimerTask();
 		timer = new Timer();
@@ -119,9 +125,16 @@ public class AgentMain {
 		@Override
 		public void run() {
 			eState = EngineProxy.getInstance().getEngineState();
-			if (!eState.isInPauseMode()) {
+			if (!eState.isInPauseMode() || (eState.isInPauseMode() && eState.getCurrentStep() > currentStep) ) {
 				AgentMain.agentsAction();
-
+				
+				if(eState.isInPauseMode() && eState.getCurrentStep() > currentStep) {
+					currentStep++;
+				}
+				else {
+					currentStep = eState.getCurrentStep();
+				}
+				
 				if (eState.getSpeed() != AgentMain.agentExecSpeed) {
 					AgentMain.agentExecSpeed = eState.getSpeed();
 					// reschedule

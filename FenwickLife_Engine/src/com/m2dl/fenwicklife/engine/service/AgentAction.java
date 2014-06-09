@@ -68,14 +68,4 @@ public class AgentAction implements IAgentAction{
 		return Engine.getInstance().getEngineState();
 	}
 
-//	@Override
-//	public boolean isInPauseMode() {
-//		return Engine.getInstance().isInPauseMode();
-//	}
-//
-//	@Override
-//	public int getSpeed() {
-//		return Engine.getInstance().getSpeed();
-//	}
-
 }

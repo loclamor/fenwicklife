@@ -35,20 +35,27 @@ public class UIMain {
 	private static IConsumer consumer;
 	
 	private static final int DEFAULT_WIDTH = 900;
-	private static final int DEFAULT_CONTROL_WIDTH = 300;
 	private static final int DEFAULT_HEIGHT = 400;
-	private static final int DEFAULT_CONTROL_HEIGHT = 50;
 	
 	private static JPanel globalPanel = new JPanel();
 	private static JPanel controlPanel = new ControlPanel();
 	
 	public static void main(String[] args) {
+		
+		if (args.length == 0) {
+			System.out
+					.println("Options are : [ serverAdress [, execSpedd ]]");
+			System.out.println("\tserverAdress :\t String, optional, default "
+					+ serverAdress);
+			System.out.println("\tserverPort :\t int, optional, default "
+					+ serverPort);
+		}
+		
 		// Get params for 
-		if (args.length == 1) {
+		if (args.length >= 1) {
 			serverAdress = args[0];
 		}
 		if (args.length >= 2) {
-			serverAdress = args[0];
 			serverPort = new Integer(args[1]).intValue();
 		}
 
@@ -63,8 +70,6 @@ public class UIMain {
 	    // Init the panel to display drawables
 	    displayPanel = new ScenePanel(1, 1);
 
-//	    displayPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_CONTROL_HEIGHT));
-//	    controlPanel.setPreferredSize(new Dimension(DEFAULT_CONTROL_WIDTH, DEFAULT_CONTROL_HEIGHT));
 	    globalPanel.setPreferredSize(new Dimension());
 	    globalPanel.setLayout(new BorderLayout());
 	    globalPanel.add(displayPanel, BorderLayout.CENTER);

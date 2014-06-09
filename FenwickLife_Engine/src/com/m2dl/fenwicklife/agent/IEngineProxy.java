@@ -77,7 +77,4 @@ public interface IEngineProxy {
 	
 	public EngineState getEngineState();
 	
-//	public boolean isInPauseMode();
-//	
-//	public int getSpeed();
 }

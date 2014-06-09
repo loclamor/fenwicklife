@@ -32,7 +32,4 @@ public interface IAgentAction {
 	
 	public EngineState getEngineState();
 	
-//	public boolean isInPauseMode();
-//	
-//	public int getSpeed();
 }
