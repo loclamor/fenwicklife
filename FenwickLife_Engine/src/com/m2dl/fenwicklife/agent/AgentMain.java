@@ -74,6 +74,10 @@ public class AgentMain {
 			// Add the agent to the list if Engine has take him
 			if (EngineProxy.getInstance().hello(agent)) {
 				agentList.add(agent);
+				System.out.println("Agent " + agent.getId() + " launch in " + agent.getX() + "-"+agent.getY());
+			}
+			else {
+				System.err.println("Engine has refused Agent's " + agent.getId() + " born on " + agent.getX() + "-"+agent.getY());
 			}
 
 		}
@@ -91,7 +95,9 @@ public class AgentMain {
 			agent.perceive();
 			agent.decide();
 			agent.act();
-			System.out.println(agent.toString());
+			if(displayLogs) {
+				System.out.println(agent.toString());
+			}
 			if (agent.isDead() && timer != null) {
 				timer.cancel();
 				timer = null;
