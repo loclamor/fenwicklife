@@ -28,14 +28,11 @@ public class AgentMain {
 
 		if (args.length == 0) {
 			System.out
-					.println("Options are : [ serverAddress [, serverPort [, agentExecSpeed [, numberOfAgents [, displayLogs ]]]]]");
+					.println("Options are : [ serverAddress [, serverPort [, numberOfAgents [, displayLogs ]]]]");
 			System.out.println("\tserverAddress :\t String, optional, default "
 					+ serverAddress);
 			System.out.println("\tserverPort :\t int, optional, default "
 					+ serverPort);
-			System.out
-					.println("\tagentExecSpeed : int (ms), optional, default "
-							+ agentExecSpeed);
 			System.out.println("\tnumberOfAgents : int, optional, default "
 					+ numberOfAgents);
 			System.out
@@ -51,15 +48,12 @@ public class AgentMain {
 			serverPort = new Integer(args[1]).intValue();
 		}
 		if (args.length >= 3) {
-			agentExecSpeed = new Integer(args[2]).intValue();
-		}
-		if (args.length >= 4) {
-			numberOfAgents = new Integer(args[3]).intValue();
+			numberOfAgents = new Integer(args[2]).intValue();
 			if (numberOfAgents < 1) {
 				numberOfAgents = 1;
 			}
 		}
-		if (args.length >= 5) {
+		if (args.length >= 4) {
 			displayLogs = (new Integer(args[3]).intValue()) == 1;
 		}
 
@@ -67,6 +61,8 @@ public class AgentMain {
 
 		// Initialize the EngineProxy with server address and port
 		EngineProxy.getInstance(serverAddress, serverPort);
+		
+		agentExecSpeed = EngineProxy.getInstance().getSpeed();
 
 		// Initialize the agent
 		for (int i = 0; i < numberOfAgents; i++) {
@@ -83,7 +79,9 @@ public class AgentMain {
 		}
 
 		// Launch the timer to get current state from engine server
-		agentsAction();
+		if (!EngineProxy.getInstance().isInPauseMode()) {
+			agentsAction();
+		}
 		task = new CustomTimerTask();
 		timer = new Timer();
 		timer.schedule(task, 0, agentExecSpeed);// AtFixedRate
