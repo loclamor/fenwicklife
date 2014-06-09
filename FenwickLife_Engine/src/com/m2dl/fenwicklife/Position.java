@@ -57,6 +57,13 @@ public class Position implements Serializable {
 		this.y = y;
 	}
 	
+	public int getDistanceFrom( Position p ) {
+		if ( this.equals( p ) ) {
+			return 0;
+		}
+		return Math.max( Math.abs(getX() - p.getX() ), Math.abs(getY() - p.getY() ));
+	}
+	
 	public String toString() {
 		return x+"-"+y;
 	}

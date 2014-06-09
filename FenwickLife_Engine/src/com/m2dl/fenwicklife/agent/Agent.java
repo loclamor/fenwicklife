@@ -249,7 +249,9 @@ public class Agent extends Active implements Serializable {
 				// Maybe improve this one
 				if(t instanceof Home) {
 					if(!((Home)t).hasBox()) {
-						return 105;
+						int dist = t.getPosition().getDistanceFrom( new Position(getX(),getY()));
+						dist = (dist==0?4:dist);
+						return 105 * (dist>3?1:Math.abs(dist-5)); //multiply interest by distance (near = best, far = lower)
 					}
 				}
 				if(tY > homeDown || tY < homeUp || tX < homeX) {
@@ -281,7 +283,9 @@ public class Agent extends Active implements Serializable {
 			}
 			if(t instanceof Storage) {
 				if(((Storage)t).hasBox()) {
-					return 105;
+					int dist = t.getPosition().getDistanceFrom( new Position(getX(),getY()));
+					dist = (dist==0?4:dist);
+					return 105 * (dist>3?1:Math.abs(dist-5)); //multiply interest by distance (near = best, far = lower)
 				}
 			}
 			else {
@@ -315,7 +319,8 @@ public class Agent extends Active implements Serializable {
 			nowInterest = (nowInterest + 1) * 3;
 		}
 
-		return Math.max(-100, Math.min(nowInterest, 100));
+		return nowInterest; //to be certain best interest is the best limitation commented
+		//return Math.max(-100, Math.min(nowInterest, 100));
 	}
 
 	/**
