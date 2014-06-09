@@ -36,10 +36,19 @@ public class Engine implements IAgentAction {
 		return field;
 	}
 
+	public static Engine getInstance(int execSpeed) {
+		instance.setSpeed(execSpeed);
+		return instance;
+	}
+	
 	public static Engine getInstance() {
 		return instance;
 	}
 
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
 	public boolean hello(SimpleAgent me) {
 		if (!field.isObstacle(me.getX(), me.getY())) {
 			field.setAgent(me);

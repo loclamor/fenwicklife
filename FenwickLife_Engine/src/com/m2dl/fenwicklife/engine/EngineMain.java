@@ -17,12 +17,32 @@ import com.m2dl.fenwicklife.xmlrpc.provider.ProviderImpl;
 public class EngineMain {
 	private static IProvider provider;
 	public static Engine engine;
+	
+	public static int port = 8081;
+	public static int execSpeed = 100;
+	
 	public static void main(String[] args) throws ClassInterfaceRelationException {
-		// Retrieve args
-		int port = 8081;
+		
+		if (args.length == 0) {
+			System.out
+					.println("Options are : [ port [, execSpedd ]]");
+			System.out.println("\tport :\t int, optional, default "
+					+ port);
+			System.out.println("\texecSpeed :\t int (ms), optional, default "
+					+ execSpeed);
+		}
+		
+		
+		
+		if (args.length >= 1) {
+			port = new Integer(args[0]).intValue();
+		}
+		if (args.length >= 2) {
+			execSpeed = new Integer(args[1]).intValue();
+		}
 		
 		// Init engine
-		EngineMain.engine = Engine.getInstance();
+		EngineMain.engine = Engine.getInstance(execSpeed);
 		
 		// Init services list
 		List<Object> classesServices = new ArrayList<Object>();
