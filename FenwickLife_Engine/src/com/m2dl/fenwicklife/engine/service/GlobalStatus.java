@@ -20,7 +20,8 @@ public class GlobalStatus implements IGlobalStatus{
 				Tile t = fieldState.get(p);
 				String box = t.hasBox() || t.hasAgentWithBox()?"1":"0";
 				String agent = t.hasAgent()?"1":"0";
-				returnedValue.append((int)p.getX()+":"+(int)p.getY()+":"+t.getClass().getSimpleName()+":"+agent+":"+box+"\n");
+				String agentWithBox = t.hasAgentWithBox()?"1":"0";
+				returnedValue.append((int)p.getX()+":"+(int)p.getY()+":"+t.getClass().getSimpleName()+":"+box+":"+agent+":"+agentWithBox+"\n");
 			}
 		}
 		return returnedValue.toString();

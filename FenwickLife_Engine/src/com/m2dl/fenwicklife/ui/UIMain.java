@@ -109,13 +109,15 @@ public class UIMain {
 	    }
 	    displayPanel.reset();
 	    for(String line : engineDataLines) {
-	    	if(line.matches("[0-9]*:[0-9]*:[a-zA-Z]*:[0-9]:[0-9]")) {
+	    	if(line.matches("[0-9]*:[0-9]*:[a-zA-Z]*:[0-9]:[0-9]:[0-9]")) {
 	    		String[] lineInformations = line.split(":");
 		    	int x = Integer.parseInt(lineInformations[0]);
 		    	int y = Integer.parseInt(lineInformations[1]);
 		    	String type = lineInformations[2];
-		    	boolean hasAgent = Integer.parseInt(lineInformations[3]) == 1;
-		    	boolean hasBox = Integer.parseInt(lineInformations[4]) == 1;
+		    	boolean hasBox = Integer.parseInt(lineInformations[3]) == 1;
+		    	boolean hasAgent = Integer.parseInt(lineInformations[4]) == 1;
+		    	boolean agentHasBox = Integer.parseInt(lineInformations[5]) == 1;
+		    	
 		    			
 		    	switch(type) {
 		    	case "Wall" :
@@ -129,9 +131,9 @@ public class UIMain {
 		    		break;
 		    	}
 		    	if( hasAgent ) {
-		    		displayPanel.addGraphics(new FenwickDrawable(x, y, !hasBox));
+		    		displayPanel.addGraphics(new FenwickDrawable(x, y, !agentHasBox));
 		    	}
-		    	else if( hasBox ) {
+		    	if( hasBox ) {
 		    		displayPanel.addGraphics(new BoxDrawable(x, y));
 		    	}
 	    	}
