@@ -1,5 +1,6 @@
 package com.m2dl.fenwicklife.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -36,6 +37,7 @@ public class UIMain {
 	private static final int DEFAULT_WIDTH = 900;
 	private static final int DEFAULT_CONTROL_WIDTH = 300;
 	private static final int DEFAULT_HEIGHT = 400;
+	private static final int DEFAULT_CONTROL_HEIGHT = 50;
 	
 	private static JPanel globalPanel = new JPanel();
 	private static JPanel controlPanel = new ControlPanel();
@@ -55,19 +57,21 @@ public class UIMain {
 		
 		// Initialize the windows
 		JFrame window = new JFrame();
-	    window.setVisible(true);
 	    window.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	    window.setTitle("Fenwick Life UI");
 	    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    // Init the panel to display drawables
 	    displayPanel = new ScenePanel(1, 1);
+
+//	    displayPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_CONTROL_HEIGHT));
+//	    controlPanel.setPreferredSize(new Dimension(DEFAULT_CONTROL_WIDTH, DEFAULT_CONTROL_HEIGHT));
+	    globalPanel.setPreferredSize(new Dimension());
+	    globalPanel.setLayout(new BorderLayout());
+	    globalPanel.add(displayPanel, BorderLayout.CENTER);
+	    globalPanel.add(controlPanel, BorderLayout.SOUTH);
+
 	    window.add(globalPanel);
-//	    window.add(displayPanel);
-	    displayPanel.setPreferredSize(new Dimension(DEFAULT_WIDTH - DEFAULT_CONTROL_WIDTH, DEFAULT_HEIGHT));
-	    controlPanel.setPreferredSize(new Dimension(DEFAULT_CONTROL_WIDTH, DEFAULT_HEIGHT));
-	    globalPanel.setLayout(new GridLayout());
-	    globalPanel.add(displayPanel);
-	    globalPanel.add(controlPanel);
+	    window.setVisible(true);
 	    
 	    // Launch the timer to get current state from engine server
 	    refreshdisplay();   
